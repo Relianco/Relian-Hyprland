@@ -8,6 +8,11 @@ configuration {
     show-icons: true;
     drun-display-format: "{name}";
     disable-history: false;
+    /* Match only the visible name and generic name ("Thunar File Manager" / "File Manager"). The default also matches
+       hidden categories and keywords, so "file" listed Steam (FileTransfer), LocalSend, Bulk Rename... above file managers.
+       Results are ordered by how often you launched them from rofi (its history), so your usual app comes first. */
+    drun-match-fields: "name,generic";
+    max-history-size: 100;
 }
 
 * {

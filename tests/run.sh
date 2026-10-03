@@ -243,6 +243,10 @@ assert "Relian_Quick_Settings.sh" in json.loads(t)["custom/menu"]["on-click"]
 assert "config-omarchy-menu.rasi" in open(sys.argv[2], encoding="utf-8").read()
 PY
 
+# launcher search: match only name/generic name (hidden categories/keywords made "file" list Steam first); keep history
+grep -q 'drun-match-fields: "name,generic"' "$root/config/rofi/config-omarchy-launcher.rasi" && grep -q 'disable-history: false' "$root/config/rofi/config-omarchy-launcher.rasi" && ok "launcher matches name/generic only and keeps usage history" || bad "launcher search settings"
+grep -q 'window.thunar' "$root/config/gtk-3.0/relian-thunar.css" && ok "thunar square-corner css is scoped to window.thunar" || bad "thunar css scope"
+
 # opacity toggle must not use the removed `hyprctl setprop`; it reads the state and sets the opposite
 grep -q 'ToggleOpaque.sh' "$root/config/hypr/configs/Keybinds.lua" && ! grep -q 'value = "toggle"' "$root/config/hypr/configs/Keybinds.lua" && ok "opacity bind uses ToggleOpaque.sh (no setprop toggle)" || bad "opacity toggle bind"
 

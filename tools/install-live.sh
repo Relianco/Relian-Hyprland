@@ -7,6 +7,11 @@ root=$(cd "$(dirname "$0")/.." && pwd)
 backup="$HOME/.config-backup-relian-$(date +%Y%m%d-%H%M%S)"
 dirs=(hypr waybar rofi wallust kitty swaync)
 
+# GTK3: ship only our own CSS file and import it from your gtk.css (your accent colours etc. stay yours)
+mkdir -p "$HOME/.config/gtk-3.0"
+cp "$root/config/gtk-3.0/relian-thunar.css" "$HOME/.config/gtk-3.0/relian-thunar.css"
+grep -q relian-thunar.css "$HOME/.config/gtk-3.0/gtk.css" 2>/dev/null || printf '\n@import url("relian-thunar.css");\n' >> "$HOME/.config/gtk-3.0/gtk.css"
+
 mkdir -p "$backup"
 for d in "${dirs[@]}"; do [ -e "$HOME/.config/$d" ] && cp -a "$HOME/.config/$d" "$backup/"; done
 echo "backup: $backup"

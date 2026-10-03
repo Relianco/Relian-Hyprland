@@ -10,7 +10,7 @@ hl.on("hyprland.start", function()
     local function run(cmd) hl.exec_cmd(cmd) end
 
     -- wallpaper stuff
-    run("awww-daemon --format xrgb")
+    run(scriptsDir .. "/WallpaperApply.sh --restore") -- awww for images, mpvpaper for animated ones
     -- run('mpvpaper "*" -o "load-scripts=no no-audio --loop" ' .. livewallpaper)
     -- run(SwwwRandom .. " " .. wallDIR) -- random wallpaper switcher every 30 minutes
 

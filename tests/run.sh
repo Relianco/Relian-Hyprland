@@ -208,6 +208,18 @@ rm -rf "$lk"
 "$root/config/hypr/scripts/InstallPackages.sh" all --dry-run >/dev/null 2>&1 && ok "InstallPackages.sh --dry-run works" || bad "InstallPackages.sh dry run" "failed"
 ! grep -rnE '(^|[^$A-Za-z_])swww( |-daemon)' "$root/config" "$root/install.sh" | grep -vE ':[0-9]+:\s*#' | grep -q . && ok "no calls to the removed swww command (renamed awww)" || bad "swww calls" "$(grep -rnE '\bswww( |-daemon)' "$root/config" | head -3)"
 
+# wallpaper apply: an image goes through awww and is remembered; a video needs mpvpaper and says so when it is missing
+wp=$(mktemp -d); mkdir -p "$wp/bin" "$wp/home/.config/hypr/wallpaper_effects" "$wp/state"
+printf '%s\n' '#!/bin/bash' 'echo "awww $*" >> "$FAKE_LOG"' > "$wp/bin/awww"; printf '%s\n' '#!/bin/bash' 'echo "awww-daemon" >> "$FAKE_LOG"' > "$wp/bin/awww-daemon"
+printf '%s\n' '#!/bin/bash' 'echo "notify $*" >> "$FAKE_LOG"' > "$wp/bin/notify-send"; chmod +x "$wp"/bin/*
+python3 -c "from PIL import Image; Image.new('RGB',(64,18),'#336699').save('$wp/pic.png')"; : > "$wp/clip.mp4"
+wenv=(env PATH="$wp/bin:$PATH" HOME="$wp/home" XDG_CACHE_HOME="$wp/home/.cache" WALLPAPER_STATE_DIR="$wp/state" FAKE_LOG="$wp/log" MPVPAPER=definitely-not-installed)
+"${wenv[@]}" "$root/config/hypr/scripts/WallpaperApply.sh" "$wp/pic.png" >/dev/null 2>&1
+"${wenv[@]}" "$root/config/hypr/scripts/WallpaperApply.sh" "$wp/clip.mp4" >/dev/null 2>&1
+[ "$(cat "$wp/state/wallpaper")" = "$wp/pic.png" ] && grep -q "awww img $wp/pic.png" "$wp/log" && grep -q "notify Animated wallpaper" "$wp/log" \
+  && ok "WallpaperApply.sh: image via awww and remembered; video without mpvpaper is refused and not remembered" || bad "WallpaperApply.sh" "$(cat "$wp/log" 2>/dev/null; cat "$wp/state/wallpaper" 2>/dev/null)"
+rm -rf "$wp"
+
 # bar toggles print valid JSON and are wired into the layout
 for m in perf dnd; do
   "$root/config/hypr/scripts/BarToggles.sh" $m | python3 -c 'import sys,json; d=json.loads(sys.stdin.read()); assert d["text"] and d["class"]' 2>&1 \
@@ -317,7 +329,7 @@ if command -v rsync >/dev/null; then
     miss=""
     for f in .config/hypr/hyprland.lua .config/hypr/UserConfigs/UserKeybinds.lua .config/hypr/monitors.lua .config/hypr/scripts/ThemeSelect.sh \
              .config/waybar/config .config/waybar/style.css .config/rofi/config-omarchy-launcher.rasi .config/kitty/kitty.conf \
-             .config/hypr/wallpaper_effects/.wallpaper_current .local/share/themes/relian/index.theme .local/share/themes/relian/gtk-3.0/gtk.css; do
+             .local/share/themes/relian/index.theme .local/share/themes/relian/gtk-3.0/gtk.css; do
       [ -e "$ih/$f" ] || miss+="$f "
     done
     grep -q 'gtk-theme-name=relian' "$ih/.config/gtk-3.0/settings.ini" 2>/dev/null || miss+="settings.ini "

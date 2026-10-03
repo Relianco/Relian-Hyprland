@@ -78,6 +78,16 @@ whole monitor. It only affects windows that are alone on their workspace.
 - **Readable highlights on any theme**: the rofi template picks light or dark text for each highlight color, and a test checks
   the contrast of all themes.
 
+## Wallpapers
+
+Wallpapers are not kept in git. `SUPER+W` opens the picker with everything in `~/Pictures/wallpapers` (subfolders too).
+- **Ultrawide stills**: `~/.config/hypr/scripts/FetchWallpapers.py` downloads a set of 32:9 wallpapers (most favorited, SFW) from
+  wallhaven.cc; `--queries nebula,city --per-query 4` picks the themes and amounts. Wider ones are scaled to 5120x1440.
+- **Animated**: drop `.mp4`/`.webm` loops in the same folder (needs `mpvpaper`: `paru -S mpvpaper`). They are hardware decoded and
+  pause while windows cover them. Pick ones with slow, ambient motion: fast pans make a screen this wide uncomfortable to look at.
+- The choice is remembered across logins (`~/.local/state/relian/wallpaper`). With the theme set to "Wallpaper colours" the palette is
+  re-derived from the wallpaper (from a still of the video for animated ones).
+
 ## Bar, menus and notifications
 
 - **Waybar**: layouts are in `~/.config/waybar/configs/`, styles in `style/`. `SUPER+CTRL+B` picks a style, `SUPER+ALT+B` a layout.

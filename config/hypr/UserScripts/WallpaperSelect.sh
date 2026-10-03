@@ -143,66 +143,9 @@ set_sddm_wallpaper() {
   fi
 }
 
-modify_startup_config() {
-  local selected_file="$1"
-  local startup_config="$HOME/.config/hypr/UserConfigs/Startup_Apps.conf"
-
-  # Check if it's a live wallpaper (video)
-  if [[ "$selected_file" =~ \.(mp4|mkv|mov|webm)$ ]]; then
-    # For video wallpapers:
-    sed -i '/^\s*exec-once\s*=\s*awww-daemon\s*--format\s*xrgb\s*$/s/^/\#/' "$startup_config"
-    sed -i '/^\s*#\s*exec-once\s*=\s*mpvpaper\s*.*$/s/^#\s*//;' "$startup_config"
-
-    # Update the livewallpaper variable with the selected video path (using $HOME)
-    selected_file="${selected_file/#$HOME/\$HOME}" # Replace /home/user with $HOME
-    sed -i "s|^\$livewallpaper=.*|\$livewallpaper=\"$selected_file\"|" "$startup_config"
-
-    echo "Configured for live wallpaper (video)."
-  else
-    # For image wallpapers:
-    sed -i '/^\s*#\s*exec-once\s*=\s*awww-daemon\s*--format\s*xrgb\s*$/s/^\s*#\s*//;' "$startup_config"
-
-    sed -i '/^\s*exec-once\s*=\s*mpvpaper\s*.*$/s/^/\#/' "$startup_config"
-
-    echo "Configured for static wallpaper (image)."
-  fi
-}
-
-# Apply Image Wallpaper
-apply_image_wallpaper() {
-  local image_path="$1"
-
-  kill_wallpaper_for_image
-
-  if ! pgrep -x "awww-daemon" >/dev/null; then
-    echo "Starting awww-daemon..."
-    awww-daemon --format xrgb &
-  fi
-
-  awww img -o "$focused_monitor" "$image_path" $SWWW_PARAMS
-
-  # Run additional scripts (pass the image path to avoid cache race conditions)
-  "$SCRIPTSDIR/WallustSwww.sh" "$image_path"
-  sleep 2
-  "$SCRIPTSDIR/Refresh.sh"
-  sleep 1
-
-  set_sddm_wallpaper
-}
-
-apply_video_wallpaper() {
-  local video_path="$1"
-
-  # Check if mpvpaper is installed
-  if ! command -v mpvpaper &>/dev/null; then
-    notify-send -i "$iDIR/error.png" "E-R-R-O-R" "mpvpaper not found"
-    return 1
-  fi
-  kill_wallpaper_for_video
-
-  # Apply video wallpaper using mpvpaper
-  mpvpaper '*' -o "load-scripts=no no-audio --loop" "$video_path" &
-}
+# Apply a wallpaper (image or video): WallpaperApply.sh kills the other kind of daemon, starts the right one, remembers
+# the choice for the next login and re-derives colours when the theme is "Wallpaper colours".
+apply_wallpaper() { "$SCRIPTSDIR/WallpaperApply.sh" "$1"; set_sddm_wallpaper; }
 
 # Main function
 main() {
@@ -230,15 +173,7 @@ main() {
     exit 1
   fi
 
-  # Modify the Startup_Apps.conf file based on wallpaper type
-  modify_startup_config "$selected_file"
-
-  # **CHECK FIRST** if it's a video or an image **before calling any function**
-  if [[ "$selected_file" =~ \.(mp4|mkv|mov|webm|MP4|MKV|MOV|WEBM)$ ]]; then
-    apply_video_wallpaper "$selected_file"
-  else
-    apply_image_wallpaper "$selected_file"
-  fi
+  apply_wallpaper "$selected_file"
 }
 
 # Check if rofi is already running

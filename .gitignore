@@ -44,3 +44,6 @@ htmlcov/
 
 # old installer logs
 Copy-Logs/
+
+# wallpapers are not kept in git: run config/hypr/scripts/FetchWallpapers.py (images) or drop your own in ~/Pictures/wallpapers
+/wallpapers/

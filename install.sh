@@ -67,13 +67,22 @@ for v in "$HOME"/.config/hypr/v[0-9]*; do [ -e "$v" ] && [ "$v" != "$newest" ] &
 say "configs copied to ~/.config"
 
 # --- 4. wallpapers -------------------------------------------------------------------------------------
+# Wallpapers are not kept in git. Anything you put in ~/Pictures/wallpapers (images, or .mp4/.webm for animated ones) shows up in
+# the picker; FetchWallpapers.py downloads a set of ultrawide (32:9) ones from wallhaven.cc.
 mkdir -p "$HOME/Pictures/wallpapers"
-cp -rn "$root/wallpapers/." "$HOME/Pictures/wallpapers/" 2>/dev/null || true
+has_img() { find -L "$HOME/Pictures/wallpapers" -maxdepth 2 -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \) 2>/dev/null | grep -q .; }
+if ! has_img; then
+  if [ "$files_only" = 0 ] && [ -t 0 ] && command -v python3 >/dev/null 2>&1; then
+    read -r -p "No wallpapers yet. Download a set of ultrawide ones from wallhaven.cc now? [y/N] " ans
+    case "$ans" in [yY]*) python3 "$HOME/.config/hypr/scripts/FetchWallpapers.py" || warn "download failed" ;; esac
+  fi
+  has_img || warn "no wallpapers yet: run ~/.config/hypr/scripts/FetchWallpapers.py, or put your own in ~/Pictures/wallpapers"
+fi
 cur="$HOME/.config/hypr/wallpaper_effects/.wallpaper_current"
 mkdir -p "$(dirname "$cur")"
 if [ ! -f "$cur" ]; then
   first=$(find "$HOME/Pictures/wallpapers" -maxdepth 2 -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \) | sort | head -1)
-  [ -n "$first" ] && cp "$first" "$cur"
+  [ -z "$first" ] || cp "$first" "$cur"
 fi
 
 # --- 5. defaults that should exist but must not clobber your choices ---------------------------------------

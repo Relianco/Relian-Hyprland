@@ -119,7 +119,7 @@ config/{kitty,swaync,wlogout,...}   styled apps
 docs/                      keybindings (generated) and the customizing guide
 tests/                     run.sh (checks) and demo-nested.sh (try it in a window)
 tools/                     generators (theme converter, keybinding doc)
-wallpapers/                starter wallpapers
+(wallpapers are not in git: config/hypr/scripts/FetchWallpapers.py downloads ultrawide ones)
 ```
 
 ## License

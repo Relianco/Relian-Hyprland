@@ -38,7 +38,6 @@ sudo pacman -S hyprland waybar rofi kitty swaync wlogout hypridle hyprlock wallu
 ```bash
 git clone https://github.com/Relianco/Relian-Hyprland.git
 cd Relian-Hyprland
-git checkout lua-config          # until it becomes the default branch
 ./install.sh
 ```
 

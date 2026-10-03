@@ -83,7 +83,6 @@ hl.window_rule({ match = { class = "^([Bb]aobab|org.gnome.[Bb]aobab)$" }, tag = 
 hl.window_rule({ match = { class = "^(gnome-disks|wihotspot(-gui)?)$" }, tag = "+settings" })
 hl.window_rule({ match = { title = "(Kvantum Manager)" }, tag = "+settings" })
 hl.window_rule({ match = { class = "^(file-roller|org.gnome.FileRoller)$" }, tag = "+settings" })  -- archive manager
-hl.window_rule({ match = { class = "^(nm-applet|nm-connection-editor|blueman-manager)$" }, tag = "+settings" })
 hl.window_rule({ match = { class = "^(qt5ct|qt6ct|[Yy]ad)$" }, tag = "+settings" })
 hl.window_rule({ match = { class = "^(org.kde.polkit-kde-authentication-agent-1)$" }, tag = "+settings" })
 hl.window_rule({ match = { class = "^([Rr]ofi)$" }, tag = "+settings" })
@@ -199,6 +198,10 @@ hl.window_rule({ match = { tag = "settings*" }, size = { "monitor_h*1.244", "mon
 hl.window_rule({ match = { class = "(xdg-desktop-portal-gtk)" }, float = true })
 hl.window_rule({ match = { class = "(xdg-desktop-portal-gtk)" }, size = { "monitor_h*0.9", "monitor_h*0.6" } })
 hl.window_rule({ match = { class = "(xdg-desktop-portal-gtk)" }, center = true })
+-- Bluetooth / network managers: compact floating windows (not tagged "settings", whose size rule would win)
+hl.window_rule({ match = { class = "^(nm-applet|nm-connection-editor|blueman-manager)$" }, float = true })
+hl.window_rule({ match = { class = "^(nm-applet|nm-connection-editor|blueman-manager)$" }, size = { "monitor_h*0.62", "monitor_h*0.5" } })
+hl.window_rule({ match = { class = "^(nm-applet|nm-connection-editor|blueman-manager)$" }, center = true })
 -- the volume mixer is a narrow list: compact and solid (the generic settings size above is far too wide for it)
 hl.window_rule({ match = { class = "^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$" }, float = true })
 hl.window_rule({ match = { class = "^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$" }, size = { "monitor_h*0.8", "monitor_h*0.62" } })

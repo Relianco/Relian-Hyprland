@@ -99,7 +99,7 @@ Wallpapers are not kept in git. `SUPER+W` opens the picker with everything in `~
   `WifiMenu.sh`, `BluetoothMenu.sh`, sharing `PopupLib.sh`). Volume shows a big meter (Left/Right = -/+5%) with rows to mute, pick the
   output or mute the mic; Wi-Fi lists networks by signal and asks for a password the first time (it is piped to `nmcli`, never put on a
   command line); Bluetooth lists devices and connects, disconnects or pairs. Right-click opens the full tools (`nm-connection-editor`,
-  `blueman-manager`); middle-click on the speaker opens the mixer. Needs `wpctl`/`pactl`, `nmcli`, `bluetoothctl`.
+  `blueman-manager`); middle-click on the speaker opens the mixer, and scrolling over it changes the volume with an on-screen progress bar (the same one the volume keys show). Needs `wpctl`/`pactl`, `nmcli`, `bluetoothctl`.
   `blueman-applet` is no longer started (its tray icon duplicated the bar's); `nm-applet` still is, because it is NetworkManager's
   password agent.
 - **Calendar**: right-click the clock for a month calendar in the rofi look (`scripts/Calendar.sh`). Left/Right (or Up/Down) change month,

@@ -145,8 +145,10 @@
   "pulseaudio": {
     "format": "{icon}",
     "on-click": "$HOME/.config/hypr/scripts/VolumeMenu.sh",
-    "on-click-right": "pamixer -t",
+    "on-click-right": "$HOME/.config/hypr/scripts/Volume.sh --toggle",
     "on-click-middle": "pavucontrol",
+    "on-scroll-up": "$HOME/.config/hypr/scripts/Volume.sh --inc",
+    "on-scroll-down": "$HOME/.config/hypr/scripts/Volume.sh --dec",
     "tooltip-format": "Playing at {volume}%",
     "scroll-step": 5,
     "format-muted": "󰝟",

@@ -39,9 +39,6 @@ hl.on("hyprland.start", function()
     run("wl-paste --type text --watch cliphist store")
     run("wl-paste --type image --watch cliphist store")
 
-    -- Rainbow borders
-    -- run(UserScripts .. "/RainbowBorders.sh")
-
     -- hypridle for hyprlock
     run("hypridle")
 

@@ -7,7 +7,9 @@
 set -eu
 root=$(cd "$(dirname "$0")/.." && pwd)
 t=${DEMO_HOME:-$(mktemp -d)}; mkdir -p "$t/.config"
-for d in "$HOME"/.config/*; do case "$(basename "$d")" in hypr|waybar) ;; *) ln -sfn "$d" "$t/.config/$(basename "$d")";; esac; done
+for d in "$HOME"/.config/*; do case "$(basename "$d")" in hypr|waybar|rofi) ;; *) ln -sfn "$d" "$t/.config/$(basename "$d")";; esac; done
+# rofi: copy of the repo's config (new launcher theme lives there)
+rm -rf "$t/.config/rofi"; cp -r "$root/config/rofi" "$t/.config/rofi"
 # waybar: a copy of the repo's config (so new layouts/styles show up). WAYBAR_LAYOUT / WAYBAR_STYLE pick them.
 rm -rf "$t/.config/waybar"; cp -r "$root/config/waybar" "$t/.config/waybar"
 ln -sfn "$t/.config/waybar/configs/${WAYBAR_LAYOUT:-[TOP] Omarchy}" "$t/.config/waybar/config"

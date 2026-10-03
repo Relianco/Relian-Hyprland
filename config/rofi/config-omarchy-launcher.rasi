@@ -1,0 +1,55 @@
+/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+/* Omarchy-style app launcher: small centered box, one search field, plain list. Colors follow wallust.
+   Used by SUPER+ALT+SPACE and SUPER+D (see hypr/configs/Keybinds.lua). */
+@import "~/.config/rofi/wallust/colors-rofi.rasi"
+
+configuration {
+    modi: "drun";
+    show-icons: true;
+    drun-display-format: "{name}";
+    disable-history: false;
+}
+
+* {
+    font: "JetBrainsMono Nerd Font 13";
+    background-color: transparent;
+    text-color: @normal-foreground;
+}
+
+window {
+    location: center;
+    anchor: center;
+    width: 644px;
+    padding: 20px;
+    border: 2px;
+    border-color: @active-background;
+    background-color: @normal-background;
+}
+
+mainbox { children: [ inputbar, listview ]; spacing: 12px; }
+
+inputbar {
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 6%);
+    children: [ entry ];
+}
+
+entry {
+    placeholder: "󰍉  Search...";
+    placeholder-color: rgba(255, 255, 255, 45%);
+}
+
+listview {
+    lines: 8;
+    columns: 1;
+    fixed-height: true;
+    scrollbar: false;
+    spacing: 2px;
+}
+
+element { padding: 6px 10px; spacing: 10px; }
+element-icon { size: 1.5em; }
+element selected.normal {
+    background-color: @active-background;
+    text-color: @active-foreground;
+}

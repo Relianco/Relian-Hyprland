@@ -31,7 +31,7 @@ GDK_BACKEND=$BACKEND yad \
 " SHIFT enter" "DropDown Terminal" " Q to close" \
 " B" "Launch Browser" "(Default browser)" \
 " A" "Desktop Overview" "(AGS - if opted to install)" \
-" D" "Application Launcher" "(rofi-wayland)" \
+" D" "Application Launcher" "(also SUPER ALT SPACE, like Omarchy)" \
 " E" "Open File Manager" "(Thunar)" \
 " S" "Google Search using rofi" "(rofi)" \
 " Q" "close active window" "(not kill)" \
@@ -58,10 +58,10 @@ GDK_BACKEND=$BACKEND yad \
 " SHIFT F" "Fullscreen" "Toggles to full screen" \
 " CTL F" "Fake Fullscreen" "Toggles to fake full screen" \
 " ALT L" "Toggle Dwindle | Master Layout" "Hyprland Layout" \
-" =" "Grow active window" "(+50px, hold to repeat) [added in Lua dots]" \
-" -" "Shrink active window" "(-50px, hold to repeat) [added in Lua dots]" \
-" SPACEBAR" "Toggle float" "single window" \
-" ALT SPACEBAR" "Toggle all windows to float" "all windows" \
+"  SPACE" "Main menu (KooL settings)" "(Omarchy: SUPER SPACE)" \
+"  - / =" "Resize window narrower / wider" "(+SHIFT: shorter/taller, +ALT: small steps, +CTRL: big steps)" \
+" T" "Toggle float" "single window" \
+" ALT T" "Toggle all windows to float" "all windows" \
 " ALT O" "Toggle Blur" "normal or less blur" \
 " CTRL O" "Toggle Opaque ON or OFF" "on active window only" \
 " Shift A" "Animations Menu" "Choose Animations via rofi" \

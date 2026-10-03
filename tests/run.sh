@@ -76,6 +76,14 @@ if command -v lua >/dev/null; then
   [ -z "$out" ] && ok "config + hyprland.start callbacks run under a stubbed hl" || bad "stubbed run failed" "$out"
 fi
 
+# no key combo is bound twice across the default/user/laptop bind files (the later one would silently fight the first)
+dups=$(grep -hoE '^hl\.bind\("[^"]+"' "$root/config/hypr/configs/Keybinds.lua" "$root/config/hypr/UserConfigs/UserKeybinds.lua" "$root/config/hypr/configs/Laptops.lua" | sort | uniq -d)
+[ -z "$dups" ] && ok "no duplicate keybinds" || bad "duplicate keybinds" "$dups"
+
+# squares and no rainbow: rounding stays 0 and the rotating-border animation stays out
+grep -qE 'rounding = 0,' "$root/config/hypr/UserConfigs/UserDecorations.lua" && ok "corners are square (rounding = 0)" || bad "rounding is not 0"
+grep -q 'borderangle' "$root/config/hypr/UserConfigs/UserAnimations.lua" && bad "rainbow border animation present" || ok "no rainbow border animation"
+
 # the Omarchy-style waybar layout is valid JSONC and its style imports the wallust colors
 if command -v python3 >/dev/null; then
   out=$(python3 - "$root/config/waybar/configs/[TOP] Omarchy" <<'PY' 2>&1

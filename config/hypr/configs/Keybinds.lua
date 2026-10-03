@@ -22,7 +22,10 @@ end
 --### STANDAR ####
 -- Common shortcuts
 --bindr = $mainMod, $mainMod_L, exec, pkill rofi || rofi -show drun -modi drun,filebrowser,run,window # Super Key to Launch rofi menu
-hl.bind("SUPER + D", hl.dsp.exec_cmd("pkill rofi || true && rofi -show drun -modi drun,filebrowser,run,window"), { description = "app launcher" })
+-- App launcher: Omarchy uses SUPER+ALT+SPACE; SUPER+D kept as an alias
+local launcher = hl.dsp.exec_cmd("pkill rofi || rofi -show drun -show-icons -theme " .. os.getenv("HOME") .. "/.config/rofi/config-omarchy-launcher.rasi")
+hl.bind("SUPER + ALT + SPACE", launcher, { description = "app launcher (Omarchy style)" })
+hl.bind("SUPER + D", launcher, { description = "app launcher" })
 hl.bind("SUPER + B", hl.dsp.exec_cmd("xdg-open \"https://\""), { description = "open default browser" })
 hl.bind("SUPER + A", hl.dsp.exec_cmd(scriptsDir .. "/OverviewToggle.sh"), { description = "desktop overview" })  -- toggles quickshell or ags overview (tries QS first, falls back to AGS)
 --bindd = $mainMod, A, ags overview, exec, pkill rofi || true && ags -t 'overview' # desktop overview (if installed)
@@ -45,8 +48,9 @@ hl.bind("SUPER + CTRL + SHIFT + R", hl.dsp.exec_cmd("pkill rofi || true && " .. 
 
 hl.bind("SUPER + SHIFT + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }), { description = "fullscreen" })
 hl.bind("SUPER + CTRL + F", hl.dsp.window.fullscreen({ mode = "maximized" }), { description = "maximize window" })
-hl.bind("SUPER + SPACE", hl.dsp.window.float({ action = "toggle" }), { description = "Float current window" })
-hl.bind("SUPER + ALT + SPACE", function()
+hl.bind("SUPER + SPACE", hl.dsp.exec_cmd(scriptsDir .. "/Kool_Quick_Settings.sh"), { description = "main menu (Omarchy style)" })
+hl.bind("SUPER + T", hl.dsp.window.float({ action = "toggle" }), { description = "Float current window" })
+hl.bind("SUPER + ALT + T", function()
     for _, w in ipairs(hl.get_workspace_windows(hl.get_active_workspace())) do
         hl.dispatch(hl.dsp.window.float({ window = w, action = "set" }))
     end

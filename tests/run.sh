@@ -260,6 +260,9 @@ grep -q 'window.thunar' "$root/config/gtk-theme/relian/gtk-3.0/relian-thunar.css
 grep -qE '^dynamic_background_opacity yes' "$root/config/kitty/kitty.conf" && grep -q '^allow_remote_control socket-only' "$root/config/kitty/kitty.conf" && grep -q '^listen_on unix:@kitty$' "$root/config/kitty/kitty.conf" \
   && ok "kitty: dynamic opacity + socket remote control (needed by the opacity toggle)" || bad "kitty opacity settings"
 
+# kitty must not restore the last window's size/maximized state, or one maximized close makes every new terminal maximized
+grep -qE '^remember_window_size no' "$root/config/kitty/kitty.conf" && ok "kitty: remember_window_size no (new terminals always tile)" || bad "kitty remembers window state (new terminals can start maximized)"
+
 # opacity toggle must not use the removed `hyprctl setprop`; it reads the state and sets the opposite
 grep -q 'ToggleOpaque.sh' "$root/config/hypr/configs/Keybinds.lua" && ! grep -q 'value = "toggle"' "$root/config/hypr/configs/Keybinds.lua" && ok "opacity bind uses ToggleOpaque.sh (no setprop toggle)" || bad "opacity toggle bind"
 

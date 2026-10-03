@@ -25,6 +25,11 @@ hl.config({
         mfact = 0.5,
     },
 
+    -- A lone window on a workspace is centred at this aspect ratio instead of stretching across the whole monitor.
+    -- On a 5120x1440 ultrawide, 16:9 gives a 2560x1440 window in the middle. Opening a second window tiles normally.
+    -- Use { 21, 9 } for wider, or remove this block to fill the screen.
+    layout = { single_window_aspect_ratio = { 16, 9 } },
+
     general = {
         resize_on_border = true,
         layout = "dwindle",

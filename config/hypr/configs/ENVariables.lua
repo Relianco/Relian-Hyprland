@@ -5,7 +5,7 @@
 
 -- environment-variables
 -- Current Version of Relian Dotfiles:
-hl.env("DOTS_VERSION", "2.3.19")
+hl.env("DOTS_VERSION", "2.4.0")
 
 --## Toolkit Backend Variables ###
 hl.env("GDK_BACKEND", "wayland,x11,*")

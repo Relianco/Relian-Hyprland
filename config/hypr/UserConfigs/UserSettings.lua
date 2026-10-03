@@ -1,5 +1,5 @@
 -- /* ---- Relian-Hyprland ---- */
--- User settings. Not touched during updates if upgrade.sh is used.
+-- User settings. Not overwritten by ./install.sh (unless --force).
 -- https://wiki.hypr.land/Configuring/Variables/
 -- Look at configs/SystemSettings.lua to know how to modify this
 -- e.g. hl.config({ general = { gaps_out = 8 } })

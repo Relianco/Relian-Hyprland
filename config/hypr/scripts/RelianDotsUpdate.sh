@@ -15,7 +15,7 @@ if [ -z "$local_version" ]; then
 fi
 
 # GitHub URL - Relian's dots
-branch="main"
+branch=$(curl -s https://api.github.com/repos/Relianco/Relian-Hyprland | jq -r '.default_branch // "main"')
 github_url="https://github.com/Relianco/Relian-Hyprland/tree/$branch/config/hypr/"
 
 # Fetch the version from GitHub URL - Relian's dots
@@ -48,7 +48,7 @@ else
           cd $Relian_Dots_DIR &&
           git stash &&
           git pull &&
-          ./copy.sh &&
+          ./install.sh &&
 		  notify-send -u critical -i "$iDIR/ja.png" 'Update Completed:' 'Kindly log out and relogin to take effect'
         "
 	
@@ -60,8 +60,8 @@ else
         kitty -e bash -c "
           git clone --depth=1 https://github.com/Relianco/Relian-Hyprland.git $Relian_Dots_DIR &&
           cd $Relian_Dots_DIR &&
-          chmod +x copy.sh &&
-          ./copy.sh &&
+          chmod +x install.sh &&
+          ./install.sh &&
 		  notify-send -u critical -i "$iDIR/ja.png" 'Update Completed:' 'Kindly log out and relogin to take effect'
         "
       fi

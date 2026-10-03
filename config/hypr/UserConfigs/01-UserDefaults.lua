@@ -1,5 +1,5 @@
 -- /* ---- Relian-Hyprland ---- */
--- Reads 01-UserDefaults.conf (kept as plain key/value so Waybar/rofi scripts and copy.sh can still read and
+-- Reads 01-UserDefaults.conf (kept as plain key/value so Waybar/rofi scripts can still read and
 -- edit it) and exposes the values to the Lua config. Edit the .conf, not this file.
 local home = os.getenv("HOME")
 local UserConfigs = home .. "/.config/hypr/UserConfigs"

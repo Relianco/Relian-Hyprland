@@ -31,7 +31,7 @@ else
 fi
 
 # shell syntax for every script we ship under config/hypr and the installer
-for f in "$root"/config/hypr/scripts/* "$root"/config/hypr/UserScripts/*.sh "$root"/config/hypr/initial-boot.sh "$root"/copy.sh; do
+for f in "$root"/config/hypr/scripts/* "$root"/config/hypr/UserScripts/*.sh "$root"/config/hypr/initial-boot.sh "$root"/install.sh; do
   case "$f" in *.sh) ;; *) head -1 "$f" 2>/dev/null | grep -q 'bash' || continue ;; esac
   [ "$(basename "$f")" = RofiEmoji.sh ] && continue # upstream: emoji data blob after `exit`, bash -n can't parse it
   out=$(bash -n "$f" 2>&1) && ok "bash -n $(basename "$f")" || bad "bash -n $(basename "$f")" "$out"
@@ -284,6 +284,30 @@ PY
   [ -z "$out" ] && ok "waybar [TOP] Omarchy: valid JSONC, every listed module defined" || bad "waybar [TOP] Omarchy" "$out"
 fi
 grep -q "colors-waybar.css" "$root/config/waybar/style/[Omarchy] Minimal.css" && ok "waybar [Omarchy] Minimal imports wallust colors" || bad "waybar Omarchy style missing wallust import"
+
+# the installer works in an empty home, installs everything, and keeps your own edits on re-run (--force resets them)
+if command -v rsync >/dev/null; then
+  ih="$tmp/ihome"; mkdir -p "$ih"
+  run_install() { HOME="$ih" XDG_CACHE_HOME="$ih/.cache" "$root/install.sh" --files-only "$@" >"$tmp/install.log" 2>&1; }
+  if run_install; then
+    miss=""
+    for f in .config/hypr/hyprland.lua .config/hypr/UserConfigs/UserKeybinds.lua .config/hypr/monitors.lua .config/hypr/scripts/ThemeSelect.sh \
+             .config/waybar/config .config/waybar/style.css .config/rofi/config-omarchy-launcher.rasi .config/kitty/kitty.conf \
+             .config/hypr/wallpaper_effects/.wallpaper_current .local/share/themes/relian/index.theme .local/share/themes/relian/gtk-3.0/gtk.css; do
+      [ -e "$ih/$f" ] || miss+="$f "
+    done
+    grep -q 'gtk-theme-name=relian' "$ih/.config/gtk-3.0/settings.ini" 2>/dev/null || miss+="settings.ini "
+    [ -z "$miss" ] && ok "install.sh installs everything into an empty home" || bad "install.sh left things out" "$miss"
+    echo "-- user edit marker" >> "$ih/.config/hypr/UserConfigs/UserKeybinds.lua"
+    run_install
+    grep -q "user edit marker" "$ih/.config/hypr/UserConfigs/UserKeybinds.lua" && ok "install.sh re-run keeps your UserConfigs edits" || bad "install.sh overwrote UserConfigs"
+    run_install --force
+    grep -q "user edit marker" "$ih/.config/hypr/UserConfigs/UserKeybinds.lua" && bad "install.sh --force did not reset UserConfigs" || ok "install.sh --force resets them to the defaults"
+  else bad "install.sh failed in an empty home" "$(tail -5 "$tmp/install.log")"; fi
+fi
+
+# docs/KEYBINDINGS.md is generated from the Lua bind files and must be current
+python3 "$root/tools/gen-keybindings-doc.py" --check && ok "docs/KEYBINDINGS.md is up to date" || bad "docs/KEYBINDINGS.md is out of date (run tools/gen-keybindings-doc.py)"
 
 # every require() in hyprland.lua resolves to a file
 for m in $(grep -oE 'require\("[^"]+"\)' "$root/config/hypr/hyprland.lua" | sed 's/require("\(.*\)")/\1/'); do

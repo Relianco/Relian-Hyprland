@@ -29,7 +29,7 @@ list of changes.
 - Optional: `ttfx` for the screensaver (`yay -S ttfx`); `power-profiles-daemon` for the bar's performance button; `claudebar` and `codexbar` for the usage icon (`yay -S claudebar codexbar`, then log in with `claude` / `codex login` once)
 
 On Arch or Manjaro, `config/hypr/scripts/InstallPackages.sh` installs only what is missing (paru, falling back to yay). Groups: `core`, `tools`
-(keys and bar buttons), `extras` (screensaver, usage bar, performance mode), `looks` (Colloid icons, cursor sets) or `all`; add `--dry-run` to
+(keys and bar buttons), `extras` (screensaver, usage bar, performance mode, animated wallpapers), `looks` (animated wallpapers, Colloid icons, cursor sets) or `all`; add `--dry-run` to
 see what it would do:
 
 ```bash

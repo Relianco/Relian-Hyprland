@@ -4,14 +4,15 @@
 #   InstallPackages.sh [group ...] [--dry-run] [--yes]
 # Groups (default: core tools):
 #   core    what the desktop needs to start        tools   what keys and bar buttons call (volume, media, mixer, ...)
-#   extras  screensaver (ttfx), Claude/Codex usage bar, performance mode      looks   Colloid icons + a few cursor sets
+#   extras  screensaver (ttfx), Claude/Codex usage bar, performance mode, animated wallpapers (mpvpaper)
+#   looks   animated wallpapers (mpvpaper), Colloid icons and a few cursor sets
 #   all     everything above
 set -u
 declare -A G
 G[core]="hyprland waybar rofi kitty swaync wlogout hypridle hyprlock wallust awww wl-clipboard cliphist grim slurp jq rsync thunar ttf-jetbrains-mono-nerd adw-gtk-theme"
 G[tools]="pamixer playerctl brightnessctl btop pavucontrol swappy blueman networkmanager libnotify python"
-G[extras]="ttfx claudebar codexbar power-profiles-daemon"
-G[looks]="papirus-icon-theme colloid-icon-theme-git colloid-catppuccin-theme-git colloid-cursors-git bibata-cursor-theme phinger-cursors catppuccin-cursors-mocha capitaine-cursors vimix-cursors"
+G[extras]="ttfx claudebar codexbar power-profiles-daemon mpvpaper"
+G[looks]="mpvpaper papirus-icon-theme colloid-icon-theme-git colloid-catppuccin-theme-git colloid-cursors-git bibata-cursor-theme phinger-cursors catppuccin-cursors-mocha capitaine-cursors vimix-cursors"
 G[all]="${G[core]} ${G[tools]} ${G[extras]} ${G[looks]}"
 
 dry=0; yes=0; groups=()

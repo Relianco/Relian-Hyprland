@@ -1,6 +1,6 @@
 {
   "$schema": "/etc/xdg/swaync/configSchema.json",
-  "positionX": "center",
+  "positionX": "right",
   "positionY": "top",
   "layer": "overlay",
   "control-center-layer": "top",
@@ -15,7 +15,7 @@
   "notification-icon-size": 24,
   "notification-body-image-height": 100,
   "notification-body-image-width": 100,
-  "notification-window-width": 300,
+  "notification-window-width": 380,
   "timeout": 6,
   "timeout-low": 3,
   "timeout-critical": 0,

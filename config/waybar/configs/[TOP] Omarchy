@@ -14,7 +14,7 @@
   "height": 26,
 
   "modules-left": ["custom/menu", "hyprland/workspaces"],
-  "modules-center": ["clock", "custom/weather"],
+  "modules-center": ["network#speed", "clock", "custom/weather", "custom/temps"],
   "modules-right": [
     "custom/claudebar",
     "custom/codexbar",
@@ -56,6 +56,22 @@
     "return-type": "json",
     "interval": 600,
     "tooltip": true
+  },
+
+  "network#speed": {
+    "interval": 2,
+    "format": "󰁅 {bandwidthDownBytes}  󰁝 {bandwidthUpBytes}",
+    "format-disconnected": "󰁅 --  󰁝 --",
+    "tooltip-format": "{ifname}  {ipaddr}\nDown {bandwidthDownBytes}  Up {bandwidthUpBytes}",
+    "min-length": 24
+  },
+
+  "custom/temps": {
+    "exec": "$HOME/.config/hypr/scripts/SensorTemps.sh",
+    "return-type": "json",
+    "interval": 5,
+    "tooltip": true,
+    "on-click": "kitty --class btop btop"
   },
 
   "custom/claudebar": {

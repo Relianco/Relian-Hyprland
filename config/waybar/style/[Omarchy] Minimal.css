@@ -32,6 +32,12 @@
 #custom-claudebar.high,  #custom-codexbar.high     { color: #d98c4a; }
 #custom-claudebar.critical, #custom-codexbar.critical { color: #a55555; }
 
+/* centre cluster: network speed | clock | weather | temps */
+#network.speed { margin: 0 12px 0 0; min-width: 190px; }
+#custom-temps { margin: 0 0 0 12px; }
+#custom-temps.warm { color: #d7a65a; }
+#custom-temps.hot  { color: #a55555; }
+
 tooltip { padding: 2px; }
 #battery.warning  { color: #d7a65a; }
 #battery.critical { color: #a55555; }

@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import SddmComponents 2.0
+import "art.js" as Art
 
 // Relian login: logo, padlock, password box. Pick the user's last session if it is Hyprland, else prefer uwsm/Hyprland.
 // "@BG@" is replaced with the theme background colour by tools/build-sddm-theme.py.
@@ -19,6 +20,42 @@ Rectangle {
       if (hypr < 0 && name.indexOf("hyprland") !== -1) hypr = i
     }
     return hypr >= 0 ? hypr : sessionModel.lastIndex
+  }
+
+  // Animated backdrop: the screensaver's ASCII art, dim, in the accent colour. A brighter band sweeps across it and the
+  // art changes every ~25s, so a locked screen still looks alive but clearly is not the screensaver.
+  Item {
+    id: backdrop
+    anchors.fill: parent
+    property int idx: Math.floor(Math.random() * Art.ART.length)
+    property real fit: Math.min(width * 0.92 / dim.implicitWidth, height * 0.92 / dim.implicitHeight)
+
+    Item {
+      id: stage
+      anchors.centerIn: parent
+      width: dim.implicitWidth; height: dim.implicitHeight
+      scale: backdrop.fit
+      opacity: 0.0
+
+      Text { id: dim; text: Art.ART[backdrop.idx]; color: "@ACCENT@"; opacity: 0.12
+             font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 14; textFormat: Text.PlainText }
+
+      Item {                      // the sweeping highlight: a clipped copy of the art, brighter
+        id: band
+        width: dim.implicitWidth * 0.12; height: parent.height; clip: true
+        NumberAnimation on x { from: -band.width; to: dim.implicitWidth; duration: 7000; loops: Animation.Infinite }
+        Text { x: -band.x; text: dim.text; color: "@ACCENT@"; opacity: 0.45
+               font.family: dim.font.family; font.pixelSize: 14; textFormat: Text.PlainText }
+      }
+
+      SequentialAnimation on opacity {
+        id: cycle; loops: Animation.Infinite
+        NumberAnimation { to: 1.0; duration: 2500 }
+        PauseAnimation { duration: 20000 }
+        NumberAnimation { to: 0.0; duration: 2500 }
+        ScriptAction { script: backdrop.idx = (backdrop.idx + 1) % Art.ART.length }
+      }
+    }
   }
 
   Connections {

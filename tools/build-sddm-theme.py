@@ -5,7 +5,7 @@ Usage: tools/build-sddm-theme.py OUTDIR [--theme "Tokyo Night"]
   --theme defaults to your current carousel theme (~/.cache/hypr-dots-theme) or Catppuccin.
 Layout and idea follow Omarchy's login theme (MIT); the artwork here is drawn from scratch.
 Install it with tools/install-login.sh (needs sudo); preview it first with tools/preview-login.sh (no sudo)."""
-import json, os, pathlib, re, shutil, sys
+import json, os, random, pathlib, re, shutil, sys
 from PIL import Image, ImageDraw
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -84,7 +84,10 @@ def build(out, theme):
     entry(out / "entry.png", mix(accent, fg, 0.25), mix(bg, (0, 0, 0, 255), 0.45))
     entry(out / "entry-failed.png", red, mix(bg, red, 0.15))
     bullet(out / "bullet.png", mix(accent, fg, 0.25))
-    (out / "Main.qml").write_text(QML.replace("@BG@", c["bg"]))
+    # animated backdrop: the screensaver art (a few random variants) as a JS array the QML cycles through
+    arts = sorted((ROOT / "config/hypr/branding/large").glob("*.txt")); random.shuffle(arts)
+    (out / "art.js").write_text("var ART = " + json.dumps([f.read_text().rstrip("\n") for f in arts[:6]], ensure_ascii=False) + ";\n")
+    (out / "Main.qml").write_text(QML.replace("@BG@", c["bg"]).replace("@ACCENT@", c["accent"]))
     shutil.copy(ROOT / "config/sddm/relian/theme.conf", out / "theme.conf")
     shutil.copy(ROOT / "config/sddm/relian/metadata.desktop", out / "metadata.desktop")
     print(f"built SDDM theme 'relian' ({theme}) in {out}")

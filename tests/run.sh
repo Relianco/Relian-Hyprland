@@ -220,6 +220,15 @@ wenv=(env PATH="$wp/bin:$PATH" HOME="$wp/home" XDG_CACHE_HOME="$wp/home/.cache" 
   && ok "WallpaperApply.sh: image via awww and remembered; video without mpvpaper is refused and not remembered" || bad "WallpaperApply.sh" "$(cat "$wp/log" 2>/dev/null; cat "$wp/state/wallpaper" 2>/dev/null)"
 rm -rf "$wp"
 
+# wallpaper downloaders compile, and the animated one only keeps what it should
+for py in FetchWallpapers FetchAnimated; do python3 -m py_compile "$root/config/hypr/scripts/$py.py" 2>&1 && ok "$py.py compiles" || bad "$py.py" "syntax error"; done
+(cd "$root/config/hypr/scripts" && python3 -c "
+import FetchAnimated as F
+assert F.OK_LICENCES.match('CC BY-SA 4.0') and F.OK_LICENCES.match('Public domain') and not F.OK_LICENCES.match('CC BY-NC 4.0')
+assert F.WIKI_SKIP.search('File:Panning across the Orion Nebula.webm') and not F.WIKI_SKIP.search('File:Carina Nebula.webm')") \
+  && ok "FetchAnimated.py licence and title filters" || bad "FetchAnimated filters" "assert failed"
+rm -rf "$root/config/hypr/scripts/__pycache__"
+
 # bar toggles print valid JSON and are wired into the layout
 for m in perf dnd; do
   "$root/config/hypr/scripts/BarToggles.sh" $m | python3 -c 'import sys,json; d=json.loads(sys.stdin.read()); assert d["text"] and d["class"]' 2>&1 \

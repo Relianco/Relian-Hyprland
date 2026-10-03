@@ -23,15 +23,23 @@ list of changes.
 ## Requirements
 
 - **Hyprland ≥ 0.55** (the Lua config needs it), Waybar, rofi (Wayland build), kitty, swaync, wlogout, hypridle, hyprlock
-- **wallust** (colors), **swww** (wallpaper daemon), `wl-clipboard`, `cliphist`, `grim`, `slurp`, `jq`, `rsync`
+- **wallust** (colors), **awww** (wallpaper daemon, formerly swww), `wl-clipboard`, `cliphist`, `grim`, `slurp`, `jq`, `rsync`
 - A **JetBrainsMono Nerd Font**, the `adw-gtk3` GTK theme, and Thunar (or any file manager)
 - Also used by keys and buttons (install.sh lists any that are missing): `pamixer`, `playerctl`, `brightnessctl`, `btop`, `pavucontrol`, `swappy`, `blueman`, `networkmanager` (nm-connection-editor), `libnotify`
 - Optional: `ttfx` for the screensaver (`yay -S ttfx`); `power-profiles-daemon` for the bar's performance button; `claudebar` and `codexbar` for the usage icon (`yay -S claudebar codexbar`, then log in with `claude` / `codex login` once)
 
-On Arch, most of it is one command:
+On Arch or Manjaro, `config/hypr/scripts/InstallPackages.sh` installs only what is missing (paru, falling back to yay). Groups: `core`, `tools`
+(keys and bar buttons), `extras` (screensaver, usage bar, performance mode), `looks` (Colloid icons, cursor sets) or `all`; add `--dry-run` to
+see what it would do:
 
 ```bash
-sudo pacman -S hyprland waybar rofi kitty swaync wlogout hypridle hyprlock wallust swww wl-clipboard cliphist \
+config/hypr/scripts/InstallPackages.sh core tools extras
+```
+
+Or by hand, the core set:
+
+```bash
+sudo pacman -S hyprland waybar rofi kitty swaync wlogout hypridle hyprlock wallust awww wl-clipboard cliphist \
   grim slurp jq rsync thunar ttf-jetbrains-mono-nerd adw-gtk-theme
 ```
 

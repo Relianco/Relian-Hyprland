@@ -21,8 +21,8 @@ rows=(
   'SUPER + ALT + mouse scroll up/down' 'Desktop Zoom' 'Desktop Magnifier'
   'SUPER + ALT + V' 'Clipboard Manager' '(cliphist)'
   'SUPER + W' 'Choose wallpaper' '(Wallpaper Menu)'
-  'SUPER + SHIFT + W' 'Choose wallpaper effects' '(imagemagick + swww)'
-  'CTRL + ALT + W' 'Random wallpaper' '(via swww)'
+  'SUPER + SHIFT + W' 'Choose wallpaper effects' '(imagemagick + awww)'
+  'CTRL + ALT + W' 'Random wallpaper' '(via awww)'
   'SUPER + CTRL + ALT + B' 'Hide/UnHide Waybar' waybar
   'SUPER + CTRL + B' 'Choose waybar styles' '(waybar styles)'
   'SUPER + ALT + B' 'Choose waybar layout' '(waybar layout)'

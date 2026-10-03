@@ -25,12 +25,12 @@ say() { printf '\033[1;35m::\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m!!\033[0m %s\n' "$*"; }
 
 # --- 1. dependencies: report, never install (package names differ per distro) ---------------------
-need=(Hyprland waybar rofi kitty swaync wallust jq rsync swww wl-paste cliphist wlogout grim slurp thunar hypridle hyprlock)
+need=(Hyprland waybar rofi kitty swaync wallust jq rsync awww wl-paste cliphist wlogout grim slurp thunar hypridle hyprlock)
 missing=()
 for c in "${need[@]}"; do command -v "$c" >/dev/null 2>&1 || missing+=("$c"); done
 if [ "${#missing[@]}" -gt 0 ]; then
   warn "missing commands: ${missing[*]}"
-  warn "install them with your package manager (see README: Requirements); continuing anyway"
+  warn "install them: ./config/hypr/scripts/InstallPackages.sh core tools extras   (Arch/Manjaro, uses paru or yay); continuing anyway"
 fi
 
 # optional: the bar and menus still load without these, but the matching button or key does nothing

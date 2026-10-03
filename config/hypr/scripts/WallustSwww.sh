@@ -7,7 +7,7 @@ set -euo pipefail
 
 # Inputs and paths
 passed_path="${1:-}"
-cache_dir="$HOME/.cache/swww/"
+cache_dir="$HOME/.cache/awww/"
 rofi_link="$HOME/.config/rofi/.current_wallpaper"
 wallpaper_current="$HOME/.config/hypr/wallpaper_effects/.wallpaper_current"
 
@@ -25,23 +25,13 @@ wallpaper_path=""
 if [[ -n "$passed_path" && -f "$passed_path" ]]; then
   wallpaper_path="$passed_path"
 else
-  # Try to read from swww cache for the focused monitor, with a short retry loop
+  # awww keeps its cache in a per-version folder, so ask the daemon instead (a few retries while it finishes an image change)
   current_monitor="$(get_focused_monitor)"
-  cache_file="$cache_dir$current_monitor"
-
-  # Wait briefly for swww to write its cache after an image change
   for i in {1..10}; do
-    if [[ -f "$cache_file" ]]; then
-      break
-    fi
+    wallpaper_path=$(awww query | grep "$current_monitor" | awk '{print $9}')
+    [[ -f "$wallpaper_path" ]] && break
     sleep 0.1
   done
-
-  if [[ -f "$cache_file" ]]; then
-    # The first non-filter line is the original wallpaper path
-    # wallpaper_path="$(grep -v 'Lanczos3' "$cache_file" | head -n 1)"
-    wallpaper_path=$(swww query | grep $current_monitor | awk '{print $9}')
-  fi
 fi
 
 if [[ -z "${wallpaper_path:-}" || ! -f "$wallpaper_path" ]]; then

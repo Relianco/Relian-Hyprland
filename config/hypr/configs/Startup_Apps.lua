@@ -10,7 +10,7 @@ hl.on("hyprland.start", function()
     local function run(cmd) hl.exec_cmd(cmd) end
 
     -- wallpaper stuff
-    run("swww-daemon --format xrgb")
+    run("awww-daemon --format xrgb")
     -- run('mpvpaper "*" -o "load-scripts=no no-audio --loop" ' .. livewallpaper)
     -- run(SwwwRandom .. " " .. wallDIR) -- random wallpaper switcher every 30 minutes
 
@@ -46,7 +46,7 @@ hl.on("hyprland.start", function()
     run(scriptsDir .. "/Hyprsunset.sh init")
 
     -- Persistent wallpaper
-    -- run("swww-daemon --format xrgb && swww img $HOME/Pictures/wallpapers/mecha-nostalgia.png")
+    -- run("awww-daemon --format xrgb && awww img $HOME/Pictures/wallpapers/mecha-nostalgia.png")
     -- Gnome polkit for NixOS
     -- run(scriptsDir .. "/Polkit-NixOS.sh")
     -- xdg-desktop-portal-hyprland (should be auto starting. However, you can force to start)

@@ -14,12 +14,12 @@ if [ "$HYPRGAMEMODE" = "true" ] || [ "$HYPRGAMEMODE" = 1 ]; then
         general = { gaps_in = 0, gaps_out = 0, border_size = 1 },
     })
     hl.window_rule({ match = { class = ".*" }, opacity = "1 override 1 override 1 override" })'
-    swww kill 
+    awww kill 
     notify-send -e -u low -i "$notif" " Gamemode:" " enabled"
     sleep 0.1
     exit
 else
-	swww-daemon --format xrgb && swww img "$HOME/.config/rofi/.current_wallpaper" &
+	awww-daemon --format xrgb && awww img "$HOME/.config/rofi/.current_wallpaper" &
 	sleep 0.1
 	${SCRIPTSDIR}/WallustSwww.sh
 	sleep 0.5

@@ -204,6 +204,10 @@ lenv=(env HOME="$lk/home" XDG_STATE_HOME="$lk/state" LOOK_DIRS="$lk/icons" LOOK_
   && ok "LookSelect.sh lists icon/cursor themes apart and persists the cursor choice" || bad "LookSelect.sh" "list/set failed"
 rm -rf "$lk"
 
+# package installer: dry run lists groups without installing, and nothing in the scripts calls the old swww binary
+"$root/config/hypr/scripts/InstallPackages.sh" all --dry-run >/dev/null 2>&1 && ok "InstallPackages.sh --dry-run works" || bad "InstallPackages.sh dry run" "failed"
+! grep -rnE '\bswww( |-daemon)' "$root/config" "$root/install.sh" | grep -vE ':[0-9]+:\s*#' | grep -q . && ok "no calls to the removed swww command (renamed awww)" || bad "swww calls" "$(grep -rnE '\bswww( |-daemon)' "$root/config" | head -3)"
+
 # bar toggles print valid JSON and are wired into the layout
 for m in perf dnd; do
   "$root/config/hypr/scripts/BarToggles.sh" $m | python3 -c 'import sys,json; d=json.loads(sys.stdin.read()); assert d["text"] and d["class"]' 2>&1 \

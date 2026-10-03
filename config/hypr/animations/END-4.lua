@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+-- /* ---- Relian-Hyprland ---- */  #
 --
 -- name "End-4"
 -- credit https://github.com/end-4/dots-hyprland

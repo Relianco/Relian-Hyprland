@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# /* ---- Relian-Hyprland ---- */  ##
 # Theme picker/carousel (modeled on Omarchy's theme menu). Colors are applied live through wallust,
 # so Hyprland borders, Waybar, rofi, kitty, swaync and hyprlock all follow.
 #   ThemeSelect.sh           open the carousel: LEFT/RIGHT cycle + preview, ENTER keep, ESC revert

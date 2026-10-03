@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# /* ---- Relian-Hyprland ---- */  ##
 # Wallust: derive colors from the current wallpaper and update templates
 # Usage: WallustSwww.sh [absolute_path_to_wallpaper]
 

@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+-- /* ---- Relian-Hyprland ---- */
 -- Commands and apps to be executed at launch (vendor defaults)
 local D = require("UserConfigs.01-UserDefaults")
 local scriptsDir, UserScripts = D.scriptsDir, D.UserScripts
@@ -19,7 +19,7 @@ hl.on("hyprland.start", function()
     run("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
     run(scriptsDir .. "/KeybindsLayoutInit.sh")
 
-    -- Drop Down terminal. See Bug#810 https://github.com/JaKooLit/Hyprland-Dots/issues/810#issuecomment-3351947644
+    -- Drop Down terminal. See Bug#810 (upstream issue #810)
     run(D.home .. "/.config/hypr/scripts/Dropterminal.sh kitty &")
 
     -- Polkit (Polkit Gnome / KDE)

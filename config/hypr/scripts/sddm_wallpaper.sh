@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+# /* ---- Relian-Hyprland ---- */
 # SDDM Wallpaper and Wallust Colors Setter
 
 # for the upcoming changes on the simple_sddm_theme

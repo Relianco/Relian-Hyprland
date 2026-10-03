@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# /* ---- Relian-Hyprland ---- */  ##
 # This is for changing kb_layouts. Set kb_layout (e.g. "us,ru") in $settings_file
 
 layout_file="$HOME/.cache/kb_layout"

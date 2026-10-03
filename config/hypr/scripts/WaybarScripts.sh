@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+# /* ---- Relian-Hyprland ---- */  #
 # This file used on waybar modules sourcing defaults set in $HOME/.config/hypr/UserConfigs/01-UserDefaults.conf
 
 # Define the path to the config file

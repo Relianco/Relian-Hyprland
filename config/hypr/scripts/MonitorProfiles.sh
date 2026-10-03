@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# /* ---- Relian-Hyprland ---- */  ##
 # For applying Pre-configured Monitor Profiles
 
 # Check if rofi is already running

@@ -1,8 +1,8 @@
-/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
-/* KooL Style LonerOrZ */
-/* Submitted by https://github.com/lonerOrz */
-/* Edited by Ja */
+/* ---- Relian-Hyprland ---- */
+/* Relian Hyprland Rofi Style 9 */
+/* Modified version of Rofi Config which was submitted by https://github.com/lonerOrz via Discord */
 
+/* Integrating Wallust and More tweaks */
 
 
 configuration {
@@ -12,17 +12,21 @@ configuration {
     disable-history:                false;
     click-to-exit: 		            true;
     location:                       0;
+    hover-select:               	true;
+    me-select-entry:            	"MouseSecondary";
+    me-accept-entry:            	"MousePrimary";
 }
 
+/* ---- Load wallust colors ---- */
+@theme "~/.config/rofi/wallust/colors-rofi.rasi"
+
 /*****----- Global Properties -----*****/
-* {
-    font: "Iosevka 12";
-    
-    BG:    #1E1D2Fff;
-    BGA:   #89DCEBff;
-    FG:    #D9E0EEff;
+* {    
+    BG:    @background;
+    BGA:   @color11;
+    FG:    @foreground;
     FGA:   #F28FADff;
-    BDR:   #96CDFBff;
+    BDR:   @color12;
     SEL:   #1E1E2Eff;
     UGT:   #F28FADff;
     IMG:   #FAE3B0ff;
@@ -30,6 +34,7 @@ configuration {
     ON:    #ABE9B3ff;
 }
 
+/* ---- Window ---- */
 window {
     transparency:                   "real";
     background-color:               @BG;
@@ -57,7 +62,6 @@ textbox-prompt-colon {
     background-color:               @SEL;
     text-color:                     @FG;
     padding:                        8px 12px 8px 12px;
-    font:			                "Iosevka Nerd Font 10";
 }
 
 entry {

@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+-- /* ---- Relian-Hyprland ---- */  #
 --
 -- name "Optimized"
 -- credit https://github.com/prasanthrangan/hyprdots

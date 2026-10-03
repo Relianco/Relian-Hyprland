@@ -3,8 +3,7 @@ description: Propose a change to the project documentation wiki
 title: "[Documentation update]: "
 labels: ["documentation_update"]
 assignees:
-  - JaKooLit
-
+  - Relianco
 body:
   - type: textarea
     id: desc

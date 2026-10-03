@@ -1,3 +1,3 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+-- /* ---- Relian-Hyprland ---- */  #
 
 hl.config({ animations = { enabled = false } })

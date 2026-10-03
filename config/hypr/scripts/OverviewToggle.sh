@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+# /* ---- Relian-Hyprland ---- */  #
 # Overview toggle wrapper - tries Quickshell first, falls back to AGS
 
 set -euo pipefail

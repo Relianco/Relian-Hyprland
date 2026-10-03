@@ -1,6 +1,6 @@
-/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+/* ---- Relian-Hyprland ---- */
 /* Omarchy-style main menu: same look as the launcher, a bit narrower list with a header line.
-   Used by the KooL settings menu (SUPER+SPACE, the top-left waybar icon). */
+   Used by the Relian settings menu (SUPER+SPACE, the top-left waybar icon). */
 @import "~/.config/rofi/config-omarchy-launcher.rasi"
 
 window { width: 560px; }

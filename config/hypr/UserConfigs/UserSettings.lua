@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+-- /* ---- Relian-Hyprland ---- */
 -- User settings. Not touched during updates if upgrade.sh is used.
 -- https://wiki.hypr.land/Configuring/Variables/
 -- Look at configs/SystemSettings.lua to know how to modify this

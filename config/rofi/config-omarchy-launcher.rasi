@@ -1,4 +1,4 @@
-/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+/* ---- Relian-Hyprland ---- */
 /* Omarchy-style app launcher: small centered box, one search field, plain list. Colors follow wallust.
    Used by SUPER+ALT+SPACE and SUPER+D (see hypr/configs/Keybinds.lua). */
 @import "~/.config/rofi/wallust/colors-rofi.rasi"

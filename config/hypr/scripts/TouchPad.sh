@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# /* ---- Relian-Hyprland ---- */  ##
 # For disabling touchpad.
 # Edit the Touchpad_Device in ~/.config/hypr/configs/Laptops.lua according to your system
 # use hyprctl devices to get your system touchpad device name

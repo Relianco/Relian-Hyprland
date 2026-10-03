@@ -1,9 +1,9 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+-- /* ---- Relian-Hyprland ---- */
 -- Window and layer rules (vendor defaults).
 -- NOTE: floating-window widths use monitor_h*(pct*16/9) rather than monitor_w*pct so ultrawide (32:9) monitors
 -- get the same window width a 16:9 screen would, instead of 70% of 5120px. https://wiki.hypr.land/Configuring/Basics/Window-Rules/
 
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+-- /* ---- Relian-Hyprland ---- */  #
 -- Vendor defaults for window rules and layerrules
 -- See https://wiki.hyprland.org/Configuring/Window-Rules/ for more
 
@@ -25,10 +25,10 @@ hl.window_rule({ match = { class = "^(zen-alpha|zen)$" }, tag = "+browser" })
 -- notif tags
 hl.window_rule({ match = { class = "^(swaync-control-center|swaync-notification-window|swaync-client|class)$" }, tag = "+notif" })
 
--- KooL settings tag
-hl.window_rule({ match = { title = "^(KooL Quick Cheat Sheet)$" }, tag = "+KooL_Cheat" })
-hl.window_rule({ match = { title = "^(KooL Hyprland Settings)$" }, tag = "+KooL_Settings" })
-hl.window_rule({ match = { class = "^(nwg-displays|nwg-look)$" }, tag = "+KooL-Settings" })
+-- Relian settings tag
+hl.window_rule({ match = { title = "^(Relian Quick Cheat Sheet)$" }, tag = "+Relian_Cheat" })
+hl.window_rule({ match = { title = "^(Relian Hyprland Settings)$" }, tag = "+Relian_Settings" })
+hl.window_rule({ match = { class = "^(nwg-displays|nwg-look)$" }, tag = "+Relian-Settings" })
 
 -- terminal tags
 hl.window_rule({ match = { class = "^(Alacritty|kitty|kitty-dropterm)$" }, tag = "+terminal" })
@@ -101,10 +101,10 @@ hl.window_rule({ match = { tag = "multimedia_video*" }, opacity = "1.0" })
 
 -- POSITION
 -- windowrule = center,floating:1 # warning, it cause even the menu to float and center.
-hl.window_rule({ match = { tag = "KooL_Cheat*" }, center = true })
+hl.window_rule({ match = { tag = "Relian_Cheat*" }, center = true })
 hl.window_rule({ match = { class = "([Tt]hunar)", title = "negative:(.*[Tt]hunar.*)" }, center = true })
 hl.window_rule({ match = { title = "^(ROG Control)$" }, center = true })
-hl.window_rule({ match = { tag = "KooL-Settings*" }, center = true })
+hl.window_rule({ match = { tag = "Relian-Settings*" }, center = true })
 hl.window_rule({ match = { title = "^(Keybindings)$" }, center = true })
 hl.window_rule({ match = { class = "^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$" }, center = true })
 hl.window_rule({ match = { class = "^([Ww]hatsapp-for-linux|ZapZap|com.rtosta.zapzap)$" }, center = true })
@@ -133,11 +133,11 @@ hl.window_rule({ match = { fullscreen = true }, idle_inhibit = "fullscreen" })
 --windowrule = workspace 9 silent, tag:multimedia*
 --
 -- FLOAT
-hl.window_rule({ match = { tag = "KooL_Cheat*" }, float = true })
+hl.window_rule({ match = { tag = "Relian_Cheat*" }, float = true })
 hl.window_rule({ match = { tag = "wallpaper*" }, float = true })
 hl.window_rule({ match = { tag = "settings*" }, float = true })
 hl.window_rule({ match = { tag = "viewer*" }, float = true })
-hl.window_rule({ match = { tag = "KooL-Settings*" }, float = true })
+hl.window_rule({ match = { tag = "Relian-Settings*" }, float = true })
 hl.window_rule({ match = { class = "([Zz]oom|onedriver|onedriver-launcher)$" }, float = true })
 hl.window_rule({ match = { class = "(org.gnome.Calculator)", title = "(Calculator)" }, float = true })
 hl.window_rule({ match = { class = "^(mpv|com.github.rafostar.Clapper)$" }, float = true })
@@ -166,9 +166,9 @@ hl.window_rule({ match = { title = "^(Save As)$" }, center = true })
 hl.window_rule({ match = { initial_title = "(Open Files)" }, float = true })
 hl.window_rule({ match = { initial_title = "(Open Files)" }, size = { "monitor_h*1.244", "monitor_h*0.6" } })
 
-hl.window_rule({ match = { title = "^(SDDM Background)$" }, float = true })  -- KooL's Dots YAD for setting SDDM background
-hl.window_rule({ match = { title = "^(SDDM Background)$" }, center = true })  -- KooL's Dots YAD for setting SDDM background
-hl.window_rule({ match = { title = "^(SDDM Background)$" }, size = { "monitor_h*0.284", "monitor_h*0.12" } })  -- KooL's Dots YAD for setting SDDM background
+hl.window_rule({ match = { title = "^(SDDM Background)$" }, float = true })  -- Relian's Dots YAD for setting SDDM background
+hl.window_rule({ match = { title = "^(SDDM Background)$" }, center = true })  -- Relian's Dots YAD for setting SDDM background
+hl.window_rule({ match = { title = "^(SDDM Background)$" }, size = { "monitor_h*0.284", "monitor_h*0.12" } })  -- Relian's Dots YAD for setting SDDM background
 -- END of float popups and dialogue #######
 
 -- OPACITY
@@ -191,7 +191,7 @@ hl.window_rule({ match = { title = "^(Picture-in-Picture)$" }, opacity = "0.95 0
 hl.window_rule({ match = { class = "^(agent)$" }, float = true })
 hl.window_rule({ match = { class = "^(agent)$" }, center = true })
 hl.window_rule({ match = { class = "^(agent)$" }, size = { "monitor_h*1.6", "monitor_h*0.75" } })
-hl.window_rule({ match = { tag = "KooL_Cheat*" }, size = { "monitor_h*1.156", "monitor_h*0.9" } })
+hl.window_rule({ match = { tag = "Relian_Cheat*" }, size = { "monitor_h*1.156", "monitor_h*0.9" } })
 hl.window_rule({ match = { tag = "wallpaper*" }, size = { "monitor_h*1.244", "monitor_h*0.7" } })
 hl.window_rule({ match = { tag = "settings*" }, size = { "monitor_h*1.244", "monitor_h*0.7" } })
 hl.window_rule({ match = { class = "^([Ww]hatsapp-for-linux|ZapZap|com.rtosta.zapzap)$" }, size = { "monitor_h*1.067", "monitor_h*0.7" } })

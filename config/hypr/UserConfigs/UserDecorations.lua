@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+-- /* ---- Relian-Hyprland ---- */
 -- Decoration settings. https://wiki.hypr.land/Configuring/Variables/#decoration
 -- Colors come from wallust (wallust/wallust-hyprland.lua)
 local c = require("wallust.wallust-hyprland")

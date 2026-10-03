@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+-- /* ---- Relian-Hyprland ---- */
 -- Workspace rules. https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 -- Examples (uncomment to use):
 -- hl.workspace_rule({ workspace = "1", monitor = "eDP-1" })

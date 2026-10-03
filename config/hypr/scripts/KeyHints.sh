@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# /* ---- Relian-Hyprland ---- */  ##
 # Quick cheat sheet (SUPER + H): every keybind with a description, in the same rofi style as the other menus.
 # Type to search (matches key, description or notes); Esc closes. For the *live* binds use SUPER + SHIFT + K.
 
@@ -8,7 +8,7 @@ rofi_theme="$HOME/.config/rofi/config-omarchy-menu.rasi"
 # key | description | notes
 rows=(
   'SUPER + SHIFT + K' 'Searchable Keybinds' '(Search all Keybinds via rofi)'
-  'SUPER + SHIFT + E' 'KooL Hyprland Settings Menu' ''
+  'SUPER + SHIFT + E' 'Relian Hyprland Settings Menu' ''
   'SUPER + enter' Terminal '(kitty)'
   'SUPER + SHIFT + enter' 'DropDown Terminal' 'SUPER Q to close'
   'SUPER + B' 'Launch Browser' '(Default browser)'
@@ -40,7 +40,7 @@ rows=(
   'SUPER + SHIFT + F' Fullscreen 'Toggles to full screen'
   'SUPER + CTRL + F' 'Fake Fullscreen' 'Toggles to fake full screen'
   'SUPER + ALT + L' 'Toggle Dwindle | Master Layout' 'Hyprland Layout'
-  'SUPER + SPACE' 'Main menu (KooL settings)' '(Omarchy: SUPER SPACE)'
+  'SUPER + SPACE' 'Main menu (Relian settings)' '(Omarchy: SUPER SPACE)'
   'SUPER + SHIFT + CTRL + SPACE' 'Theme carousel' '(LEFT/RIGHT cycle + live preview, ENTER keep, ESC revert)'
   'SUPER + CTRL + A' 'Ask an AI agent' '(Enter: Claude Code, Shift+Enter: Codex; also the waybar robot icon)'
   'SUPER + - / =' 'Resize window narrower / wider' '(+SHIFT: shorter/taller, +ALT: small steps, +CTRL: big steps)'
@@ -54,7 +54,6 @@ rows=(
   'SUPER + SHIFT + G' 'Gamemode! All animations OFF or ON' toggle
   'SUPER + ALT + E' 'Rofi Emoticons' Emoticon
   'SUPER + H' 'Launch this Quick Cheat Sheet' ''
-  'More tips:' https://github.com/JaKooLit/Hyprland-Dots/wiki ''
 )
 
 pkill rofi 2>/dev/null

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# /* ---- Relian-Hyprland ---- */  ##
 # One Waybar icon for AI-coding-agent usage (like Omarchy's agents icon): shows the fullest limit,
 # hover lists every limit of Claude Code and Codex with a meter and the time until it resets.
 # Data comes from `claudebar --json` and `codexbar --json` (github.com/mryll/claudebar, mryll/codexbar,

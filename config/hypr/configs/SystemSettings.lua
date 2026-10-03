@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+-- /* ---- Relian-Hyprland ---- */
 -- Default settings (Lua). Refer to https://wiki.hypr.land/Configuring/Variables/
 -- NOTE: some settings are in UserConfigs/UserDecorations.lua and UserAnimations.lua
 local scriptsDir = require("UserConfigs.01-UserDefaults").scriptsDir

@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+-- /* ---- Relian-Hyprland ---- */  #
 -- Environment variables. See https://wiki.hyprland.org/Configuring/Environment-variables/
 
 -- Set your defaults editor through ENV in ~/.config/hypr/UserConfigs/01-UserDefaults.conf

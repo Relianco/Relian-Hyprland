@@ -3,8 +3,7 @@ description: Something is not working right
 title: "[Bug]: "
 labels: ["bug"]
 assignees:
-  - JaKooLit
-
+  - Relianco
 body:
   - type: checkboxes
     attributes:
@@ -52,10 +51,10 @@ body:
   - type: textarea
     id: dots
     attributes:
-      label: KooL's Dots version
+      label: Relian's Dots version
       description: |
         Paste the output of   `find ~/.config/hypr/ -type f -name 'v*' -exec basename {} \;` 
-        This is just KooL's Hyprland Dots version.
+        This is just Relian's Hyprland Dots version.
     validations:
       required: true
 

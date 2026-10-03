@@ -1,4 +1,4 @@
- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  
+ /* ---- Relian-Hyprland ---- */  
  /* wallust template - colors-rofi */
 {#- on(c, bg, fg): text color for a highlight of color c = whichever of bg/fg contrasts more with it; pure black/white if neither is clearly readable (so selected rows stay readable on every theme) -#}
 {%- macro lum(c) -%}{%- set h = {"0":0,"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9,"a":10,"b":11,"c":12,"d":13,"e":14,"f":15} -%}{%- set s = (c | strip) | lower -%}{{ 299 * (h[s[0]] * 16 + h[s[1]]) + 587 * (h[s[2]] * 16 + h[s[3]]) + 114 * (h[s[4]] * 16 + h[s[5]]) }}{%- endmacro -%}

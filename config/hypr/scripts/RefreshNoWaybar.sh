@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# /* ---- Relian-Hyprland ---- */  ##
 
 # Modified version of Refresh.sh but waybar wont refresh
 # Used by automatic wallpaper change

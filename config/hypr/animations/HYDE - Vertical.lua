@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+-- /* ---- Relian-Hyprland ---- */  #
 --
 -- name "Vertical"
 -- credit https://github.com/prasanthrangan/hyprdots

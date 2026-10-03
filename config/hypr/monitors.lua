@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+-- /* ---- Relian-Hyprland ---- */
 -- Default monitor config. https://wiki.hypr.land/Configuring/Basics/Monitors/
 -- Use `hyprctl monitors` to get the info. A copy of the original defaults lives in Monitor_Profiles/.
 -- NOTE: nwg-displays writes monitors.conf / workspaces.conf (hyprlang); it does not generate Lua, so edit here.

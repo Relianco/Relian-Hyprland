@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# /* ---- Relian-Hyprland ---- */  ##
 # Script for Oh my ZSH theme ( CTRL SHIFT O)
 
 # preview of theme can be view here: https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
@@ -10,7 +10,7 @@ iDIR="$HOME/.config/swaync/images"
 rofi_theme="$HOME/.config/rofi/config-zsh-theme.rasi"
 
 if [ -n "$(grep -i nixos < /etc/os-release)" ]; then
-  notify-send -i "$iDIR/note.png" "NOT Supported" "Sorry NixOS does not support this KooL feature"
+  notify-send -i "$iDIR/note.png" "NOT Supported" "Sorry NixOS does not support this Relian feature"
   exit 1
 fi
 

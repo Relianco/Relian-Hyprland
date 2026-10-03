@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+-- /* ---- Relian-Hyprland ---- */
 -- This is where you put your own keybinds. Check configs/Keybinds.lua first to avoid conflicts.
 -- Wiki: https://wiki.hypr.land/Configuring/Basics/Binds/
 -- See also configs/Laptops.lua for laptop keybinds

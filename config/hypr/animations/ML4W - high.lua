@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+-- /* ---- Relian-Hyprland ---- */  #
 --
 -- name "High"
 -- credit https://github.com/mylinuxforwork/dotfiles

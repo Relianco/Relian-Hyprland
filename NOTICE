@@ -1,0 +1,15 @@
+Relian-Hyprland
+===============
+
+Relian-Hyprland is a modified version of "Hyprland-Dots" by JaKooLit
+(https://github.com/JaKooLit/Hyprland-Dots), distributed under the GNU General Public License,
+version 3 (see LICENSE.md). It is free software and comes with NO WARRANTY.
+
+Changes made in this version (GPL-3.0 section 5(a) notice of modification):
+  - Hyprland configuration converted from hyprlang (.conf) to Lua (Hyprland >= 0.55)
+  - Omarchy-style Waybar layout and style, rofi launcher and menus, theme carousel,
+    AI-agent usage icon, searchable help menu, notification/terminal styling
+  - Project renamed and rebranded; tests added (tests/run.sh)
+
+The upstream installers for other distributions (Distro-Hyprland.sh) and the wallpaper bank
+are separate projects by the same author and are still fetched from their original locations.

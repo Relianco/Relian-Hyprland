@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+-- /* ---- Relian-Hyprland ---- */
 -- Default keybinds (Lua). https://wiki.hypr.land/Configuring/Basics/Binds/
 local D = require("UserConfigs.01-UserDefaults")
 local scriptsDir, UserScripts, term, files = D.scriptsDir, D.UserScripts, D.term, D.files
@@ -11,7 +11,7 @@ local function zoom(m)
         hl.config({ cursor = { zoom_factor = math.max(1, f * m) } })
     end
 end
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+-- /* ---- Relian-Hyprland ---- */  #
 -- Default Keybinds
 -- visit https://wiki.hyprland.org/Configuring/Binds/ for more info
 
@@ -48,7 +48,7 @@ hl.bind("SUPER + CTRL + SHIFT + R", hl.dsp.exec_cmd("pkill rofi || true && " .. 
 
 hl.bind("SUPER + SHIFT + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }), { description = "fullscreen" })
 hl.bind("SUPER + CTRL + F", hl.dsp.window.fullscreen({ mode = "maximized" }), { description = "maximize window" })
-hl.bind("SUPER + SPACE", hl.dsp.exec_cmd(scriptsDir .. "/Kool_Quick_Settings.sh"), { description = "main menu (Omarchy style)" })
+hl.bind("SUPER + SPACE", hl.dsp.exec_cmd(scriptsDir .. "/Relian_Quick_Settings.sh"), { description = "main menu (Omarchy style)" })
 hl.bind("SUPER + SHIFT + CTRL + SPACE", hl.dsp.exec_cmd(scriptsDir .. "/ThemeSelect.sh"), { description = "theme carousel (Omarchy style)" })
 hl.bind("SUPER + CTRL + A", hl.dsp.exec_cmd(scriptsDir .. "/AgentPrompt.sh"), { description = "ask an AI agent (Claude / Codex)" })
 hl.bind("SUPER + T", hl.dsp.window.float({ action = "toggle" }), { description = "Float current window" })
@@ -98,7 +98,7 @@ hl.bind("SUPER + SHIFT + Q", hl.dsp.exec_cmd(scriptsDir .. "/KillActiveProcess.s
 hl.bind("CTRL + ALT + L", hl.dsp.exec_cmd(scriptsDir .. "/LockScreen.sh"), { description = "lock screen" })
 hl.bind("CTRL + ALT + P", hl.dsp.exec_cmd(scriptsDir .. "/Wlogout.sh"), { description = "powermenu" })
 hl.bind("SUPER + SHIFT + N", hl.dsp.exec_cmd("swaync-client -t -sw"), { description = "notification panel" })
-hl.bind("SUPER + SHIFT + E", hl.dsp.exec_cmd(scriptsDir .. "/Kool_Quick_Settings.sh"), { description = "Quick settings menu" })
+hl.bind("SUPER + SHIFT + E", hl.dsp.exec_cmd(scriptsDir .. "/Relian_Quick_Settings.sh"), { description = "Quick settings menu" })
 
 -- Master Layout
 hl.bind("SUPER + CTRL + D", hl.dsp.layout("removemaster"), { description = "remove master" })
@@ -180,7 +180,7 @@ hl.bind("SUPER + CTRL + L", hl.dsp.window.move({ into_group = "right" }), { desc
 hl.bind("SUPER + CTRL + H", hl.dsp.window.move({ out_of_group = true }), { description = "Move active out of group" })  -- Move active window out of group
 
 -- Try to dynamically move in grouped window and when ungrouped
---  Not working for me DW 11/26/25  PR: https://github.com/JaKooLit/Hyprland-Dots/pull/872
+--  Not working for me DW 11/26/25  (upstream PR #872)
 --bindd = $mainMod, right, focus right, exec, bash -c 'if hyprctl activewindow -j | jq -e "((.grouped | type) == \"boolean\") or (.address == (.grouped[-1] // empty))" >/dev/null 2>&1; then hyprctl dispatch movefocus r; else hyprctl dispatch changegroupactive f; fi'
 --bindd = $mainMod, left, focus left, exec, bash -c 'if hyprctl activewindow -j | jq -e "((.grouped | type) == \"boolean\") or (.address == (.grouped[0] // empty))" >/dev/null 2>&1; then hyprctl dispatch movefocus l; else hyprctl dispatch changegroupactive b; fi'
 

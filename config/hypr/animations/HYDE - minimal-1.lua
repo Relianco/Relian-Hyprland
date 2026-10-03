@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+-- /* ---- Relian-Hyprland ---- */  #
 --
 -- # name "Minimal-1"
 -- credit https://github.com/prasanthrangan/hyprdots-

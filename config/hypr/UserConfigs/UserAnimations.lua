@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+-- /* ---- Relian-Hyprland ---- */
 -- https://wiki.hypr.land/Configuring/Animations/
 hl.config({ animations = { enabled = true } })
 

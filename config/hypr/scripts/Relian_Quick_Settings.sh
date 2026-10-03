@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
-# Rofi menu for KooL Hyprland Quick Settings (SUPER SHIFT E)
+# /* ---- Relian-Hyprland ---- */  ##
+# Rofi menu for Relian Hyprland Quick Settings (SUPER SHIFT E)
 # Updated for UserConfigs/configs separation
 
 # Modify this config file for default terminal and EDITOR

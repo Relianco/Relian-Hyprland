@@ -1,11 +1,11 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+-- /* ---- Relian-Hyprland ---- */
 -- Mostly for laptops. Addendum to Keybinds.lua
 local scriptsDir = require("UserConfigs.01-UserDefaults").scriptsDir
 
 -- for disabling Touchpad. hyprctl devices to get device name.
 local Touchpad_Device = "asue1209:00-04f3:319f-touchpad"
 local TOUCHPAD_ENABLED = true
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+-- /* ---- Relian-Hyprland ---- */  #
 -- See https://wiki.hyprland.org/Configuring/Keywords/ for more variable settings
 -- These configs are mostly for laptops. This is addemdum to Keybinds.conf
 

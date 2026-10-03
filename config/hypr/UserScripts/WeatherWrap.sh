@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# /* ---- Relian-Hyprland ---- */  ##
 # Weather entrypoint: prefer Python (Open‑Meteo), fallback to legacy Bash (wttr.in)
 
 SCRIPT_DIR="$(dirname "$0")"

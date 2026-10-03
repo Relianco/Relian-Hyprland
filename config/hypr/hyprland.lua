@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+-- /* ---- Relian-Hyprland ---- */
 -- Always refer to the Hyprland wiki: https://wiki.hypr.land/Configuring/Start/
 
 -- Make `require("configs.Keybinds")` etc. resolve against ~/.config/hypr

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# /* ---- Relian-Hyprland ---- */  ##
 # CPU / GPU / drive temperatures for a Waybar custom module (return-type json).
 # Looks sensors up by hwmon *name* (the hwmonN numbers change between boots). Missing sensors are skipped.
 #   CPU: k10temp (AMD) or coretemp (Intel)   GPU: amdgpu, or nvidia-smi   Drives: every nvme

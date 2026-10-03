@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+# /* ---- Relian-Hyprland ---- */  #
 # Kitty Themes Source https://github.com/dexpota/kitty-themes #
 
 # Define directories and variables

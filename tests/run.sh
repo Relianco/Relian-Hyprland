@@ -184,6 +184,10 @@ if command -v jq >/dev/null; then
 fi
 grep -q 'AgentPrompt.sh' "$root/config/waybar/configs/[TOP] Omarchy" && grep -q '"SUPER + CTRL + A"' "$root/config/hypr/configs/Keybinds.lua" && ok "agents icon + SUPER+CTRL+A open the agent prompt" || bad "agent prompt wiring"
 
+# rebrand guard: no leftover upstream branding outside the license, changelog, NOTICE and the two external installer URLs
+left=$(cd "$root" && git grep -n -I -i 'k[o]ol' -- . ':!LICENSE.md' ':!CHANGELOG.md' ':!NOTICE' ':!tests/run.sh' 2>/dev/null | grep -vE 'github\.com/JaK[o]oLit/(\$Distro|Wallpaper-Bank)\.git')
+[ -z "$left" ] && ok "no upstream branding left (besides license/NOTICE/changelog/installer URLs)" || bad "upstream branding found" "$left"
+
 # rofi menu header messages are plain text (emoji render as ugly colour glyphs in rofi)
 emo=$(grep -rnP '^\s*msg=.*[\x{1F000}-\x{1FAFF}\x{2600}-\x{27BF}\x{2049}\x{203C}\x{FE0F}]' "$root/config/hypr/scripts" "$root/config/hypr/UserScripts" 2>/dev/null)
 emo+=$(grep -rnP 'placeholder:.*[\x{1F000}-\x{1FAFF}\x{2600}-\x{27BF}\x{2049}\x{203C}\x{FE0F}]' "$root/config/rofi" 2>/dev/null)
@@ -194,11 +198,11 @@ grep -q 'kb-accept-alt ""' "$root/config/hypr/scripts/AgentPrompt.sh" && ok "Age
 grep -q 'kb-row-up' "$root/config/hypr/scripts/ThemeSelect.sh" && grep -q 'kb-move-char-back' "$root/config/hypr/scripts/ThemeSelect.sh" && ok "ThemeSelect frees rofi's arrow-key bindings" || bad "ThemeSelect arrow keys overlap rofi defaults"
 
 # the top-left waybar icon opens the same (Omarchy-style) main menu as SUPER+SPACE
-python3 - "$root/config/waybar/configs/[TOP] Omarchy" "$root/config/hypr/scripts/Kool_Quick_Settings.sh" <<'PY' && ok "waybar menu icon = SUPER+SPACE main menu, themed like the launcher" || bad "waybar menu icon / menu theme"
+python3 - "$root/config/waybar/configs/[TOP] Omarchy" "$root/config/hypr/scripts/Relian_Quick_Settings.sh" <<'PY' && ok "waybar menu icon = SUPER+SPACE main menu, themed like the launcher" || bad "waybar menu icon / menu theme"
 import re, sys, json
 t = open(sys.argv[1], encoding="utf-8").read()
 t = re.sub(r'/\*.*?\*/', '', t, flags=re.S); t = re.sub(r'^\s*//.*$', '', t, flags=re.M)
-assert "Kool_Quick_Settings.sh" in json.loads(t)["custom/menu"]["on-click"]
+assert "Relian_Quick_Settings.sh" in json.loads(t)["custom/menu"]["on-click"]
 assert "config-omarchy-menu.rasi" in open(sys.argv[2], encoding="utf-8").read()
 PY
 

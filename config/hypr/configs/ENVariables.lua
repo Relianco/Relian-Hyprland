@@ -1,10 +1,10 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+-- /* ---- Relian-Hyprland ---- */  #
 -- Environment variables. See https://wiki.hyprland.org/Configuring/Environment-variables/
 
 -- Set your defaults editor through ENV in ~/.config/hypr/UserConfigs/01-UserDefaults.conf
 
 -- environment-variables
--- Current Version of JakooLit Dotfiles:
+-- Current Version of Relian Dotfiles:
 hl.env("DOTS_VERSION", "2.3.19")
 
 --## Toolkit Backend Variables ###

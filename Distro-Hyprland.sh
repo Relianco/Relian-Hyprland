@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# https://github.com/JaKooLit
+# https://github.com/Relianco
 
 # Script design to clone the Distro-Hyprland install scripts
 

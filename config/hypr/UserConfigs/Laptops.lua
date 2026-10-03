@@ -1,4 +1,4 @@
--- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+-- /* ---- Relian-Hyprland ---- */
 -- Laptop extras. Disable the laptop panel when the lid is closed (external display use).
 -- Wiki: https://wiki.hypr.land/Configuring/Binds/ (switches)
 -- WARNING: see caveats in the original docs: you may need to re-pick a wallpaper (SUPER W) after waking.

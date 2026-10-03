@@ -1,4 +1,4 @@
-/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+/* ---- Relian-Hyprland ---- */
 
 // ### Omarchy-style bar ### //
 // Minimal icon bar modeled on Omarchy's Waybar (github.com/basecamp/omarchy, branch dev).
@@ -28,7 +28,7 @@
 
   "custom/menu": {
     "format": "󰣇",
-    "on-click": "$HOME/.config/hypr/scripts/Kool_Quick_Settings.sh",
+    "on-click": "$HOME/.config/hypr/scripts/Relian_Quick_Settings.sh",
     "on-click-right": "kitty",
     "tooltip-format": "Menu\n\nSuper + Space   (right-click: terminal)"
   },

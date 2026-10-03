@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# /* ---- Relian-Hyprland ---- */  ##
 # Script for Monitor backlights (if supported) using brightnessctl
 
 iDIR="$HOME/.config/swaync/icons"

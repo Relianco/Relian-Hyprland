@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# /* ---- Relian-Hyprland ---- */  ##
 # Searchable list of the active keybinds in rofi.
 # Reads the live binds from Hyprland (hyprctl binds -j), so user overrides/unbinds are reflected automatically.
 # Binds show their `description` (set it with hl.bind(..., { description = "..." })).

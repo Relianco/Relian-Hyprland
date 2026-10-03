@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# /* ---- Relian-Hyprland ---- */  ##
 # Ask a coding agent something from anywhere (like Omarchy's `agent prompt`).
 #   AgentPrompt.sh              rofi box: type a prompt, ENTER -> Claude Code, SHIFT+ENTER -> Codex
 #   AgentPrompt.sh claude|codex [prompt...]   open that agent now (empty prompt = interactive session)

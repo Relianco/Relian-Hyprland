@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# /* ---- Relian-Hyprland ---- */  ##
 # for changing Hyprland Layouts (Master or Dwindle) on the fly
 
 notif="$HOME/.config/swaync/images/ja.png"

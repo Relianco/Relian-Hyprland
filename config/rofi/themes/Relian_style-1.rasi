@@ -1,5 +1,5 @@
-/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
-/* KooL Hyprland Rofi Style 3 - Full screen v1 */
+/* ---- Relian-Hyprland ---- */
+/* Relian Hyprland Rofi Style 1 */
 
 /* ---- Configuration ---- */
 
@@ -22,35 +22,21 @@ configuration {
 
 /* ---- Global Properties ---- */
 * {
-
-    background-alt:              @selected-active-background; // Buttons background
-    selected:                    @selected-urgent-background; // Button selected
-    active:                      @selected-normal-background; // Window activated
-    urgent:                      @selected; // When hovering the activated window (maybe more?)
+    background-alt:              @color1;
+    selected:                    @color12;
+    active:                      @color11;
+    urgent:                      red;
 
     text-selected:               @background;
     text-color:                  @foreground;
     border-color:                @selected;
 }
 
-/* ---- Global Properties ---- */
-* {
-	main-bg:            @background;
-    main-fg:            @foreground;
-    main-br:            @color12;
-    main-ex:            @color11;
-    select-bg:          @foreground;
-    select-fg:          @background;
-    separatorcolor:     transparent;
-    border-color:       transparent;
-}
-
-
 /* ---- Window ---- */
 window {
     // Default
     enabled:                    true;
-    fullscreen:                 true;
+    fullscreen:                 false;
     transparency:               "real";
     cursor:                     "default";
     spacing:                    0px;
@@ -60,6 +46,7 @@ window {
     anchor:                     center;
 
     // Style Values
+    width:                      50%;
     background-color:           @background;
 }
 
@@ -92,7 +79,7 @@ entry {
     width:                       20%;
     padding:                     10px;
     border-radius:               12px;
-    background-color:            @selected;
+    background-color:            @active;
     text-color:                  @text-selected;
     cursor:                      text;
     placeholder: "Search ";
@@ -123,6 +110,7 @@ listview {
     spacing:                     10px;
     background-color:            transparent;
     margin: 					 10px;
+    text-color:					 @foreground;
 
 //  Adapt rofi theme
     border:                      0px;
@@ -156,9 +144,11 @@ button selected {
 /* ---- Scrollbar ---- */
 scrollbar {
     border:       				0px;
-    handle-color: 				@background-alt;
+    border-radius:				10px;
+    border-color:				@color12;
+    handle-color: 				@color11;
     handle-width: 				2px ;
-    padding:      				0px;
+    padding:      				0;
 }
 
 /* ---- Elements ---- */
@@ -172,16 +162,15 @@ element {
     cursor:                      pointer;
 }
 
+element-text selected,
 element normal.normal {
     background-color:            inherit;
     text-color:                  inherit;
 }
-
 element normal.urgent {
     background-color:            @urgent;
     text-color:                  @foreground;
 }
-
 element normal.active {
     background-color:            @active;
     text-color:                  @foreground;
@@ -190,9 +179,9 @@ element normal.active {
 element selected.normal {
     border:                      0px 3px 0px 3px;
     border-radius:               16px;
-    border-color:                @selected;
+    border-color:                @active;
     background-color:            transparent;
-    text-color:                  @background-alt;
+    text-color:                  @selected;
 }
 
 element selected.urgent {
@@ -217,12 +206,13 @@ element alternate.active {
     text-color:                  inherit;
 }
 element-icon {
-  	size: 						 5%;
+  	size: 						 3%;
     background-color:            transparent;
     text-color:                  inherit;
     cursor:                      inherit;
 }
 element-text {
+	size:						 1%;
     background-color:            transparent;
     text-color:                  inherit;
     cursor:                      inherit;
@@ -236,17 +226,17 @@ message {
     border:                      0px;
 }
 textbox {
-    margin: 					 10px;
+	margin: 10px;
     padding:                     12px;
     border-radius:               10px;
-    background-color:            @selected;
-    text-color:                  @background;
+    background-color:            @active;
+    text-color:                  @foreground;
     vertical-align:              0.5;
     horizontal-align:            0.5;
 }
 error-message {
     padding:                     12px;
     border-radius:               20px;
-    background-color:            @background-alt;
-    text-color:                  @background;
+    background-color:            @background;
+    text-color:                  @foreground;
 }

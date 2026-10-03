@@ -1,6 +1,6 @@
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+# /* ---- Relian-Hyprland ---- */  #
 
-KooL's Hyprland-Dots
+Relian's Hyprland-Dots
 
 1.) Suggest not to rename any files in this directory. As this is connected and being loaded (via require) from hyprland.lua in ~/.config/hypr
 

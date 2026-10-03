@@ -1,0 +1,21 @@
+/* Relian-Hyprland: Thunar only. Flat, square widgets to match the rest of the desktop.
+   `window.thunar` is Thunar's own window, so other GTK apps are untouched.
+   Loaded from ~/.config/gtk-3.0/gtk.css via:  @import url("relian-thunar.css"); */
+window.thunar *,
+window.thunar *:hover,
+window.thunar *:focus {
+    border-radius: 0;
+}
+
+/* same font as the rest of the desktop (bar, rofi, notifications, terminal) */
+window.thunar label,
+window.thunar entry,
+window.thunar button,
+window.thunar treeview,
+window.thunar treeview.view,
+window.thunar menubar > menuitem,
+window.thunar .view,
+window.thunar .sidebar {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 11pt;
+}

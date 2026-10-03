@@ -132,7 +132,7 @@ PY
 fi
 if command -v wallust >/dev/null; then
   wl="$tmp/wl"; wh="$tmp/wlhome"; mkdir -p "$wl" "$wh/.config"; cp -r "$root"/config/wallust/* "$wl/"
-  for d in cava hypr/wallust rofi/wallust waybar/wallust kitty quickshell; do mkdir -p "$wh/.config/$d"; done
+  for d in cava hypr/wallust rofi/wallust waybar/wallust kitty quickshell; do mkdir -p "$wh/.config/$d"; done; mkdir -p "$wh/.local/share/themes/relian/gtk-3.0"
   names=$(env HOME="$wh" WALLUST_CONFIG_DIR="$wl" "$root/config/hypr/scripts/ThemeSelect.sh" --list 2>&1)
   [ "$(echo "$names" | wc -l)" -ge 17 ] && ok "ThemeSelect --list shows wallpaper + themes" || bad "ThemeSelect --list" "$names"
   out=$(env HOME="$wh" WALLUST_CONFIG_DIR="$wl" THEME_NO_RELOAD=1 XDG_CACHE_HOME="$wh/.cache" "$root/config/hypr/scripts/ThemeSelect.sh" --set "Tokyo Night" 2>&1)
@@ -245,7 +245,16 @@ PY
 
 # launcher search: match only name/generic name (hidden categories/keywords made "file" list Steam first); keep history
 grep -q 'drun-match-fields: "name,generic"' "$root/config/rofi/config-omarchy-launcher.rasi" && grep -q 'disable-history: false' "$root/config/rofi/config-omarchy-launcher.rasi" && ok "launcher matches name/generic only and keeps usage history" || bad "launcher search settings"
-grep -q 'window.thunar' "$root/config/gtk-3.0/relian-thunar.css" && ok "thunar square-corner css is scoped to window.thunar" || bad "thunar css scope"
+grep -q 'window.thunar' "$root/config/gtk-theme/relian/gtk-3.0/relian-thunar.css" && ok "thunar square-corner css is scoped to window.thunar" || bad "thunar css scope"
+
+# GTK follows the wallust theme: applying a theme writes the adw-gtk3 colour names with that theme's accent
+gtkcss="$wh/.local/share/themes/relian/gtk-3.0/gtk.css"
+if command -v wallust >/dev/null && [ -d "$wh" ]; then
+  env HOME="$wh" WALLUST_CONFIG_DIR="$wl" THEME_NO_RELOAD=1 XDG_CACHE_HOME="$wh/.cache" "$root/config/hypr/scripts/ThemeSelect.sh" --set "Tokyo Night" >/dev/null 2>&1
+  grep -q '@define-color accent_bg_color #7AA2F7;' "$gtkcss" 2>/dev/null && grep -q 'adw-gtk3-dark/gtk-3.0/gtk.css' "$gtkcss" \
+    && ok "GTK theme 'relian' is written with the theme's accent on top of adw-gtk3-dark" || bad "GTK theme file" "$(head -c 300 "$gtkcss" 2>/dev/null)"
+fi
+grep -q 'window.thunar' "$root/config/gtk-theme/relian/gtk-3.0/relian-thunar.css" && grep -q 'JetBrainsMono' "$root/config/gtk-theme/relian/gtk-3.0/relian-thunar.css" && ok "thunar css: scoped, square, JetBrainsMono" || bad "thunar css"
 
 # opacity toggle must not use the removed `hyprctl setprop`; it reads the state and sets the opposite
 grep -q 'ToggleOpaque.sh' "$root/config/hypr/configs/Keybinds.lua" && ! grep -q 'value = "toggle"' "$root/config/hypr/configs/Keybinds.lua" && ok "opacity bind uses ToggleOpaque.sh (no setprop toggle)" || bad "opacity toggle bind"

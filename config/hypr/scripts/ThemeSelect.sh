@@ -30,6 +30,21 @@ while IFS= read -r f; do themes+=("$(pretty "$(basename "$f")")"); done < <(find
 current() { cat "$state" 2>/dev/null || echo "$WALL"; }
 index_of() { local i; for i in "${!themes[@]}"; do [ "${themes[i]}" = "$1" ] && { echo "$i"; return; }; done; echo 0; }
 
+# Running GTK apps (Thunar, pavucontrol, ...) re-read a GTK *theme* when the gtk-theme setting changes (the "relian"
+# theme holds the wallust colours), so flick it to another theme and back. Skipped while previewing in the carousel (done once when you confirm).
+reload_gtk() {
+  [ -n "${THEME_NO_RELOAD:-}" ] && return 0
+  command -v gsettings >/dev/null 2>&1 || return 0
+  local cur other=Adwaita
+  cur=$(gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null | tr -d "'")
+  [ -n "$cur" ] || return 0
+  [ "$cur" = Adwaita ] && other=Adwaita-dark
+  gsettings set org.gnome.desktop.interface gtk-theme "$other" 2>/dev/null
+  sleep 0.4
+  gsettings set org.gnome.desktop.interface gtk-theme "$cur" 2>/dev/null
+}
+PREVIEW=0
+
 apply() { # apply <theme name>
   local name=$1
   if [ "$name" = "$WALL" ]; then
@@ -44,6 +59,7 @@ apply() { # apply <theme name>
   hyprctl reload >/dev/null 2>&1          # re-reads the Lua config, which re-reads wallust-hyprland.lua
   pkill -SIGUSR2 waybar 2>/dev/null       # waybar reloads its css
   swaync-client -rs >/dev/null 2>&1 &     # swaync css
+  [ "$PREVIEW" = 1 ] || reload_gtk
   return 0
 }
 
@@ -61,7 +77,7 @@ esac
 
 # --- carousel -----------------------------------------------------------------------------------
 pkill rofi 2>/dev/null
-original=$(current); sel=$(index_of "$original"); shown=$original
+original=$(current); sel=$(index_of "$original"); shown=$original; PREVIEW=1
 # rofi's default bindings for Left/Right/Up/Down are moved to Ctrl+B/F/P/N below so the carousel can use the arrows
 while true; do
   choice=$(printf '%s\n' "${themes[@]}" | rofi -dmenu -i -format i -selected-row "$sel" -no-custom \
@@ -73,7 +89,7 @@ while true; do
   case $rc in
     10) sel=$(( (sel - 1 + ${#themes[@]}) % ${#themes[@]} )); shown=${themes[sel]}; apply "$shown" ;;
     11) sel=$(( (sel + 1) % ${#themes[@]} )); shown=${themes[sel]}; apply "$shown" ;;
-    0)  sel=$choice; [ "${themes[sel]}" = "$shown" ] || apply "${themes[sel]}"; exit 0 ;;
-    *)  [ "$shown" = "$original" ] || apply "$original"; exit 0 ;;
+    0)  sel=$choice; PREVIEW=0; apply "${themes[sel]}"; exit 0 ;;
+    *)  PREVIEW=0; if [ "$shown" = "$original" ]; then reload_gtk; else apply "$original"; fi; exit 0 ;;
   esac
 done

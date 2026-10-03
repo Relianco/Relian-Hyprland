@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=relian
+Comment=Relian-Hyprland GTK theme: adw-gtk3-dark with the wallust colours (follows the theme carousel)
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=relian

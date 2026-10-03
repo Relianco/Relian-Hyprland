@@ -43,9 +43,9 @@ jq -nc --argjson claude "$claude" --argjson codex "$codex" --arg icon "$ICON" '
   [$claude, $codex] as $docs
   | ($docs | map(select(. != null and (.error // null) == null) | (.max_pct // 0)) | max) as $pct
   | (worst($docs)) as $state
-  | ([($claude | select(. != null and (.error // null) == null) | "C \(.max_pct // 0 | round)%"),
-       ($codex  | select(. != null and (.error // null) == null) | "X \(.max_pct // 0 | round)%")] | join("  ")) as $both
-  | {text: (if $pct == null then $icon else "\($icon) \($both)" end),
+  | ([($claude | select(. != null and (.error // null) == null) | "\uec82 \(.max_pct // 0 | round)%"),
+       ($codex  | select(. != null and (.error // null) == null) | "\uec81 \(.max_pct // 0 | round)%")] | join("   ")) as $both
+  | {text: (if $pct == null then $icon else $both end),
      tooltip: ("<span size=\"small\" weight=\"bold\" alpha=\"55%\">AI AGENTS</span>" + gap
                + section("Claude Code"; $claude; "yay -S claudebar") + gap + gap
                + section("Codex"; $codex; "yay -S codexbar") + gap + gap

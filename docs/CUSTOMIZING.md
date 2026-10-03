@@ -106,7 +106,7 @@ Wallpapers are not kept in git. `SUPER+W` opens the picker with everything in `~
   Home or the Today row jumps back, Esc closes. Left-click still flips the clock between time and date. The rows under the month are
   reserved for events once Outlook/Gmail sync is added.
 - **Agent usage icon**: needs `claudebar` and `codexbar` (AUR). Without them the icon still shows and the tooltip says what to
-  install. The bar shows each agent's fullest limit (C = Claude, X = Codex); hovering shows every limit with a meter and its reset time. Click asks an agent (`AgentPrompt.sh`); right-click opens
+  install. The bar shows each agent's fullest limit next to its logo (Claude, then Codex); hovering shows every limit with a meter and its reset time. Click asks an agent (`AgentPrompt.sh`); right-click opens
   Claude, middle-click opens Codex.
 - **Performance and do-not-disturb buttons**: two icons left of the tray (`scripts/BarToggles.sh`). The gauge flips the power
   profile between performance and balanced (needs `power-profiles-daemon`), the bell silences notifications (swaync). Lit = on, dim = off.

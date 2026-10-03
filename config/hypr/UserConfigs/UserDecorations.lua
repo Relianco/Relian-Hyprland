@@ -8,8 +8,8 @@ local function alpha(col, a) return (col:gsub("^rgb%((%x+)%)$", "rgba(%1" .. a .
 hl.config({
     general = {
         border_size = 2,
-        gaps_in = 2,
-        gaps_out = 4,
+        gaps_in = 5,
+        gaps_out = 10,  -- Omarchy spacing (was 2 / 4)
         col = {
             active_border = c.color12,
             inactive_border = alpha(c.color8, "66"),

@@ -71,6 +71,10 @@ whole monitor. It only affects windows that are alone on their workspace.
 - **Add a theme**: drop a wallust color scheme (JSON with `special` and `color0`–`color15`) into
   `config/wallust/colorschemes/omarchy-<name>.json` and re-run `./install.sh`. `tools/omarchy-themes-to-wallust.py` regenerates
   the bundled ones from Omarchy's palettes (it skips light themes on purpose).
+- **Icons and cursors**: `SUPER+SHIFT+CTRL+I` (icons) and `SUPER+SHIFT+CTRL+C` (cursor) open carousels like the theme one: Left/Right
+  preview live, Enter keeps, Esc reverts. They list whatever is installed in `/usr/share/icons`, `~/.local/share/icons` and `~/.icons`,
+  so installing a new set (for example `colloid-icon-theme-git` from the AUR) adds it to the list. The cursor choice is remembered
+  and used for Hyprland itself on the next start.
 - **Readable highlights on any theme**: the rofi template picks light or dark text for each highlight color, and a test checks
   the contrast of all themes.
 

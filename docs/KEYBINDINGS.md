@@ -38,6 +38,8 @@ Source: `config/hypr/configs/Keybinds.lua`
 | `SUPER + SPACE` | main menu (Omarchy style) |
 | `SUPER + CTRL + ALT + S` | toggle the screensaver on/off |
 | `SUPER + SHIFT + CTRL + SPACE` | theme carousel (Omarchy style) |
+| `SUPER + SHIFT + CTRL + I` | icon theme carousel |
+| `SUPER + SHIFT + CTRL + C` | cursor theme carousel |
 | `SUPER + CTRL + A` | ask an AI agent (Claude / Codex) |
 | `SUPER + T` | Float current window |
 | `SUPER + ALT + T` | Float all windows |

@@ -40,7 +40,14 @@ hl.env("QT_SCALE_FACTOR", "1")
 -- Bibata-Modern-Ice-Cursor
 -- NOTE! You must have the hyprcursor version to activate this.
 -- https://wiki.hyprland.org/Hypr-Ecosystem/hyprcursor/
-hl.env("HYPRCURSOR_THEME", "Bibata-Modern-Ice")
+-- the cursor carousel (LookSelect.sh cursors) saves the choice here; Bibata-Modern-Ice until you pick another
+local cursor_theme = "Bibata-Modern-Ice"
+do
+    local f = io.open((os.getenv("XDG_STATE_HOME") or (os.getenv("HOME") .. "/.local/state")) .. "/relian/cursor-theme")
+    if f then local v = f:read("*l"); f:close(); if v and v ~= "" then cursor_theme = v end end
+end
+hl.env("HYPRCURSOR_THEME", cursor_theme)
+hl.env("XCURSOR_THEME", cursor_theme)
 hl.env("HYPRCURSOR_SIZE", "24")
 
 --## firefox ###

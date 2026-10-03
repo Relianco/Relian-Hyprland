@@ -58,6 +58,8 @@ Toggle Game Mode
 Preview Screensaver
 Toggle Screensaver
 Choose Theme (carousel)
+Choose Icon Theme
+Choose Cursor Theme
 Switch Dark-Light Theme
 EOF
 }
@@ -116,6 +118,8 @@ main() {
         "Preview Screensaver") $scriptsDir/Screensaver.sh force ;;
         "Toggle Screensaver") $scriptsDir/Screensaver.sh toggle ;;
         "Choose Theme (carousel)") $scriptsDir/ThemeSelect.sh ;;
+        "Choose Icon Theme") $scriptsDir/LookSelect.sh icons ;;
+        "Choose Cursor Theme") $scriptsDir/LookSelect.sh cursors ;;
         "Choose Monitor Profiles") $scriptsDir/MonitorProfiles.sh ;;
         "Choose Rofi Themes") $scriptsDir/RofiThemeSelector.sh ;;
         "Search for Keybinds") $scriptsDir/KeyBinds.sh ;;

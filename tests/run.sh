@@ -194,6 +194,16 @@ grep -E 'radius' "$root/config/swaync/style.css" | grep -qvE 'radius: 0' && bad 
 grep -q '\.notification-action button' "$root/config/swaync/style.css" && ok "swaync styles the notification action buttons" || bad "swaync action buttons unstyled"
 python3 -c 'import json,sys; c=json.load(open(sys.argv[1])); assert c["positionX"]=="right" and c["notification-window-width"]==380' "$root/config/swaync/config.json" 2>&1 && ok "swaync: top-right, 380px" || bad "swaync config"
 
+# icon/cursor carousel: lists themes, applies by name (settings only), persists the cursor for the next Hyprland start
+lk=$(mktemp -d); mkdir -p "$lk/icons/Foo/cursors" "$lk/icons/Bar" "$lk/home/.config/gtk-3.0" "$lk/state"
+printf '[Icon Theme]\nName=Foo\n' > "$lk/icons/Foo/index.theme"; printf '[Icon Theme]\nDirectories=16x16\n' > "$lk/icons/Bar/index.theme"
+printf '[Settings]\ngtk-cursor-theme-name=x\n' > "$lk/home/.config/gtk-3.0/settings.ini"
+lenv=(env HOME="$lk/home" XDG_STATE_HOME="$lk/state" LOOK_DIRS="$lk/icons" LOOK_NO_APPLY=1 "$root/config/hypr/scripts/LookSelect.sh")
+[ "$("${lenv[@]}" cursors --list)" = Foo ] && [ "$("${lenv[@]}" icons --list)" = Bar ] \
+  && "${lenv[@]}" cursors --set Foo && [ "$(cat "$lk/state/relian/cursor-theme")" = Foo ] && grep -q '^gtk-cursor-theme-name=Foo' "$lk/home/.config/gtk-3.0/settings.ini" \
+  && ok "LookSelect.sh lists icon/cursor themes apart and persists the cursor choice" || bad "LookSelect.sh" "list/set failed"
+rm -rf "$lk"
+
 # bar toggles print valid JSON and are wired into the layout
 for m in perf dnd; do
   "$root/config/hypr/scripts/BarToggles.sh" $m | python3 -c 'import sys,json; d=json.loads(sys.stdin.read()); assert d["text"] and d["class"]' 2>&1 \

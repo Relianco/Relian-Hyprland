@@ -27,6 +27,8 @@ resize_binds("", 100, "")
 resize_binds("ALT", 25, " (a little)")
 resize_binds("CTRL", 300, " (a lot)")
 
+hl.bind("SUPER + CTRL + SHIFT + M", hl.dsp.exec_cmd(scriptsDir .. "/Volume.sh --toggle-mic"), { description = "toggle mic mute" })
+
 -- For passthrough keyboard into a VM
 -- hl.bind("SUPER + ALT + P", hl.dsp.submap("passthru"))
 -- hl.define_submap("passthru", "SUPER + ALT + P", function() end)

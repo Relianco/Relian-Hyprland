@@ -3,8 +3,10 @@
 -- Use `hyprctl monitors` to get the info. A copy of the original defaults lives in Monitor_Profiles/.
 -- NOTE: nwg-displays writes monitors.conf / workspaces.conf (hyprlang); it does not generate Lua, so edit here.
 
-hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1 })
--- High Refresh Rate:    hl.monitor({ output = "", mode = "highrr", position = "auto", scale = 1 })
+-- Highest refresh rate on every monitor (the old default ended up here too: 5120x1440@240 on the ultrawide).
+-- "preferred" alone would pick the monitor's default mode, often 60Hz.
+hl.monitor({ output = "", mode = "highrr", position = "auto", scale = 1 })
+-- Default mode:         hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1 })
 -- High Resolution:      hl.monitor({ output = "", mode = "highres", position = "auto", scale = 1 })
 
 -- Examples

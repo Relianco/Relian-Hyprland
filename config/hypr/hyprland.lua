@@ -26,6 +26,7 @@ require("UserConfigs.UserDecorations")
 require("UserConfigs.UserAnimations")
 require("UserConfigs.UserKeybinds")     -- put your own keybinds here
 require("UserConfigs.UserSettings")     -- main user settings
+require("UserConfigs.UserGaming")       -- VRR + Wine/Proton/gamescope fixes
 
 -- monitors / workspaces (nwg-displays equivalents)
 require("monitors")

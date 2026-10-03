@@ -84,9 +84,7 @@ hl.window_rule({ match = { class = "^(gnome-disks|wihotspot(-gui)?)$" }, tag = "
 hl.window_rule({ match = { title = "(Kvantum Manager)" }, tag = "+settings" })
 hl.window_rule({ match = { class = "^(file-roller|org.gnome.FileRoller)$" }, tag = "+settings" })  -- archive manager
 hl.window_rule({ match = { class = "^(nm-applet|nm-connection-editor|blueman-manager)$" }, tag = "+settings" })
-hl.window_rule({ match = { class = "^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$" }, tag = "+settings" })
 hl.window_rule({ match = { class = "^(qt5ct|qt6ct|[Yy]ad)$" }, tag = "+settings" })
-hl.window_rule({ match = { class = "(xdg-desktop-portal-gtk)" }, tag = "+settings" })
 hl.window_rule({ match = { class = "^(org.kde.polkit-kde-authentication-agent-1)$" }, tag = "+settings" })
 hl.window_rule({ match = { class = "^([Rr]ofi)$" }, tag = "+settings" })
 
@@ -163,8 +161,10 @@ hl.window_rule({ match = { title = "^(Save As)$" }, float = true })
 hl.window_rule({ match = { title = "^(Save As)$" }, size = { "monitor_h*1.244", "monitor_h*0.6" } })
 hl.window_rule({ match = { title = "^(Save As)$" }, center = true })
 
-hl.window_rule({ match = { initial_title = "(Open Files)" }, float = true })
-hl.window_rule({ match = { initial_title = "(Open Files)" }, size = { "monitor_h*1.244", "monitor_h*0.6" } })
+-- file pickers (upload/save dialogs from Chrome, Firefox, ...): a normal dialog size, not a settings-window one
+hl.window_rule({ match = { initial_title = "^(Open Files?|Open Folder|Save File|Save As|File Upload|Select .*|Choose .*)$" }, float = true })
+hl.window_rule({ match = { initial_title = "^(Open Files?|Open Folder|Save File|Save As|File Upload|Select .*|Choose .*)$" }, size = { "monitor_h*0.9", "monitor_h*0.6" } })
+hl.window_rule({ match = { initial_title = "^(Open Files?|Open Folder|Save File|Save As|File Upload|Select .*|Choose .*)$" }, center = true })
 
 hl.window_rule({ match = { title = "^(SDDM Background)$" }, float = true })  -- Relian's Dots YAD for setting SDDM background
 hl.window_rule({ match = { title = "^(SDDM Background)$" }, center = true })  -- Relian's Dots YAD for setting SDDM background
@@ -194,7 +194,13 @@ hl.window_rule({ match = { class = "^(agent)$" }, size = { "monitor_h*1.6", "mon
 hl.window_rule({ match = { tag = "Relian_Cheat*" }, size = { "monitor_h*1.156", "monitor_h*0.9" } })
 hl.window_rule({ match = { tag = "wallpaper*" }, size = { "monitor_h*1.244", "monitor_h*0.7" } })
 hl.window_rule({ match = { tag = "settings*" }, size = { "monitor_h*1.244", "monitor_h*0.7" } })
+-- (not tagged "settings": tag-matching rules apply last and would override these sizes)
+-- xdg-desktop-portal-gtk draws the file chooser Chrome/Firefox use: same compact size
+hl.window_rule({ match = { class = "(xdg-desktop-portal-gtk)" }, float = true })
+hl.window_rule({ match = { class = "(xdg-desktop-portal-gtk)" }, size = { "monitor_h*0.9", "monitor_h*0.6" } })
+hl.window_rule({ match = { class = "(xdg-desktop-portal-gtk)" }, center = true })
 -- the volume mixer is a narrow list: compact and solid (the generic settings size above is far too wide for it)
+hl.window_rule({ match = { class = "^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$" }, float = true })
 hl.window_rule({ match = { class = "^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$" }, size = { "monitor_h*0.8", "monitor_h*0.62" } })
 hl.window_rule({ match = { class = "^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$" }, opacity = "1.0 override 1.0 override" })
 hl.window_rule({ match = { class = "^([Ww]hatsapp-for-linux|ZapZap|com.rtosta.zapzap)$" }, size = { "monitor_h*1.067", "monitor_h*0.7" } })

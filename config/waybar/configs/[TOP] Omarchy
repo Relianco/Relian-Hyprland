@@ -12,7 +12,7 @@
   "layer": "top",
   "position": "top",
   "spacing": 0,
-  "height": 26,
+  "height": 30,
 
   "modules-left": ["custom/menu", "hyprland/workspaces"],
   "modules-center": ["network#speed", "clock", "custom/weather", "custom/temps"],

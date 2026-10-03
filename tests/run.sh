@@ -206,7 +206,7 @@ rm -rf "$lk"
 
 # package installer: dry run lists groups without installing, and nothing in the scripts calls the old swww binary
 "$root/config/hypr/scripts/InstallPackages.sh" all --dry-run >/dev/null 2>&1 && ok "InstallPackages.sh --dry-run works" || bad "InstallPackages.sh dry run" "failed"
-! grep -rnE '\bswww( |-daemon)' "$root/config" "$root/install.sh" | grep -vE ':[0-9]+:\s*#' | grep -q . && ok "no calls to the removed swww command (renamed awww)" || bad "swww calls" "$(grep -rnE '\bswww( |-daemon)' "$root/config" | head -3)"
+! grep -rnE '(^|[^$A-Za-z_])swww( |-daemon)' "$root/config" "$root/install.sh" | grep -vE ':[0-9]+:\s*#' | grep -q . && ok "no calls to the removed swww command (renamed awww)" || bad "swww calls" "$(grep -rnE '\bswww( |-daemon)' "$root/config" | head -3)"
 
 # bar toggles print valid JSON and are wired into the layout
 for m in perf dnd; do

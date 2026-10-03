@@ -58,6 +58,8 @@ GDK_BACKEND=$BACKEND yad \
 " SHIFT F" "Fullscreen" "Toggles to full screen" \
 " CTL F" "Fake Fullscreen" "Toggles to fake full screen" \
 " ALT L" "Toggle Dwindle | Master Layout" "Hyprland Layout" \
+" =" "Grow active window" "(+50px, hold to repeat) [added in Lua dots]" \
+" -" "Shrink active window" "(-50px, hold to repeat) [added in Lua dots]" \
 " SPACEBAR" "Toggle float" "single window" \
 " ALT SPACEBAR" "Toggle all windows to float" "all windows" \
 " ALT O" "Toggle Blur" "normal or less blur" \

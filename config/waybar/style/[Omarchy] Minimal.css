@@ -1,0 +1,37 @@
+/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+/* Omarchy-style minimal bar. Pair with the layout "[TOP] Omarchy". Colors follow wallust. */
+@import '../../.config/waybar/wallust/colors-waybar.css';
+
+* {
+  background-color: @background;
+  color: @foreground;
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  font-family: 'JetBrainsMono Nerd Font';
+  font-size: 12px;
+}
+
+.modules-left  { margin-left: 8px; }
+.modules-right { margin-right: 8px; }
+
+#workspaces button { all: initial; padding: 0 6px; margin: 0 1.5px; min-width: 9px; color: @foreground; }
+#workspaces button.empty { opacity: 0.5; }
+
+#cpu, #battery, #pulseaudio, #custom-menu { min-width: 12px; margin: 0 7.5px; }
+#tray { margin-right: 16px; }
+#bluetooth { margin-right: 17px; }
+#network { margin-right: 13px; }
+#custom-expand-icon { margin-right: 18px; }
+#clock { margin-left: 8.75px; }
+#custom-weather { margin: 0 7.5px; min-width: 14px; }
+
+/* AI usage (claudebar / codexbar emit these classes) */
+#custom-claudebar, #custom-codexbar { margin: 0 7.5px; }
+#custom-claudebar.mid,   #custom-codexbar.mid      { color: #d7a65a; }
+#custom-claudebar.high,  #custom-codexbar.high     { color: #d98c4a; }
+#custom-claudebar.critical, #custom-codexbar.critical { color: #a55555; }
+
+tooltip { padding: 2px; }
+#battery.warning  { color: #d7a65a; }
+#battery.critical { color: #a55555; }

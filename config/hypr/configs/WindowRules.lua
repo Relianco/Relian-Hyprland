@@ -1,5 +1,7 @@
 -- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
--- Window and layer rules (vendor defaults). https://wiki.hypr.land/Configuring/Basics/Window-Rules/
+-- Window and layer rules (vendor defaults).
+-- NOTE: floating-window widths use monitor_h*(pct*16/9) rather than monitor_w*pct so ultrawide (32:9) monitors
+-- get the same window width a 16:9 screen would, instead of 70% of 5120px. https://wiki.hypr.land/Configuring/Basics/Window-Rules/
 
 -- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
 -- Vendor defaults for window rules and layerrules
@@ -154,19 +156,19 @@ hl.window_rule({ match = { class = "^([Ss]team)$", title = "negative:^([Ss]team)
 hl.window_rule({ match = { class = "([Tt]hunar)", title = "negative:(.*[Tt]hunar.*)" }, float = true })
 
 hl.window_rule({ match = { title = "^(Add Folder to Workspace)$" }, float = true })
-hl.window_rule({ match = { title = "^(Add Folder to Workspace)$" }, size = { "monitor_w*0.7", "monitor_h*0.6" } })
+hl.window_rule({ match = { title = "^(Add Folder to Workspace)$" }, size = { "monitor_h*1.244", "monitor_h*0.6" } })
 hl.window_rule({ match = { title = "^(Add Folder to Workspace)$" }, center = true })
 
 hl.window_rule({ match = { title = "^(Save As)$" }, float = true })
-hl.window_rule({ match = { title = "^(Save As)$" }, size = { "monitor_w*0.7", "monitor_h*0.6" } })
+hl.window_rule({ match = { title = "^(Save As)$" }, size = { "monitor_h*1.244", "monitor_h*0.6" } })
 hl.window_rule({ match = { title = "^(Save As)$" }, center = true })
 
 hl.window_rule({ match = { initial_title = "(Open Files)" }, float = true })
-hl.window_rule({ match = { initial_title = "(Open Files)" }, size = { "monitor_w*0.7", "monitor_h*0.6" } })
+hl.window_rule({ match = { initial_title = "(Open Files)" }, size = { "monitor_h*1.244", "monitor_h*0.6" } })
 
 hl.window_rule({ match = { title = "^(SDDM Background)$" }, float = true })  -- KooL's Dots YAD for setting SDDM background
 hl.window_rule({ match = { title = "^(SDDM Background)$" }, center = true })  -- KooL's Dots YAD for setting SDDM background
-hl.window_rule({ match = { title = "^(SDDM Background)$" }, size = { "monitor_w*0.16", "monitor_h*0.12" } })  -- KooL's Dots YAD for setting SDDM background
+hl.window_rule({ match = { title = "^(SDDM Background)$" }, size = { "monitor_h*0.284", "monitor_h*0.12" } })  -- KooL's Dots YAD for setting SDDM background
 -- END of float popups and dialogue #######
 
 -- OPACITY
@@ -185,11 +187,11 @@ hl.window_rule({ match = { class = "^(seahorse)$" }, opacity = "0.9 0.8" })  -- 
 hl.window_rule({ match = { title = "^(Picture-in-Picture)$" }, opacity = "0.95 0.75" })
 
 -- SIZE
-hl.window_rule({ match = { tag = "KooL_Cheat*" }, size = { "monitor_w*0.65", "monitor_h*0.9" } })
-hl.window_rule({ match = { tag = "wallpaper*" }, size = { "monitor_w*0.7", "monitor_h*0.7" } })
-hl.window_rule({ match = { tag = "settings*" }, size = { "monitor_w*0.7", "monitor_h*0.7" } })
-hl.window_rule({ match = { class = "^([Ww]hatsapp-for-linux|ZapZap|com.rtosta.zapzap)$" }, size = { "monitor_w*0.6", "monitor_h*0.7" } })
-hl.window_rule({ match = { class = "^([Ff]erdium)$" }, size = { "monitor_w*0.6", "monitor_h*0.7" } })
+hl.window_rule({ match = { tag = "KooL_Cheat*" }, size = { "monitor_h*1.156", "monitor_h*0.9" } })
+hl.window_rule({ match = { tag = "wallpaper*" }, size = { "monitor_h*1.244", "monitor_h*0.7" } })
+hl.window_rule({ match = { tag = "settings*" }, size = { "monitor_h*1.244", "monitor_h*0.7" } })
+hl.window_rule({ match = { class = "^([Ww]hatsapp-for-linux|ZapZap|com.rtosta.zapzap)$" }, size = { "monitor_h*1.067", "monitor_h*0.7" } })
+hl.window_rule({ match = { class = "^([Ff]erdium)$" }, size = { "monitor_h*1.067", "monitor_h*0.7" } })
 
 --windowrule = size 25% 25%, title:^(Picture-in-Picture)$
 --windowrule = size 25% 25%, title:^(Firefox)$

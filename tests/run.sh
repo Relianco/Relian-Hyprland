@@ -76,6 +76,22 @@ if command -v lua >/dev/null; then
   [ -z "$out" ] && ok "config + hyprland.start callbacks run under a stubbed hl" || bad "stubbed run failed" "$out"
 fi
 
+# the Omarchy-style waybar layout is valid JSONC and its style imports the wallust colors
+if command -v python3 >/dev/null; then
+  out=$(python3 - "$root/config/waybar/configs/[TOP] Omarchy" <<'PY' 2>&1
+import re, sys, json
+t = open(sys.argv[1], encoding="utf-8").read()
+t = re.sub(r'/\*.*?\*/', '', t, flags=re.S); t = re.sub(r'^\s*//.*$', '', t, flags=re.M)
+c = json.loads(t)
+mods = [m for k in ("modules-left", "modules-center", "modules-right") for m in c[k]]
+missing = [m for m in mods if m not in c]
+sys.exit("modules listed but not defined: %s" % missing if missing else 0)
+PY
+)
+  [ -z "$out" ] && ok "waybar [TOP] Omarchy: valid JSONC, every listed module defined" || bad "waybar [TOP] Omarchy" "$out"
+fi
+grep -q "colors-waybar.css" "$root/config/waybar/style/[Omarchy] Minimal.css" && ok "waybar [Omarchy] Minimal imports wallust colors" || bad "waybar Omarchy style missing wallust import"
+
 # every require() in hyprland.lua resolves to a file
 for m in $(grep -oE 'require\("[^"]+"\)' "$root/config/hypr/hyprland.lua" | sed 's/require("\(.*\)")/\1/'); do
   [ -f "$root/config/hypr/$(echo "$m" | tr . /).lua" ] && ok "require $m" || bad "require $m has no file"

@@ -1,27 +1,30 @@
  /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  
  /* wallust template - colors-rofi */
+{#- on(c, bg, fg): text color for a highlight of color c = whichever of bg/fg contrasts more with it; pure black/white if neither is clearly readable (so selected rows stay readable on every theme) -#}
+{%- macro lum(c) -%}{%- set h = {"0":0,"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9,"a":10,"b":11,"c":12,"d":13,"e":14,"f":15} -%}{%- set s = (c | strip) | lower -%}{{ 299 * (h[s[0]] * 16 + h[s[1]]) + 587 * (h[s[2]] * 16 + h[s[3]]) + 114 * (h[s[4]] * 16 + h[s[5]]) }}{%- endmacro -%}
+{%- macro on(c, bg, fg) -%}{%- set lc = lum(c) | int -%}{%- set db = ((lum(bg) | int) - lc) | abs -%}{%- set df = ((lum(fg) | int) - lc) | abs -%}{%- if db < 150000 and df < 150000 -%}{%- if lc > 127500 -%}#000000{%- else -%}#ffffff{%- endif -%}{%- elif db > df -%}{{ bg }}{%- else -%}{{ fg }}{%- endif -%}{%- endmacro -%}
 
 * {
 active-background: {{color12}};
-active-foreground: {{foreground}};
+active-foreground: {{ on(color12, background, foreground) }};
 normal-background: {{background}};
 normal-foreground: {{foreground}};
 urgent-background: {{color13}};
-urgent-foreground: {{foreground}};
+urgent-foreground: {{ on(color13, background, foreground) }};
 
 alternate-active-background: {{color11}};
-alternate-active-foreground: {{foreground}};
+alternate-active-foreground: {{ on(color11, background, foreground) }};
 alternate-normal-background: {{background}};
 alternate-normal-foreground: {{foreground}};
 alternate-urgent-background: {{background}};
 alternate-urgent-foreground: {{foreground}};
 
 selected-active-background: {{color13}};
-selected-active-foreground: {{foreground}};
+selected-active-foreground: {{ on(color13, background, foreground) }};
 selected-normal-background: {{color13}};
-selected-normal-foreground: {{foreground}};
+selected-normal-foreground: {{ on(color13, background, foreground) }};
 selected-urgent-background: {{color12}};
-selected-urgent-foreground: {{foreground}};
+selected-urgent-foreground: {{ on(color12, background, foreground) }};
 
 background-color: {{background}};
 background: rgba(0,0,0,0.7);

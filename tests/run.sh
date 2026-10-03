@@ -119,6 +119,37 @@ if command -v wallust >/dev/null; then
   [ "$nxt" = "Vantablack" ] && ok "ThemeSelect --next cycles (Tokyo Night -> Vantablack)" || bad "ThemeSelect --next" "got: $nxt"
 fi
 
+# rofi: highlighted rows stay readable on every theme (text vs highlight contrast >= 3:1; the template picks light/dark text)
+if command -v wallust >/dev/null && command -v python3 >/dev/null; then
+  out=$(python3 - "$root" "$tmp" <<'PY' 2>&1
+import re, subprocess, sys, os, glob, shutil
+root, S = sys.argv[1], sys.argv[2]
+def lum(h):
+    c=[int(h[i:i+2],16)/255 for i in (0,2,4)]
+    c=[x/12.92 if x<=0.03928 else ((x+0.055)/1.055)**2.4 for x in c]
+    return 0.2126*c[0]+0.7152*c[1]+0.0722*c[2]
+def cr(a,b):
+    la,lb=sorted((lum(a),lum(b)),reverse=True); return (la+0.05)/(lb+0.05)
+pairs=[("active","active"),("urgent","urgent"),("selected-normal","selected-normal"),("selected-active","selected-active"),("selected-urgent","selected-urgent"),("alternate-active","alternate-active")]
+worst=(99,"")
+for f in sorted(glob.glob(root+"/config/wallust/colorschemes/omarchy-*.json")):
+    wl,wh=S+"/c_wl",S+"/c_wh"
+    shutil.rmtree(wl,ignore_errors=True); shutil.rmtree(wh,ignore_errors=True)
+    shutil.copytree(root+"/config/wallust",wl)
+    for d in ("cava","hypr/wallust","rofi/wallust","waybar/wallust","kitty","quickshell"): os.makedirs(wh+"/.config/"+d)
+    subprocess.run(["wallust","-d",wl,"-q","-s","cs",os.path.basename(f)],env={**os.environ,"HOME":wh},check=True,capture_output=True)
+    t=open(wh+"/.config/rofi/wallust/colors-rofi.rasi").read()
+    g=lambda k: re.search(r"^%s:\s*#([0-9A-Fa-f]{6})"%k,t,re.M).group(1)
+    for a,_ in pairs:
+        r=cr(g(a+"-background"),g(a+"-foreground"))
+        if r<worst[0]: worst=(r,"%s %s"%(os.path.basename(f),a))
+print("worst contrast %.2f at %s"%worst)
+sys.exit(0 if worst[0] >= 3.0 else 1)
+PY
+)
+  [ $? -eq 0 ] && ok "rofi highlight text contrast >= 3:1 on all themes ($out)" || bad "rofi highlight contrast too low" "$out"
+fi
+
 # the Omarchy-style waybar layout is valid JSONC and its style imports the wallust colors
 if command -v python3 >/dev/null; then
   out=$(python3 - "$root/config/waybar/configs/[TOP] Omarchy" <<'PY' 2>&1

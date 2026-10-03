@@ -4,7 +4,7 @@
   FetchWallpapers.py [--per-query 2] [--queries space,nebula,aurora,...] [--out DIR] [--list]
 Images stay on your machine (not in the repo): wallhaven wallpapers carry their authors' own licences.
 Anything wider than 5120 px is scaled down to 5120x1440 so files stay a sensible size. No account or API key needed."""
-import argparse, json, pathlib, sys, time, urllib.parse, urllib.request
+import argparse, json, pathlib, subprocess, sys, time, urllib.parse, urllib.request
 from io import BytesIO
 from PIL import Image
 
@@ -43,6 +43,8 @@ def main():
             if im.width > 5120: im = im.resize((5120, round(im.height * 5120 / im.width)), Image.LANCZOS)
             im.save(dest, quality=93, subsampling=0)
         time.sleep(1.2)   # be polite to the API (45 requests/minute allowed)
+    s = pathlib.Path.home() / ".config/hypr/UserScripts/WallpaperSelect.sh"
+    if s.exists() and not a.list: subprocess.run([str(s), "--warm"])   # build the picker thumbnails now
 
 
 if __name__ == "__main__":

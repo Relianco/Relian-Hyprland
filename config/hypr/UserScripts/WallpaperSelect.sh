@@ -1,107 +1,55 @@
 #!/usr/bin/env bash
 # /* ---- Relian-Hyprland ---- */
-# This script for selecting wallpapers (SUPER W)
+# Wallpaper picker (SUPER W): stills and animated videos from ~/Pictures/wallpapers, opens on the one in use.
+# Thumbnails are cached in ~/.cache/relian/wallthumbs and built in parallel the first time, so later opens are quick.
 
-# WALLPAPERS PATH
 terminal=kitty
 wallDIR="$HOME/Pictures/wallpapers"
 SCRIPTSDIR="$HOME/.config/hypr/scripts"
-wallpaper_current="$HOME/.config/hypr/wallpaper_effects/.wallpaper_current"
-
-# Directory for swaync
+state="${XDG_STATE_HOME:-$HOME/.local/state}/relian/wallpaper"
 iDIR="$HOME/.config/swaync/images"
-iDIRi="$HOME/.config/swaync/icons"
-
-# swww transition config
-FPS=60
-TYPE="any"
-DURATION=2
-BEZIER=".43,1.19,1,.4"
-SWWW_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration $DURATION --transition-bezier $BEZIER"
-
-# Check if package bc exists
-if ! command -v bc &>/dev/null; then
-  notify-send -i "$iDIR/error.png" "bc missing" "Install package bc first"
-  exit 1
-fi
-
-# Variables
 rofi_theme="$HOME/.config/rofi/config-wallpaper.rasi"
-focused_monitor=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')
-
-# Ensure focused_monitor is detected
-if [[ -z "$focused_monitor" ]]; then
-  notify-send -i "$iDIR/error.png" "E-R-R-O-R" "Could not detect focused monitor"
-  exit 1
-fi
-
-# Monitor details
-scale_factor=$(hyprctl monitors -j | jq -r --arg mon "$focused_monitor" '.[] | select(.name == $mon) | .scale')
-monitor_height=$(hyprctl monitors -j | jq -r --arg mon "$focused_monitor" '.[] | select(.name == $mon) | .height')
-
-icon_size=$(echo "scale=1; ($monitor_height * 3) / ($scale_factor * 150)" | bc)
-adjusted_icon_size=$(echo "$icon_size" | awk '{if ($1 < 15) $1 = 20; if ($1 > 25) $1 = 25; print $1}')
-# Omarchy-style grid uses a fixed thumbnail size (see config-wallpaper.rasi), so no per-monitor percentage override
 rofi_override="element-icon{size:330px;}"
 
-# Kill existing wallpaper daemons for video
-kill_wallpaper_for_video() {
-  awww kill 2>/dev/null
-  pkill mpvpaper 2>/dev/null
-  pkill swaybg 2>/dev/null
-  pkill hyprpaper 2>/dev/null
-}
+# files, sorted; one stat call gives every mtime (forking per file is what made this slow)
+mapfile -d '' found < <(find -L "$wallDIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o \
+  -iname "*.bmp" -o -iname "*.tiff" -o -iname "*.webp" -o -iname "*.mp4" -o -iname "*.mkv" -o -iname "*.mov" -o -iname "*.webm" \) -print0)
+[[ ${#found[@]} -gt 0 ]] || { notify-send -i "$iDIR/error.png" "No wallpapers" "Put some in $wallDIR (or run FetchWallpapers.py)"; exit 1; }
+mapfile -t PICS < <(printf '%s\n' "${found[@]}" | LC_ALL=C sort)
+mapfile -t mtimes < <(stat -c '%Y' -- "${PICS[@]}")
 
-# Kill existing wallpaper daemons for image
-kill_wallpaper_for_image() {
-  pkill mpvpaper 2>/dev/null
-  pkill swaybg 2>/dev/null
-  pkill hyprpaper 2>/dev/null
-}
-
-# Retrieve wallpapers (both images & videos)
-mapfile -d '' PICS < <(find -L "${wallDIR}" -type f \( \
-  -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o \
-  -iname "*.bmp" -o -iname "*.tiff" -o -iname "*.webp" -o \
-  -iname "*.mp4" -o -iname "*.mkv" -o -iname "*.mov" -o -iname "*.webm" \) -print0)
-
-RANDOM_PIC="${PICS[$((RANDOM % ${#PICS[@]}))]}"
-RANDOM_PIC_NAME=". random"
-
-# Rofi command
-rofi_command="rofi -i -show -dmenu -config $rofi_theme -theme-str $rofi_override"
-
-# Thumbnails: decoding 5120px images and 4K videos for every row is what made the picker slow, so each file gets a small cached
-# thumbnail (made once, in parallel; later opens only read the cache).
 thumb_dir="$HOME/.cache/relian/wallthumbs"
-thumb_path() { # thumb_path FILE -> cache file for it (changes when the file does)
-  local k; k=$(printf '%s:%s' "$1" "$(stat -c '%Y:%s' "$1")" | md5sum | cut -c1-20); echo "$thumb_dir/$k.jpg"
-}
+thumbs=()
+for i in "${!PICS[@]}"; do
+  k=${PICS[i]//[^A-Za-z0-9]/_}; thumbs[i]="$thumb_dir/${k: -140}_${mtimes[i]}.jpg"
+done
+
 make_thumb() { # make_thumb FILE THUMB
   local ss=()
   [[ "${1,,}" =~ \.(mp4|mkv|mov|webm)$ ]] && ss=(-ss 2)
-  ffmpeg -v error -y "${ss[@]}" -i "$1" -frames:v 1 -vf "scale=800:-2" -q:v 4 "$2" 2>/dev/null \
-    || ffmpeg -v error -y -i "$1" -frames:v 1 -vf "scale=800:-2" -q:v 4 "$2" 2>/dev/null
+  ffmpeg -v error -y "${ss[@]}" -i "$1" -frames:v 1 -vf "scale=500:-2" -q:v 5 "$2" 2>/dev/null \
+    || ffmpeg -v error -y -i "$1" -frames:v 1 -vf "scale=500:-2" -q:v 5 "$2" 2>/dev/null
 }
 export -f make_thumb
 
 build_thumbs() {
   mkdir -p "$thumb_dir"
-  local f t
-  for f in "${PICS[@]}"; do
-    t=$(thumb_path "$f"); [[ -s "$t" ]] || printf '%s\0%s\0' "$f" "$t"
-  done | xargs -0 -n 2 -P 12 bash -c 'make_thumb "$0" "$1"'
+  local i
+  for i in "${!PICS[@]}"; do [[ -s "${thumbs[i]}" ]] || printf '%s\0%s\0' "${PICS[i]}" "${thumbs[i]}"; done \
+    | xargs -0 -r -n 2 -P 12 bash -c 'make_thumb "$0" "$1"'
 }
 
-# Sorting Wallpapers
+# row of the wallpaper in use (row 0 is ". random"), so the list opens on it
+selected_row=0
+cur=$(cat "$state" 2>/dev/null)
+if [[ -n "$cur" ]]; then
+  for i in "${!PICS[@]}"; do [[ "${PICS[i]}" == "$cur" ]] && { selected_row=$((i + 1)); break; }; done
+fi
+
 menu() {
-  IFS=$'\n' sorted_options=($(sort <<<"${PICS[*]}"))
-
-  printf "%s\x00icon\x1f%s\n" "$RANDOM_PIC_NAME" "$(thumb_path "$RANDOM_PIC")"
-
-  for pic_path in "${sorted_options[@]}"; do
-    printf "%s\x00icon\x1f%s\n" "$(basename "$pic_path")" "$(thumb_path "$pic_path")"
-  done
+  printf ". random\x00icon\x1f%s\n" "${thumbs[RANDOM % ${#thumbs[@]}]}"
+  local i
+  for i in "${!PICS[@]}"; do printf "%s\x00icon\x1f%s\n" "${PICS[i]##*/}" "${thumbs[i]}"; done
 }
 
 # Offer SDDM Simple Wallpaper Option (only for non-video wallpapers)
@@ -152,39 +100,27 @@ set_sddm_wallpaper() {
 # the choice for the next login and re-derives colours when the theme is "Wallpaper colours".
 apply_wallpaper() { "$SCRIPTSDIR/WallpaperApply.sh" "$1"; set_sddm_wallpaper; }
 
-# Main function
 main() {
   build_thumbs
-  choice=$(menu | $rofi_command)
-  choice=$(echo "$choice" | xargs)
-  RANDOM_PIC_NAME=$(echo "$RANDOM_PIC_NAME" | xargs)
+  choice=$(menu | rofi -i -show -dmenu -config "$rofi_theme" -theme-str "$rofi_override" -selected-row "$selected_row")
+  choice=$(echo "$choice" | xargs -0)
+  choice=${choice%$'\n'}
+  [[ -n "$choice" ]] || exit 0
 
-  if [[ -z "$choice" ]]; then
-    echo "No choice selected. Exiting."
-    exit 0
+  if [[ "$choice" == ". random" ]]; then
+    selected_file=${PICS[RANDOM % ${#PICS[@]}]}
+  else
+    selected_file=""
+    for f in "${PICS[@]}"; do [[ "${f##*/}" == "$choice" ]] && { selected_file=$f; break; }; done
   fi
-
-  # Handle random selection correctly
-  if [[ "$choice" == "$RANDOM_PIC_NAME" ]]; then
-    choice=$(basename "$RANDOM_PIC")
-  fi
-
-  choice_basename=$(basename "$choice" | sed 's/\(.*\)\.[^.]*$/\1/')
-
-  # Search for the selected file in the wallpapers directory, including subdirectories
-  selected_file=$(find "$wallDIR" -iname "$choice_basename.*" -print -quit)
-
-  if [[ -z "$selected_file" ]]; then
-    echo "File not found. Selected choice: $choice"
-    exit 1
-  fi
-
+  [[ -n "$selected_file" ]] || { echo "File not found: $choice"; exit 1; }
   apply_wallpaper "$selected_file"
 }
 
-# Check if rofi is already running
-if pidof rofi >/dev/null; then
-  pkill rofi
-fi
+# --warm: just build the thumbnails (the downloaders call this, so SUPER+W opens fast the first time too)
+if [[ "${1:-}" == "--warm" ]]; then build_thumbs; exit 0; fi
+
+# only one rofi at a time
+pidof rofi >/dev/null && pkill rofi
 
 main

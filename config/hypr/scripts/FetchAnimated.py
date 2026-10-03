@@ -88,6 +88,12 @@ def wiki_candidates():
             yield {"name": name, "url": ii["url"], "credit": f"{title} ({lic}) https://commons.wikimedia.org/wiki/{urllib.parse.quote(title.replace(' ', '_'))}"}
 
 
+def warm():
+    """build the picker's thumbnails now, so the first SUPER+W is as quick as the rest"""
+    s = pathlib.Path.home() / ".config/hypr/UserScripts/WallpaperSelect.sh"
+    if s.exists(): subprocess.run([str(s), "--warm"])
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--max-gb", type=float, default=20)
@@ -104,7 +110,7 @@ def main():
     kept = rejected = 0
     for src in a.sources.split(","):
         for c in gens[src]():
-            if total >= cap: print(f"reached {a.max_gb} GB"); return
+            if total >= cap: print(f"reached {a.max_gb} GB"); warm(); return
             dest = out / c["name"]
             if dest.exists(): continue
             ctype, size = head(c["url"])
@@ -124,6 +130,7 @@ def main():
             with credits.open("a") as cf: cf.write(c["credit"] + "\n")
             print(f"kept {c['name']} {dest.stat().st_size / 1e6:.0f} MB, motion {m:.1f} ({total / 1e9:.1f} / {a.max_gb:g} GB)", flush=True)
     print(f"done: kept {kept}, rejected {rejected}, folder {total / 1e9:.1f} GB")
+    warm()
 
 
 if __name__ == "__main__":

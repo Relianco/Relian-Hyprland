@@ -84,6 +84,17 @@ dups=$(grep -hoE '^hl\.bind\("[^"]+"' "$root/config/hypr/configs/Keybinds.lua" "
 grep -qE 'rounding = 0,' "$root/config/hypr/UserConfigs/UserDecorations.lua" && ok "corners are square (rounding = 0)" || bad "rounding is not 0"
 grep -q 'borderangle' "$root/config/hypr/UserConfigs/UserAnimations.lua" && bad "rainbow border animation present" || ok "no rainbow border animation"
 
+# dark-only carousel: no scheme with a light background (luminance of #bg must stay below 0.5)
+python3 - "$root/config/wallust/colorschemes" <<'PY' && ok "all themes are dark" || bad "a light theme is in the carousel"
+import json, glob, sys
+bad = []
+for f in glob.glob(sys.argv[1] + "/omarchy-*.json"):
+    h = json.load(open(f))["special"]["background"].lstrip("#")
+    c = [int(h[i:i+2], 16) / 255 for i in (0, 2, 4)]
+    if 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2] >= 0.5: bad.append(f.split("/")[-1])
+sys.exit("light themes: %s" % bad if bad else 0)
+PY
+
 # theme carousel: every color scheme is complete, and applying one writes its accent into the hypr colors file
 if command -v python3 >/dev/null; then
   out=$(python3 - "$root/config/wallust/colorschemes" <<'PY' 2>&1
@@ -102,7 +113,7 @@ if command -v wallust >/dev/null; then
   wl="$tmp/wl"; wh="$tmp/wlhome"; mkdir -p "$wl" "$wh/.config"; cp -r "$root"/config/wallust/* "$wl/"
   for d in cava hypr/wallust rofi/wallust waybar/wallust kitty quickshell; do mkdir -p "$wh/.config/$d"; done
   names=$(env HOME="$wh" WALLUST_CONFIG_DIR="$wl" "$root/config/hypr/scripts/ThemeSelect.sh" --list 2>&1)
-  [ "$(echo "$names" | wc -l)" -ge 22 ] && ok "ThemeSelect --list shows wallpaper + themes" || bad "ThemeSelect --list" "$names"
+  [ "$(echo "$names" | wc -l)" -ge 17 ] && ok "ThemeSelect --list shows wallpaper + themes" || bad "ThemeSelect --list" "$names"
   out=$(env HOME="$wh" WALLUST_CONFIG_DIR="$wl" THEME_NO_RELOAD=1 XDG_CACHE_HOME="$wh/.cache" "$root/config/hypr/scripts/ThemeSelect.sh" --set "Tokyo Night" 2>&1)
   grep -q 'color12 = "rgb(7AA2F7)"' "$wh/.config/hypr/wallust/wallust-hyprland.lua" && ok "ThemeSelect --set writes Tokyo Night accent" || bad "ThemeSelect --set" "$out"
   # every theme must apply, and land its own accent (color12) in the hypr colors file

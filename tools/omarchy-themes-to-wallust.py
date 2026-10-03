@@ -17,6 +17,7 @@ OUT.mkdir(parents=True, exist_ok=True)
 for n in names:
     try: c = tomllib.loads(gh(f"themes/{n}/colors.toml"))
     except subprocess.CalledProcessError: print("skip (no colors.toml):", n); continue
+    if c.get("mode") == "light": print("skip (light theme):", n); continue   # dark-only carousel by choice
     g = lambda k, d=None: c.get(k, c.get(d) if d else None)
     slots = [g("dark_background", "background"), g("red"), g("green"), g("yellow"), g("blue"), g("magenta"), g("cyan"), g("foreground"),
              g("muted", "dark_foreground"), g("bright_red", "red"), g("bright_green", "green"), g("bright_yellow", "yellow"),

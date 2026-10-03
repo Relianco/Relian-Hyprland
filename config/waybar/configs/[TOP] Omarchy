@@ -110,7 +110,8 @@
     "tooltip-format-ethernet": "Connected",
     "tooltip-format-disconnected": "Disconnected",
     "interval": 3,
-    "on-click": "nm-connection-editor"
+    "on-click": "$HOME/.config/hypr/scripts/WifiMenu.sh",
+    "on-click-right": "nm-connection-editor"
   },
 
   "battery": {
@@ -137,13 +138,15 @@
     "format-connected": "󰂱",
     "format-no-controller": "",
     "tooltip-format": "Devices connected: {num_connections}",
-    "on-click": "blueman-manager"
+    "on-click": "$HOME/.config/hypr/scripts/BluetoothMenu.sh",
+    "on-click-right": "blueman-manager"
   },
 
   "pulseaudio": {
     "format": "{icon}",
-    "on-click": "pavucontrol",
+    "on-click": "$HOME/.config/hypr/scripts/VolumeMenu.sh",
     "on-click-right": "pamixer -t",
+    "on-click-middle": "pavucontrol",
     "tooltip-format": "Playing at {volume}%",
     "scroll-step": 5,
     "format-muted": "󰝟",

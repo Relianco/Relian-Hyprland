@@ -269,6 +269,28 @@ PY
 rm -rf "$ca"
 grep -q 'on-click-right": "$HOME/.config/hypr/scripts/Calendar.sh"' "$root/config/waybar/configs/[TOP] Omarchy" && ok "right-clicking the clock opens the calendar" || bad "clock right-click" "not wired"
 
+# bar popups: meter, Wi-Fi list (strongest per network, connected one preselected, no "turn off" default), valid markup
+pp=$(mktemp -d); mkdir -p "$pp/bin" "$pp/home/.config/hypr/scripts" "$pp/home/.config/rofi/wallust"
+cp "$root/config/hypr/scripts/PopupLib.sh" "$pp/home/.config/hypr/scripts/"
+printf '%s\n' 'active-background: #112233;' 'active-foreground: #000000;' 'normal-foreground: #CDD6F4;' > "$pp/home/.config/rofi/wallust/colors-rofi.rasi"
+cat > "$pp/bin/nmcli" <<'EOS'
+#!/bin/bash
+case "$*" in
+  *"radio wifi"*) echo enabled ;;
+  *"IN-USE,SIGNAL,SECURITY,SSID"*) printf '%s\n' ' :40:WPA2:Cafe' '*:75:WPA2:Home' ' :90:WPA2:Cafe' ' :55::Open & Free' ' ::WPA2:' ;;
+  *"ACTIVE,SSID"*) printf '%s\n' 'yes:Home' 'no:Cafe' ;;
+esac
+EOS
+printf '%s\n' '#!/bin/bash' 'echo "args: $*" >> "$FAKE_LOG"; cat >> "$FAKE_LOG"; exit 1' > "$pp/bin/rofi"; chmod +x "$pp/bin"/*
+env PATH="$pp/bin:$PATH" HOME="$pp/home" FAKE_LOG="$pp/log" "$root/config/hypr/scripts/WifiMenu.sh" >/dev/null 2>&1
+n_cafe=$(grep -c "Cafe" "$pp/log"); n_home=$(grep -c "Home" "$pp/log")
+grep -q "selected-row 2" "$pp/log" && [ "$n_cafe" = 1 ] && grep -q "Open &amp; Free" "$pp/log" && grep -q "Home" "$pp/log" && ! grep -q "^args.*selected-row 0" "$pp/log" \
+  && ok "WifiMenu.sh: one row per network, escaped names, opens on the connected network" || bad "WifiMenu.sh" "$(cat "$pp/log")"
+out=$(env HOME="$pp/home" bash -c '. "$HOME/.config/hypr/scripts/PopupLib.sh"; meter 50 10; echo; esc "a<b&c"')
+echo "$out" | head -1 | python3 -c "import sys,re; s=sys.stdin.read(); assert s.count('█')==10 and 'foreground=\"#112233\"' in s" && echo "$out" | tail -1 | grep -qx 'a&lt;b&amp;c' \
+  && ok "PopupLib: meter (10 blocks, theme accent) and pango escaping" || bad "PopupLib" "$out"
+rm -rf "$pp"
+
 # bar toggles print valid JSON and are wired into the layout
 for m in perf dnd; do
   "$root/config/hypr/scripts/BarToggles.sh" $m | python3 -c 'import sys,json; d=json.loads(sys.stdin.read()); assert d["text"] and d["class"]' 2>&1 \

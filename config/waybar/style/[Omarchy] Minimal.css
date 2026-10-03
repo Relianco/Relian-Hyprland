@@ -27,7 +27,7 @@
 #custom-weather { margin: 0 7.5px; min-width: 14px; }
 
 /* AI agents icon (AgentUsage.sh sets the class from the fullest limit) */
-#custom-agents { margin: 0 7.5px; }
+#custom-agents { margin: 0 14px 0 7.5px; }
 #custom-agents.mid      { color: #d7a65a; }
 #custom-agents.high     { color: #d98c4a; }
 #custom-agents.critical { color: #a55555; }
@@ -35,7 +35,7 @@
 #custom-agents.error    { color: #a55555; }
 
 /* performance mode / do-not-disturb toggles: dim when off, accent when on */
-#custom-perf, #custom-dnd { margin: 0 7.5px; min-width: 12px; }
+#custom-perf, #custom-dnd { margin: 0 14px; min-width: 14px; }
 #custom-perf.off, #custom-dnd.off, #custom-perf.missing { opacity: 0.45; }
 #custom-perf.on { color: #d98c4a; }
 #custom-dnd.on  { color: #a55555; }

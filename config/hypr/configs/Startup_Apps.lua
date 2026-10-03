@@ -15,6 +15,7 @@ hl.on("hyprland.start", function()
     -- run(SwwwRandom .. " " .. wallDIR) -- random wallpaper switcher every 30 minutes
 
     -- Startup
+    run("nm-applet --indicator")
     run("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
     run("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
     run(scriptsDir .. "/KeybindsLayoutInit.sh")
@@ -26,8 +27,6 @@ hl.on("hyprland.start", function()
     run(scriptsDir .. "/Polkit.sh")
 
     -- startup apps
-    run("nm-applet --indicator")
-    run("nm-tray") -- For ubuntu
     run("swaync")
     -- run("ags")
     -- run("blueman-applet")
@@ -52,6 +51,7 @@ hl.on("hyprland.start", function()
     -- xdg-desktop-portal-hyprland (should be auto starting. However, you can force to start)
     -- run(scriptsDir .. "/PortalHyprland.sh")
 
-    run("blueman-applet")
+    -- (no blueman-applet: the bar has its own Bluetooth icon and popup, the tray one was a duplicate. nm-applet stays: it is the
+    --  NetworkManager password agent that Wi-Fi connections with saved secrets need)
     run("ags")
 end)

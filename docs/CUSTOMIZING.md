@@ -95,6 +95,13 @@ Wallpapers are not kept in git. `SUPER+W` opens the picker with everything in `~
 - **Waybar**: layouts are in `~/.config/waybar/configs/`, styles in `style/`. `SUPER+CTRL+B` picks a style, `SUPER+ALT+B` a layout.
   The default pair is `[TOP] Omarchy` and `[Omarchy] Minimal`. The center shows network speed, clock, weather and temperatures
   (`scripts/SensorTemps.sh` finds the sensors by name, so it keeps working if the hwmon numbers change).
+- **Volume, Wi-Fi and Bluetooth popups**: click the icons in the bar for rofi-style popups at the top right (`scripts/VolumeMenu.sh`,
+  `WifiMenu.sh`, `BluetoothMenu.sh`, sharing `PopupLib.sh`). Volume shows a big meter (Left/Right = -/+5%) with rows to mute, pick the
+  output or mute the mic; Wi-Fi lists networks by signal and asks for a password the first time (it is piped to `nmcli`, never put on a
+  command line); Bluetooth lists devices and connects, disconnects or pairs. Right-click opens the full tools (`nm-connection-editor`,
+  `blueman-manager`); middle-click on the speaker opens the mixer. Needs `wpctl`/`pactl`, `nmcli`, `bluetoothctl`.
+  `blueman-applet` is no longer started (its tray icon duplicated the bar's); `nm-applet` still is, because it is NetworkManager's
+  password agent.
 - **Calendar**: right-click the clock for a month calendar in the rofi look (`scripts/Calendar.sh`). Left/Right (or Up/Down) change month,
   Home or the Today row jumps back, Esc closes. Left-click still flips the clock between time and date. The rows under the month are
   reserved for events once Outlook/Gmail sync is added.

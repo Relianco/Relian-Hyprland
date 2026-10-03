@@ -1,0 +1,10 @@
+/* ---- Relian-Hyprland ---- */
+/* Bar popups (volume, Wi-Fi, Bluetooth): the menu look, dropping down at the top right under the bar icons. */
+@import "~/.config/rofi/config-omarchy-menu.rasi"
+
+window { width: 460px; location: north east; anchor: north east; x-offset: -16px; y-offset: 40px; }
+mainbox { children: [ message, listview ]; }
+message { padding: 16px 20px 8px 20px; }
+textbox { text-color: @normal-foreground; }
+listview { lines: 10; scrollbar: false; padding: 0 0 6px 0; }
+element-icon { size: 0px; }

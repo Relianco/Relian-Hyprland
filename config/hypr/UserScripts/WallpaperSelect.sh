@@ -39,17 +39,33 @@ build_thumbs() {
     | xargs -0 -r -n 2 -P 12 bash -c 'make_thumb "$0" "$1"'
 }
 
-# row of the wallpaper in use (row 0 is ". random"), so the list opens on it
-selected_row=0
-cur=$(cat "$state" 2>/dev/null)
-if [[ -n "$cur" ]]; then
-  for i in "${!PICS[@]}"; do [[ "${PICS[i]}" == "$cur" ]] && { selected_row=$((i + 1)); break; }; done
-fi
+is_video() { [[ "${1,,}" =~ \.(mp4|mkv|mov|webm)$ ]]; }
+
+# filter: all | still | animated (Ctrl+1/2/3 in the picker)
+filter=all
+shown=()   # indexes into PICS that pass the filter
+apply_filter() {
+  shown=(); local i
+  for i in "${!PICS[@]}"; do
+    case "$filter" in
+      still) is_video "${PICS[i]}" && continue ;;
+      animated) is_video "${PICS[i]}" || continue ;;
+    esac
+    shown+=("$i")
+  done
+}
 
 menu() {
-  printf ". random\x00icon\x1f%s\n" "${thumbs[RANDOM % ${#thumbs[@]}]}"
+  printf ". random\x00icon\x1f%s\n" "${thumbs[shown[RANDOM % ${#shown[@]}]]}"
   local i
-  for i in "${!PICS[@]}"; do printf "%s\x00icon\x1f%s\n" "${PICS[i]##*/}" "${thumbs[i]}"; done
+  for i in "${shown[@]}"; do printf "%s\x00icon\x1f%s\n" "${PICS[i]##*/}" "${thumbs[i]}"; done
+}
+
+# row (0 is ". random") of the wallpaper in use within the filtered list, so the picker opens on it
+current_row() {
+  local cur n=1 i; cur=$(cat "$state" 2>/dev/null)
+  for i in "${shown[@]}"; do [[ "${PICS[i]}" == "$cur" ]] && { echo "$n"; return; }; n=$((n + 1)); done
+  echo 0
 }
 
 # Offer SDDM Simple Wallpaper Option (only for non-video wallpapers)
@@ -102,16 +118,31 @@ apply_wallpaper() { "$SCRIPTSDIR/WallpaperApply.sh" "$1"; set_sddm_wallpaper; }
 
 main() {
   build_thumbs
-  choice=$(menu | rofi -i -show -dmenu -config "$rofi_theme" -theme-str "$rofi_override" -selected-row "$selected_row")
-  choice=$(echo "$choice" | xargs -0)
+  local row choice rc label
+  while true; do
+    apply_filter
+    [[ ${#shown[@]} -gt 0 ]] || { notify-send -i "$iDIR/error.png" "No $filter wallpapers" "nothing matches this filter"; filter=all; apply_filter; }
+    case "$filter" in all) label="all" ;; still) label="stills only" ;; animated) label="animated only" ;; esac
+    choice=$(menu | rofi -i -show -dmenu -config "$rofi_theme" -theme-str "$rofi_override" -selected-row "$(current_row)" \
+      -mesg "Showing: $label     Ctrl+1 all   Ctrl+2 stills   Ctrl+3 animated" \
+      -kb-custom-1 "Control+1" -kb-custom-2 "Control+2" -kb-custom-3 "Control+3")
+    rc=$?
+    case $rc in
+      10) filter=all; continue ;;
+      11) filter=still; continue ;;
+      12) filter=animated; continue ;;
+      0) break ;;
+      *) exit 0 ;;
+    esac
+  done
   choice=${choice%$'\n'}
   [[ -n "$choice" ]] || exit 0
 
+  local selected_file=""
   if [[ "$choice" == ". random" ]]; then
-    selected_file=${PICS[RANDOM % ${#PICS[@]}]}
+    selected_file=${PICS[shown[RANDOM % ${#shown[@]}]]}
   else
-    selected_file=""
-    for f in "${PICS[@]}"; do [[ "${f##*/}" == "$choice" ]] && { selected_file=$f; break; }; done
+    for i in "${shown[@]}"; do [[ "${PICS[i]##*/}" == "$choice" ]] && { selected_file=${PICS[i]}; break; }; done
   fi
   [[ -n "$selected_file" ]] || { echo "File not found: $choice"; exit 1; }
   apply_wallpaper "$selected_file"

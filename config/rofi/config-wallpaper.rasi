@@ -4,7 +4,8 @@
 
 configuration { modi: "drun"; }
 window { width: 1500px; }
-mainbox { children: [ inputbar, listview ]; }
+mainbox { children: [ inputbar, message, listview ]; }
+message { padding: 4px 10px; }
 entry { placeholder: "Choose wallpaper"; }
 listview { columns: 4; lines: 2; spacing: 16px; fixed-columns: true; flow: horizontal; scrollbar: false; }
 element { orientation: vertical; padding: 8px; spacing: 6px; border: 2px; border-color: transparent; }

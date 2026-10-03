@@ -229,6 +229,23 @@ assert F.WIKI_SKIP.search('File:Panning across the Orion Nebula.webm') and not F
   && ok "FetchAnimated.py licence and title filters" || bad "FetchAnimated filters" "assert failed"
 rm -rf "$root/config/hypr/scripts/__pycache__"
 
+# wallpaper picker: filter keys re-open the list with only stills/animated, and the pick goes to WallpaperApply
+pk=$(mktemp -d); mkdir -p "$pk/bin" "$pk/home/Pictures/wallpapers/animated" "$pk/home/.config/hypr/scripts" "$pk/home/.cache"
+: > "$pk/home/Pictures/wallpapers/a.jpg"; : > "$pk/home/Pictures/wallpapers/b.png"; : > "$pk/home/Pictures/wallpapers/animated/c.mp4"
+printf '%s\n' '#!/bin/bash' 'echo "$1" >> "$FAKE_LOG"; echo "applied $*" >> "$FAKE_LOG"' > "$pk/home/.config/hypr/scripts/WallpaperApply.sh"
+printf '%s\n' '#!/bin/bash' 'echo "ffmpeg" >/dev/null; for a; do last=$a; done; : > "$last"' > "$pk/bin/ffmpeg"
+cat > "$pk/bin/rofi" <<'EOS'
+#!/bin/bash
+n=$(cat "$FAKE_N" 2>/dev/null || echo 0); echo $((n + 1)) > "$FAKE_N"
+lines=$(cat | tr '\0\037' '  ' | grep -c .); echo "rofi call $n rows=$lines" >> "$FAKE_LOG"
+case $n in 0) exit 12 ;; 1) echo "c.mp4"; exit 0 ;; esac
+EOS
+chmod +x "$pk"/bin/* "$pk/home/.config/hypr/scripts/WallpaperApply.sh"
+env PATH="$pk/bin:$PATH" HOME="$pk/home" FAKE_LOG="$pk/log" FAKE_N="$pk/n" "$root/config/hypr/UserScripts/WallpaperSelect.sh" >/dev/null 2>&1
+grep -q "rofi call 0 rows=4" "$pk/log" && grep -q "rofi call 1 rows=2" "$pk/log" && grep -q "applied .*c.mp4" "$pk/log" \
+  && ok "wallpaper picker: Ctrl+3 shows only animated (all=3+random, animated=1+random) and applies the pick" || bad "wallpaper picker filter" "$(cat "$pk/log" 2>/dev/null)"
+rm -rf "$pk"
+
 # bar toggles print valid JSON and are wired into the layout
 for m in perf dnd; do
   "$root/config/hypr/scripts/BarToggles.sh" $m | python3 -c 'import sys,json; d=json.loads(sys.stdin.read()); assert d["text"] and d["class"]' 2>&1 \

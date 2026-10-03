@@ -36,6 +36,7 @@ Source: `config/hypr/configs/Keybinds.lua`
 | `SUPER + SHIFT + F` | fullscreen |
 | `SUPER + CTRL + F` | maximize window |
 | `SUPER + SPACE` | main menu (Omarchy style) |
+| `SUPER + CTRL + ALT + S` | toggle the screensaver on/off |
 | `SUPER + SHIFT + CTRL + SPACE` | theme carousel (Omarchy style) |
 | `SUPER + CTRL + A` | ask an AI agent (Claude / Codex) |
 | `SUPER + T` | Float current window |

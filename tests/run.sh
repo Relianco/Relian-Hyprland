@@ -39,7 +39,7 @@ done
 
 # regression guard: legacy hyprlang-only calls break under a Lua config
 out=$(grep -rnE "hyprctl (keyword|--batch|setprop)|hyprctl dispatch [a-z_]+( |$)" "$root/config" --include=* -I 2>/dev/null \
-      | grep -vE "hl\.dsp|:[0-9]+:\s*(#|--)|\.md:|RainbowBorders.bak.sh|hyprlock|README|Laptops.lua|ToggleOpaque.sh" )
+      | grep -vE "hl\.dsp|:[0-9]+:\s*(#|--)|\.md:|RainbowBorders.bak.sh|hyprlock|README|Laptops.lua|ToggleOpaque.sh|Screensaver(Run)?.sh" )
 [ -z "$out" ] && ok "no legacy 'hyprctl dispatch X' / keyword calls" || bad "legacy hyprctl calls found" "$out"
 
 # every default keybind should carry a description (KeyBinds.sh cheatsheet shows it)
@@ -194,6 +194,14 @@ grep -E 'radius' "$root/config/swaync/style.css" | grep -qvE 'radius: 0' && bad 
 grep -q '\.notification-action button' "$root/config/swaync/style.css" && ok "swaync styles the notification action buttons" || bad "swaync action buttons unstyled"
 python3 -c 'import json,sys; c=json.load(open(sys.argv[1])); assert c["positionX"]=="right" and c["notification-window-width"]==380' "$root/config/swaync/config.json" 2>&1 && ok "swaync: top-right, 380px" || bad "swaync config"
 
+# bar toggles print valid JSON and are wired into the layout
+for m in perf dnd; do
+  "$root/config/hypr/scripts/BarToggles.sh" $m | python3 -c 'import sys,json; d=json.loads(sys.stdin.read()); assert d["text"] and d["class"]' 2>&1 \
+    && ok "BarToggles.sh $m prints valid waybar JSON" || bad "BarToggles.sh $m" "bad JSON"
+done
+grep -q '"custom/perf"' "$root/config/waybar/configs/[TOP] Omarchy" && grep -q '"custom/dnd"' "$root/config/waybar/configs/[TOP] Omarchy" \
+  && ok "layout has the performance and do-not-disturb buttons" || bad "bar toggles in layout" "missing"
+
 # AgentUsage.sh merges claudebar + codexbar into one waybar module (stand-in commands, never real credentials)
 if command -v jq >/dev/null; then
   stub="$tmp/stub"; mkdir -p "$stub"; nohome="$tmp/nohome"; mkdir -p "$nohome"
@@ -308,6 +316,65 @@ fi
 
 # docs/KEYBINDINGS.md is generated from the Lua bind files and must be current
 python3 "$root/tools/gen-keybindings-doc.py" --check && ok "docs/KEYBINDINGS.md is up to date" || bad "docs/KEYBINDINGS.md is out of date (run tools/gen-keybindings-doc.py)"
+
+# screensaver: art variants exist at both sizes and fit (large: <= 41 lines, small: <= 24 lines; both <= 120 columns)
+python3 - "$root/config/hypr/branding" <<'PY' && ok "screensaver art: large + small variants, all within size limits" || bad "screensaver art sizes"
+import sys, glob
+base = sys.argv[1]; bad = []
+for size, maxl in (("large", 41), ("small", 24)):
+    fs = glob.glob(f"{base}/{size}/*.txt")
+    if len(fs) < 4: bad.append(f"{size}: only {len(fs)} variants")
+    for f in fs:
+        lines = open(f, encoding="utf-8").read().rstrip("\n").split("\n")
+        if len(lines) > maxl or max(len(l) for l in lines) > 120 or not any(ch in "".join(lines) for ch in "\u2588\u2580\u2584"): bad.append(f.split("/")[-1] + f" ({size})")
+sys.exit("; ".join(bad) if bad else 0)
+PY
+
+# screensaver runner: exits on a key press, restores the cursor, and picks art from branding/ (fake ttfx + hyprctl, no session touched)
+if command -v python3 >/dev/null; then
+  fb="$tmp/fakebin"; mkdir -p "$fb" "$tmp/sshome/.config/hypr/branding/large" "$tmp/sshome/.config/hypr/branding/small"
+  cp "$root"/config/hypr/branding/small/*.txt "$tmp/sshome/.config/hypr/branding/small/"; cp "$root"/config/hypr/branding/large/*.txt "$tmp/sshome/.config/hypr/branding/large/"
+  printf '%s\n' '#!/bin/bash' 'echo "ttfx $*" >> "$FAKE_LOG"; sleep 30' > "$fb/ttfx"   # direct shebang: via env the process would be named bash, which pgrep -x ttfx cannot see
+  printf '%s\n' '#!/usr/bin/env bash' 'echo "hyprctl $*" >> "$FAKE_LOG"' 'case "$1" in activewindow) echo "{\"class\":\"org.relian.screensaver\"}";; eval) echo ok;; esac' > "$fb/hyprctl"
+  chmod +x "$fb"/*
+  out=$(FAKE_LOG="$tmp/ss.log" HOME="$tmp/sshome" PATH="$fb:$PATH" python3 - "$root/config/hypr/scripts/ScreensaverRun.sh" <<'PY' 2>&1
+import os, pty, sys, time, select
+pid, fd = pty.fork()
+if pid == 0:
+    os.execv("/bin/bash", ["bash", sys.argv[1]])
+t0 = time.time(); sent = False
+while time.time() - t0 < 12:
+    r, _, _ = select.select([fd], [], [], 0.3)
+    if r:
+        try: os.read(fd, 4096)
+        except OSError:                      # the terminal closed: the script ended
+            print("exited-after-key" if sent else "exited-early"); sys.exit(0 if sent else 1)
+    if not sent and time.time() - t0 > 2.5: os.write(fd, b"x"); sent = True
+    done, _ = os.waitpid(pid, os.WNOHANG)
+    if done: print("exited-after-key"); sys.exit(0)
+os.kill(pid, 9); print("did-not-exit"); sys.exit(1)
+PY
+)
+  hid=$(grep -c 'invisible = true' "$tmp/ss.log" 2>/dev/null); shown=$(grep -c 'invisible = false' "$tmp/ss.log" 2>/dev/null); used=$(grep -c "branding/small/.*\.txt" "$tmp/ss.log" 2>/dev/null)
+  [ "$out" = "exited-after-key" ] && [ "${hid:-0}" -ge 1 ] && [ "${shown:-0}" -ge 1 ] && [ "${used:-0}" -ge 1 ] \
+    && ok "screensaver runner: hides the cursor, picks art, exits on a key and restores the cursor" || bad "screensaver runner" "out=$out hide=$hid show=$shown art=$used"
+fi
+
+# login theme builds in every theme and the installer switches/restores /etc/sddm.conf (throwaway paths, no root)
+if python3 -c 'import PIL' 2>/dev/null; then
+  bt="$tmp/sddm"; mkdir -p "$bt"
+  fails=""
+  for f in "$root"/config/wallust/colorschemes/omarchy-*.json; do
+    nm=$(basename "$f" .json); nm=${nm#omarchy-}; pn=$(for w in ${nm//-/ }; do printf '%s ' "${w^}"; done); pn=${pn% }
+    python3 "$root/tools/build-sddm-theme.py" "$bt/$nm" --theme "$pn" >/dev/null 2>&1 && [ -f "$bt/$nm/Main.qml" ] && [ -f "$bt/$nm/logo.png" ] || fails+="$pn "
+  done
+  printf '[Theme]\nCurrent=simple_sddm_2\n\n[General]\nNumlock=on\n' > "$bt/sddm.conf"
+  RELIAN_THEMES_DIR="$bt/themes" RELIAN_SDDM_CONF="$bt/sddm.conf" "$root/tools/install-login.sh" "Nord" >/dev/null 2>&1
+  grep -q '^Current=relian' "$bt/sddm.conf" && grep -q 'Numlock=on' "$bt/sddm.conf" && [ -f "$bt/themes/relian/Main.qml" ] || fails+="install "
+  RELIAN_THEMES_DIR="$bt/themes" RELIAN_SDDM_CONF="$bt/sddm.conf" "$root/tools/install-login.sh" --restore >/dev/null 2>&1
+  grep -q '^Current=simple_sddm_2' "$bt/sddm.conf" || fails+="restore "
+  [ -z "$fails" ] && ok "login theme builds for every theme; installer switches and restores sddm.conf" || bad "login theme" "$fails"
+fi
 
 # every require() in hyprland.lua resolves to a file
 for m in $(grep -oE 'require\("[^"]+"\)' "$root/config/hypr/hyprland.lua" | sed 's/require("\(.*\)")/\1/'); do

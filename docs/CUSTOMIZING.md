@@ -82,10 +82,21 @@ whole monitor. It only affects windows that are alone on their workspace.
 - **Agent usage icon**: needs `claudebar` and `codexbar` (AUR). Without them the icon still shows and the tooltip says what to
   install. Hovering shows each limit with a meter and its reset time. Click asks an agent (`AgentPrompt.sh`); right-click opens
   Claude, middle-click opens Codex.
+- **Performance and do-not-disturb buttons**: two icons left of the tray (`scripts/BarToggles.sh`). The gauge flips the power
+  profile between performance and balanced (needs `power-profiles-daemon`), the bell silences notifications (swaync). Lit = on, dim = off.
 - **rofi**: every menu imports `config-omarchy-menu.rasi` (list menus) or `config-omarchy-launcher.rasi` (launcher/input boxes).
   The launcher searches app names (and generic names like "File Manager") and orders results by how often you launch them.
 - **Notifications** (swaync) and **power menu** (wlogout) have their own stylesheets in `config/swaync` and `config/wlogout`;
   both follow the theme colors.
+
+## Screensaver and login screen
+
+- **Screensaver**: after 5 minutes idle (hypridle) every monitor shows the Relian logo as ASCII art with a random
+  [ttfx](https://github.com/ChrisBuilds/terminaltexteffects) effect; any key or focus change ends it. Needs `ttfx` (`yay -S ttfx`).
+  `SUPER+CTRL+ALT+S` turns it on/off, the main menu can preview it. Add your own art as `.txt` files in
+  `~/.config/hypr/branding/large/` (42+ rows, big screens) or `small/`; `tools/make-ascii-logo.py --all` regenerates the bundled set.
+- **Login screen** (SDDM): `tools/preview-login.sh` shows it without touching anything; `sudo tools/install-login.sh [Theme]` installs it
+  (backs up `/etc/sddm.conf` first), `sudo tools/install-login.sh --restore` undoes it. Colors follow the theme you pick.
 
 ## Troubleshooting
 

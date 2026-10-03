@@ -55,6 +55,9 @@ Choose Monitor Profiles
 Choose Rofi Themes
 Search for Keybinds
 Toggle Game Mode
+Preview Screensaver
+Toggle Screensaver
+Choose Theme (carousel)
 Switch Dark-Light Theme
 EOF
 }
@@ -110,6 +113,9 @@ main() {
             fi
             qt5ct ;;
         "Choose Hyprland Animations") $scriptsDir/Animations.sh ;;
+        "Preview Screensaver") $scriptsDir/Screensaver.sh force ;;
+        "Toggle Screensaver") $scriptsDir/Screensaver.sh toggle ;;
+        "Choose Theme (carousel)") $scriptsDir/ThemeSelect.sh ;;
         "Choose Monitor Profiles") $scriptsDir/MonitorProfiles.sh ;;
         "Choose Rofi Themes") $scriptsDir/RofiThemeSelector.sh ;;
         "Search for Keybinds") $scriptsDir/KeyBinds.sh ;;

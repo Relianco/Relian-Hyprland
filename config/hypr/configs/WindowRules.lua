@@ -238,3 +238,7 @@ hl.layer_rule({ match = { namespace = "quickshell:overview" }, ignore_alpha = 0.
 
 --layerrule = ignorezero, overview
 --layerrule = blur, overview
+
+-- Screensaver (scripts/Screensaver.sh): one fullscreen terminal per monitor
+hl.window_rule({ match = { class = "^(org\\.relian\\.screensaver)$" }, fullscreen = true })
+hl.window_rule({ match = { class = "^(org\\.relian\\.screensaver)$" }, float = true })

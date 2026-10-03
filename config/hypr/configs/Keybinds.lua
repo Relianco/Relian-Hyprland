@@ -49,6 +49,7 @@ hl.bind("SUPER + CTRL + SHIFT + R", hl.dsp.exec_cmd("pkill rofi || true && " .. 
 hl.bind("SUPER + SHIFT + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }), { description = "fullscreen" })
 hl.bind("SUPER + CTRL + F", hl.dsp.window.fullscreen({ mode = "maximized" }), { description = "maximize window" })
 hl.bind("SUPER + SPACE", hl.dsp.exec_cmd(scriptsDir .. "/Relian_Quick_Settings.sh"), { description = "main menu (Omarchy style)" })
+hl.bind("SUPER + CTRL + ALT + S", hl.dsp.exec_cmd(scriptsDir .. "/Screensaver.sh toggle"), { description = "toggle the screensaver on/off" })
 hl.bind("SUPER + SHIFT + CTRL + SPACE", hl.dsp.exec_cmd(scriptsDir .. "/ThemeSelect.sh"), { description = "theme carousel (Omarchy style)" })
 hl.bind("SUPER + CTRL + A", hl.dsp.exec_cmd(scriptsDir .. "/AgentPrompt.sh"), { description = "ask an AI agent (Claude / Codex)" })
 hl.bind("SUPER + T", hl.dsp.window.float({ action = "toggle" }), { description = "Float current window" })

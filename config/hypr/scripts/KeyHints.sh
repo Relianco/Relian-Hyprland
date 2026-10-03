@@ -42,6 +42,7 @@ rows=(
   'SUPER + ALT + L' 'Toggle Dwindle | Master Layout' 'Hyprland Layout'
   'SUPER + SPACE' 'Main menu (Relian settings)' '(Omarchy: SUPER SPACE)'
   'SUPER + SHIFT + CTRL + SPACE' 'Theme carousel' '(LEFT/RIGHT cycle + live preview, ENTER keep, ESC revert)'
+  'SUPER + CTRL + ALT + S' 'Toggle the screensaver' '(starts after 5 minutes idle; any key ends it)'
   'SUPER + CTRL + A' 'Ask an AI agent' '(Enter: Claude Code, Shift+Enter: Codex; also the waybar robot icon)'
   'SUPER + - / =' 'Resize window narrower / wider' '(+SHIFT: shorter/taller, +ALT: small steps, +CTRL: big steps)'
   'SUPER + T' 'Toggle float' 'single window'

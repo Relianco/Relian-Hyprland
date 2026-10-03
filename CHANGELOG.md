@@ -5,6 +5,8 @@
 The Lua rewrite and the Omarchy-style look.
 
 ### Added
+- **Screensaver**: randomized ASCII-art Relian logo with ttfx effects on every monitor (idle 5 min, `SUPER+CTRL+ALT+S` toggle), and a minimal **SDDM login theme** (`tools/install-login.sh`). Adapted from Omarchy (MIT, see NOTICE).
+- Waybar **performance mode** and **do-not-disturb** buttons (`BarToggles.sh`).
 - Hyprland config converted to **Lua** (Hyprland ≥ 0.55): `hyprland.lua` plus small modules; your settings in `UserConfigs/`.
 - **Theme carousel** (`SUPER+SHIFT+CTRL+SPACE`): 16 dark themes with live preview; Waybar, rofi, kitty, swaync, hyprlock and
   GTK apps recolor together. A GTK theme, `relian`, follows the palette live.

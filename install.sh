@@ -119,6 +119,7 @@ cat <<EOF
 Next steps
   - Log out and start Hyprland again (>= 0.55) so it loads ~/.config/hypr/hyprland.lua.
     A running session that started on the old hyprlang config cannot switch to Lua without a restart.
+  - Optional: 'yay -S ttfx' for the screensaver; 'sudo tools/install-login.sh' for the SDDM login theme (preview: tools/preview-login.sh).
   - SUPER+H shows every keybind, SUPER+SPACE the main menu, SUPER+SHIFT+CTRL+SPACE the theme carousel.
   - Docs: docs/KEYBINDINGS.md and docs/CUSTOMIZING.md
 EOF

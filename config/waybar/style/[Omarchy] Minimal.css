@@ -34,6 +34,12 @@
 #custom-agents.missing  { opacity: 0.5; }
 #custom-agents.error    { color: #a55555; }
 
+/* performance mode / do-not-disturb toggles: dim when off, accent when on */
+#custom-perf, #custom-dnd { margin: 0 7.5px; min-width: 12px; }
+#custom-perf.off, #custom-dnd.off, #custom-perf.missing { opacity: 0.45; }
+#custom-perf.on { color: #d98c4a; }
+#custom-dnd.on  { color: #a55555; }
+
 /* centre cluster: network speed | clock | weather | temps */
 #network.speed { margin: 0 12px 0 0; min-width: 190px; }
 #custom-temps { margin: 0 0 0 12px; }

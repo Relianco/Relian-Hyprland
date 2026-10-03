@@ -17,6 +17,7 @@ list of changes.
 | **Launcher and menus** | One shared rofi look. `SUPER+ALT+SPACE` apps, `SUPER+SPACE` main menu, `SUPER+ALT+V` clipboard, plus emoji, calculator, wallpaper grid and power menu. `SUPER+H` is a searchable list of every keybind. |
 | **AI agents** | The robot icon in the bar: hover for your Claude and Codex usage, click (or `SUPER+CTRL+A`) to type a prompt and open it in a floating terminal. |
 | **Apps styled to match** | kitty (terminal), swaync (notifications), wlogout (power menu), Thunar and other GTK3 apps. |
+| **Screensaver and login** | Idle screensaver with the Relian logo in randomized 90s ASCII art on every monitor, and a minimal SDDM login theme. See [docs/CUSTOMIZING.md](docs/CUSTOMIZING.md). |
 | **Tests** | `tests/run.sh` validates the whole config in a few seconds, without touching your session. |
 
 ## Requirements
@@ -24,7 +25,7 @@ list of changes.
 - **Hyprland ≥ 0.55** (the Lua config needs it), Waybar, rofi (Wayland build), kitty, swaync, wlogout, hypridle, hyprlock
 - **wallust** (colors), **swww** (wallpaper daemon), `wl-clipboard`, `cliphist`, `grim`, `slurp`, `jq`, `rsync`
 - A **JetBrainsMono Nerd Font**, the `adw-gtk3` GTK theme, and Thunar (or any file manager)
-- Optional: `claudebar` and `codexbar` for the usage icon (`yay -S claudebar codexbar`, then log in with `claude` / `codex login` once)
+- Optional: `ttfx` for the screensaver (`yay -S ttfx`); `power-profiles-daemon` for the bar's performance button; `claudebar` and `codexbar` for the usage icon (`yay -S claudebar codexbar`, then log in with `claude` / `codex login` once)
 
 On Arch, most of it is one command:
 

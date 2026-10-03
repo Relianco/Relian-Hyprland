@@ -1,0 +1,7 @@
+[SddmGreeterTheme]
+Name=Relian
+Description=Minimal login theme: pixel logo, padlock and a password box, in the colors of your current theme
+Author=Relian-Hyprland (layout idea from Omarchy, MIT)
+Type=sddm-theme
+Version=1.0
+QtVersion=6

@@ -244,6 +244,7 @@ chmod +x "$pk"/bin/* "$pk/home/.config/hypr/scripts/WallpaperApply.sh"
 env PATH="$pk/bin:$PATH" HOME="$pk/home" FAKE_LOG="$pk/log" FAKE_N="$pk/n" "$root/config/hypr/UserScripts/WallpaperSelect.sh" >/dev/null 2>&1
 grep -q "rofi call 0 rows=6" "$pk/log" && grep -q "rofi call 1 rows=4" "$pk/log" && grep -q "applied .*c.mp4" "$pk/log" \
   && ok "wallpaper picker: Ctrl+3 shows only animated (all=3+random+2 filter tiles, animated=1+random+2) and applies the pick" || bad "wallpaper picker filter" "$(cat "$pk/log" 2>/dev/null)"
+[ "$(ls "$pk/home/.cache/relian/wallthumbs" | wc -l)" = 3 ] && ok "wallpaper picker: every file gets its own thumbnail (same mtime, short paths)" || bad "thumbnail names collide" "$(ls "$pk/home/.cache/relian/wallthumbs")"
 rm -rf "$pk"
 
 # bar toggles print valid JSON and are wired into the layout

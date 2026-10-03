@@ -21,7 +21,8 @@ mapfile -t mtimes < <(stat -c '%Y' -- "${PICS[@]}")
 thumb_dir="$HOME/.cache/relian/wallthumbs"
 thumbs=()
 for i in "${!PICS[@]}"; do
-  k=${PICS[i]//[^A-Za-z0-9]/_}; thumbs[i]="$thumb_dir/${k: -140}_${mtimes[i]}.jpg"
+  k=${PICS[i]//[^A-Za-z0-9]/_}; [[ ${#k} -gt 140 ]] && k=${k: -140}   # (a negative offset longer than the string gives "")
+  thumbs[i]="$thumb_dir/${k}_${mtimes[i]}.jpg"
 done
 
 make_thumb() { # make_thumb FILE THUMB

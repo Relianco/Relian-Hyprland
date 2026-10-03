@@ -7,9 +7,12 @@
 set -eu
 root=$(cd "$(dirname "$0")/.." && pwd)
 t=${DEMO_HOME:-$(mktemp -d)}; mkdir -p "$t/.config"
-for d in "$HOME"/.config/*; do case "$(basename "$d")" in hypr|waybar|rofi) ;; *) ln -sfn "$d" "$t/.config/$(basename "$d")";; esac; done
+for d in "$HOME"/.config/*; do case "$(basename "$d")" in hypr|waybar|rofi|wallust|kitty|cava|quickshell) ;; *) ln -sfn "$d" "$t/.config/$(basename "$d")";; esac; done
 # rofi: copy of the repo's config (new launcher theme lives there)
 rm -rf "$t/.config/rofi"; cp -r "$root/config/rofi" "$t/.config/rofi"
+# folders wallust writes into (theme picker): copies, so the demo never recolors your real kitty/cava/quickshell
+for d in wallust kitty cava quickshell; do rm -rf "$t/.config/$d"; if [ -d "$root/config/$d" ]; then cp -r "$root/config/$d" "$t/.config/$d"; else mkdir -p "$t/.config/$d"; fi; done
+export THEME_NO_SEQUENCES=1   # theme picker must not repaint your real terminals
 # waybar: a copy of the repo's config (so new layouts/styles show up). WAYBAR_LAYOUT / WAYBAR_STYLE pick them.
 rm -rf "$t/.config/waybar"; cp -r "$root/config/waybar" "$t/.config/waybar"
 ln -sfn "$t/.config/waybar/configs/${WAYBAR_LAYOUT:-[TOP] Omarchy}" "$t/.config/waybar/config"

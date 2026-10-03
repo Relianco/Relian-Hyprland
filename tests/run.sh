@@ -84,6 +84,41 @@ dups=$(grep -hoE '^hl\.bind\("[^"]+"' "$root/config/hypr/configs/Keybinds.lua" "
 grep -qE 'rounding = 0,' "$root/config/hypr/UserConfigs/UserDecorations.lua" && ok "corners are square (rounding = 0)" || bad "rounding is not 0"
 grep -q 'borderangle' "$root/config/hypr/UserConfigs/UserAnimations.lua" && bad "rainbow border animation present" || ok "no rainbow border animation"
 
+# theme carousel: every color scheme is complete, and applying one writes its accent into the hypr colors file
+if command -v python3 >/dev/null; then
+  out=$(python3 - "$root/config/wallust/colorschemes" <<'PY' 2>&1
+import json, glob, re, sys
+bad = []
+for f in sorted(glob.glob(sys.argv[1] + "/omarchy-*.json")):
+    d = json.load(open(f))
+    cols = [d["colors"].get("color%d" % i, "") for i in range(16)] + [d["special"].get(k, "") for k in ("background", "foreground", "cursor")]
+    if not all(re.fullmatch(r"#[0-9a-fA-F]{6}", c) for c in cols): bad.append(f.split("/")[-1])
+sys.exit("incomplete schemes: %s" % bad if bad else 0)
+PY
+)
+  [ -z "$out" ] && ok "all omarchy color schemes have 16 colors + special" || bad "color schemes" "$out"
+fi
+if command -v wallust >/dev/null; then
+  wl="$tmp/wl"; wh="$tmp/wlhome"; mkdir -p "$wl" "$wh/.config"; cp -r "$root"/config/wallust/* "$wl/"
+  for d in cava hypr/wallust rofi/wallust waybar/wallust kitty quickshell; do mkdir -p "$wh/.config/$d"; done
+  names=$(env HOME="$wh" WALLUST_CONFIG_DIR="$wl" "$root/config/hypr/scripts/ThemeSelect.sh" --list 2>&1)
+  [ "$(echo "$names" | wc -l)" -ge 22 ] && ok "ThemeSelect --list shows wallpaper + themes" || bad "ThemeSelect --list" "$names"
+  out=$(env HOME="$wh" WALLUST_CONFIG_DIR="$wl" THEME_NO_RELOAD=1 XDG_CACHE_HOME="$wh/.cache" "$root/config/hypr/scripts/ThemeSelect.sh" --set "Tokyo Night" 2>&1)
+  grep -q 'color12 = "rgb(7AA2F7)"' "$wh/.config/hypr/wallust/wallust-hyprland.lua" && ok "ThemeSelect --set writes Tokyo Night accent" || bad "ThemeSelect --set" "$out"
+  # every theme must apply, and land its own accent (color12) in the hypr colors file
+  fails=""
+  for f in "$root"/config/wallust/colorschemes/omarchy-*.json; do
+    nm=$(basename "$f" .json); nm=${nm#omarchy-}; pn=$(for w in ${nm//-/ }; do printf '%s ' "${w^}"; done); pn=${pn% }
+    env HOME="$wh" WALLUST_CONFIG_DIR="$wl" THEME_NO_RELOAD=1 XDG_CACHE_HOME="$wh/.cache" "$root/config/hypr/scripts/ThemeSelect.sh" --set "$pn" >/dev/null 2>&1
+    want=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['colors']['color12'].lstrip('#').upper())" "$f")
+    grep -q "color12 = \"rgb($want)\"" "$wh/.config/hypr/wallust/wallust-hyprland.lua" || fails+="$pn "
+  done
+  [ -z "$fails" ] && ok "every theme applies with its own accent" || bad "themes that failed to apply" "$fails"
+  env HOME="$wh" WALLUST_CONFIG_DIR="$wl" THEME_NO_RELOAD=1 XDG_CACHE_HOME="$wh/.cache" "$root/config/hypr/scripts/ThemeSelect.sh" --set "Tokyo Night" >/dev/null 2>&1
+  nxt=$(env HOME="$wh" WALLUST_CONFIG_DIR="$wl" THEME_NO_RELOAD=1 XDG_CACHE_HOME="$wh/.cache" "$root/config/hypr/scripts/ThemeSelect.sh" --next 2>&1)
+  [ "$nxt" = "Vantablack" ] && ok "ThemeSelect --next cycles (Tokyo Night -> Vantablack)" || bad "ThemeSelect --next" "got: $nxt"
+fi
+
 # the Omarchy-style waybar layout is valid JSONC and its style imports the wallust colors
 if command -v python3 >/dev/null; then
   out=$(python3 - "$root/config/waybar/configs/[TOP] Omarchy" <<'PY' 2>&1

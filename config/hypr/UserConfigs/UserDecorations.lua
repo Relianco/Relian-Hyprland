@@ -2,6 +2,8 @@
 -- Decoration settings. https://wiki.hypr.land/Configuring/Variables/#decoration
 -- Colors come from wallust (wallust/wallust-hyprland.lua)
 local c = require("wallust.wallust-hyprland")
+-- translucent version of an "rgb(RRGGBB)" color; keeps inactive borders subtle on any theme
+local function alpha(col, a) return (col:gsub("^rgb%((%x+)%)$", "rgba(%1" .. a .. ")")) end
 
 hl.config({
     general = {
@@ -10,7 +12,7 @@ hl.config({
         gaps_out = 4,
         col = {
             active_border = c.color12,
-            inactive_border = c.color10,
+            inactive_border = alpha(c.color8, "66"),
         },
     },
 
@@ -28,7 +30,7 @@ hl.config({
             range = 3,
             render_power = 1,
             color = c.color12,
-            color_inactive = c.color10,
+            color_inactive = alpha(c.color8, "66"),
         },
 
         blur = {

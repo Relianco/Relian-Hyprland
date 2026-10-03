@@ -256,6 +256,10 @@ if command -v wallust >/dev/null && [ -d "$wh" ]; then
 fi
 grep -q 'window.thunar' "$root/config/gtk-theme/relian/gtk-3.0/relian-thunar.css" && grep -q 'JetBrainsMono' "$root/config/gtk-theme/relian/gtk-3.0/relian-thunar.css" && ok "thunar css: scoped, square, JetBrainsMono" || bad "thunar css"
 
+# kitty transparency can be toggled from outside: dynamic opacity ON (must be 'yes', '1' is read as off) + socket remote control
+grep -qE '^dynamic_background_opacity yes' "$root/config/kitty/kitty.conf" && grep -q '^allow_remote_control socket-only' "$root/config/kitty/kitty.conf" && grep -q '^listen_on unix:@kitty$' "$root/config/kitty/kitty.conf" \
+  && ok "kitty: dynamic opacity + socket remote control (needed by the opacity toggle)" || bad "kitty opacity settings"
+
 # opacity toggle must not use the removed `hyprctl setprop`; it reads the state and sets the opposite
 grep -q 'ToggleOpaque.sh' "$root/config/hypr/configs/Keybinds.lua" && ! grep -q 'value = "toggle"' "$root/config/hypr/configs/Keybinds.lua" && ok "opacity bind uses ToggleOpaque.sh (no setprop toggle)" || bad "opacity toggle bind"
 

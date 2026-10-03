@@ -80,6 +80,14 @@ fi
 dups=$(grep -hoE '^hl\.bind\("[^"]+"' "$root/config/hypr/configs/Keybinds.lua" "$root/config/hypr/UserConfigs/UserKeybinds.lua" "$root/config/hypr/configs/Laptops.lua" | sort | uniq -d)
 [ -z "$dups" ] && ok "no duplicate keybinds" || bad "duplicate keybinds" "$dups"
 
+# flat borders: window shadows stay off (the accent-tinted shadow looked like a glow)
+python3 - "$root/config/hypr/UserConfigs/UserDecorations.lua" <<'PY' && ok "window shadows are off (flat borders)" || bad "window shadows are enabled"
+import re, sys
+t = open(sys.argv[1], encoding="utf-8").read()
+m = re.search(r"shadow\s*=\s*\{[^}]*\}", t)
+sys.exit(0 if m and "enabled = false" in m.group(0) else 1)
+PY
+
 # squares and no rainbow: rounding stays 0 and the rotating-border animation stays out
 grep -qE 'rounding = 0,' "$root/config/hypr/UserConfigs/UserDecorations.lua" && ok "corners are square (rounding = 0)" || bad "rounding is not 0"
 grep -q 'borderangle' "$root/config/hypr/UserConfigs/UserAnimations.lua" && bad "rainbow border animation present" || ok "no rainbow border animation"

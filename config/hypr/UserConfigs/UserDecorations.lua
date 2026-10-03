@@ -25,13 +25,8 @@ hl.config({
         dim_strength = 0.1,
         dim_special = 0.8,
 
-        shadow = {
-            enabled = true,
-            range = 3,
-            render_power = 1,
-            color = c.color12,
-            color_inactive = alpha(c.color8, "66"),
-        },
+        -- flat borders: no shadow (the accent-colored shadow read as a glow around the focused window)
+        shadow = { enabled = false },
 
         blur = {
             enabled = true,

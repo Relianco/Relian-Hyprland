@@ -2,7 +2,7 @@ import QtQuick 2.0
 import SddmComponents 2.0
 import "art.js" as Art
 
-// Relian login: logo, padlock, password box. Pick the user's last session if it is Hyprland, else prefer uwsm/Hyprland.
+// Relian login: the word "login", padlock, password box. Pick the user's last session if it is Hyprland, else prefer uwsm/Hyprland.
 // "@BG@" is replaced with the theme background colour by tools/build-sddm-theme.py.
 Rectangle {
   id: root
@@ -75,12 +75,12 @@ Rectangle {
     anchors.centerIn: parent
     spacing: 40
 
-    Image {
-      id: logo
-      source: "logo.png"
-      width: Math.min(sourceSize.width, root.width * 0.8)
-      height: sourceSize.width > 0 ? Math.round(width * sourceSize.height / sourceSize.width) : 0
-      fillMode: Image.PreserveAspectFit
+    Text {
+      text: "login"
+      color: "@ACCENT@"
+      font.family: "JetBrainsMono Nerd Font"
+      font.pixelSize: 72
+      font.letterSpacing: 14
       anchors.horizontalCenter: parent.horizontalCenter
     }
 

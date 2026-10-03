@@ -79,7 +79,6 @@ QML = (ROOT / "config/sddm/relian/Main.qml").read_text()
 def build(out, theme):
     c = load_colors(theme); out = pathlib.Path(out); out.mkdir(parents=True, exist_ok=True)
     bg, fg, accent, red = rgb(c["bg"]), rgb(c["fg"]), rgb(c["accent"]), rgb(c["red"])
-    logo(out / "logo.png", accent)
     lock(out / "lock.png", mix(accent, fg, 0.25)); lock(out / "lock-failed.png", red)
     entry(out / "entry.png", mix(accent, fg, 0.25), mix(bg, (0, 0, 0, 255), 0.45))
     entry(out / "entry-failed.png", red, mix(bg, red, 0.15))

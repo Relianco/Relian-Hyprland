@@ -366,7 +366,7 @@ if python3 -c 'import PIL' 2>/dev/null; then
   fails=""
   for f in "$root"/config/wallust/colorschemes/omarchy-*.json; do
     nm=$(basename "$f" .json); nm=${nm#omarchy-}; pn=$(for w in ${nm//-/ }; do printf '%s ' "${w^}"; done); pn=${pn% }
-    python3 "$root/tools/build-sddm-theme.py" "$bt/$nm" --theme "$pn" >/dev/null 2>&1 && [ -f "$bt/$nm/Main.qml" ] && [ -f "$bt/$nm/logo.png" ] || fails+="$pn "
+    python3 "$root/tools/build-sddm-theme.py" "$bt/$nm" --theme "$pn" >/dev/null 2>&1 && [ -f "$bt/$nm/Main.qml" ] && [ -f "$bt/$nm/lock.png" ] || fails+="$pn "
   done
   printf '[Theme]\nCurrent=simple_sddm_2\n\n[General]\nNumlock=on\n' > "$bt/sddm.conf"
   RELIAN_THEMES_DIR="$bt/themes" RELIAN_SDDM_CONF="$bt/sddm.conf" "$root/tools/install-login.sh" "Nord" >/dev/null 2>&1

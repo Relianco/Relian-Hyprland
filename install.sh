@@ -33,6 +33,12 @@ if [ "${#missing[@]}" -gt 0 ]; then
   warn "install them with your package manager (see README: Requirements); continuing anyway"
 fi
 
+# optional: the bar and menus still load without these, but the matching button or key does nothing
+opt=(pamixer playerctl brightnessctl btop pavucontrol swappy powerprofilesctl blueman-manager nm-connection-editor notify-send python3 ttfx claudebar codexbar)
+omissing=()
+for c in "${opt[@]}"; do command -v "$c" >/dev/null 2>&1 || omissing+=("$c"); done
+[ "${#omissing[@]}" -gt 0 ] && warn "optional, missing: ${omissing[*]} (volume/brightness/media keys, mixer, screenshots, performance button, screensaver, agent usage)"
+
 # --- 2. backup ---------------------------------------------------------------------------------------
 # Only the desktop pieces we manage. nvim, Qt (qt5ct/qt6ct/Kvantum) etc. are yours and are never touched.
 dirs=(hypr waybar rofi wallust kitty swaync wlogout fastfetch cava btop swappy quickshell ags)

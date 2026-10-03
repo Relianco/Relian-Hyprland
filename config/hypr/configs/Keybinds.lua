@@ -76,7 +76,7 @@ hl.bind("SUPER + SHIFT + M", hl.dsp.exec_cmd(UserScripts .. "/RofiBeats.sh"), { 
 hl.bind("SUPER + W", hl.dsp.exec_cmd(UserScripts .. "/WallpaperSelect.sh"), { description = "select wallpaper" })
 hl.bind("SUPER + SHIFT + W", hl.dsp.exec_cmd(UserScripts .. "/WallpaperEffects.sh"), { description = "wallpaper effects" })
 hl.bind("CTRL + ALT + W", hl.dsp.exec_cmd(UserScripts .. "/WallpaperRandom.sh"), { description = "random wallpaper" })
-hl.bind("SUPER + CTRL + O", hl.dsp.window.set_prop({ prop = "opaque", value = "toggle" }), { description = "toggle active window opacity" })
+hl.bind("SUPER + CTRL + O", hl.dsp.exec_cmd(scriptsDir .. "/ToggleOpaque.sh"), { description = "toggle active window opacity" })
 hl.bind("SUPER + SHIFT + K", hl.dsp.exec_cmd(scriptsDir .. "/KeyBinds.sh"), { description = "search keybinds" })
 hl.bind("SUPER + SHIFT + A", hl.dsp.exec_cmd(scriptsDir .. "/Animations.sh"), { description = "animations menu" })
 hl.bind("SUPER + SHIFT + O", hl.dsp.exec_cmd(UserScripts .. "/ZshChangeTheme.sh"), { description = "change oh-my-zsh theme" })

@@ -176,7 +176,7 @@ hl.window_rule({ match = { tag = "browser*" }, opacity = "0.99 0.8" })
 hl.window_rule({ match = { tag = "projects*" }, opacity = "0.9 0.8" })
 hl.window_rule({ match = { tag = "im*" }, opacity = "0.94 0.86" })
 hl.window_rule({ match = { tag = "multimedia*" }, opacity = "0.94 0.86" })
-hl.window_rule({ match = { tag = "file-manager*" }, opacity = "0.9 0.8" })
+hl.window_rule({ match = { tag = "file-manager*" }, opacity = "1.0 override 1.0 override" })  -- solid: readable, like Omarchy
 hl.window_rule({ match = { tag = "terminal*" }, opacity = "0.9 0.7" })
 hl.window_rule({ match = { tag = "settings*" }, opacity = "0.8 0.7" })
 hl.window_rule({ match = { tag = "viewer*" }, opacity = "0.82 0.75" })

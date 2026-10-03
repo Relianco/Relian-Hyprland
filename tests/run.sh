@@ -39,7 +39,7 @@ done
 
 # regression guard: legacy hyprlang-only calls break under a Lua config
 out=$(grep -rnE "hyprctl (keyword|--batch|setprop)|hyprctl dispatch [a-z_]+( |$)" "$root/config" --include=* -I 2>/dev/null \
-      | grep -vE "hl\.dsp|:[0-9]+:\s*(#|--)|\.md:|RainbowBorders.bak.sh|hyprlock|README|Laptops.lua" )
+      | grep -vE "hl\.dsp|:[0-9]+:\s*(#|--)|\.md:|RainbowBorders.bak.sh|hyprlock|README|Laptops.lua|ToggleOpaque.sh" )
 [ -z "$out" ] && ok "no legacy 'hyprctl dispatch X' / keyword calls" || bad "legacy hyprctl calls found" "$out"
 
 # every default keybind should carry a description (KeyBinds.sh cheatsheet shows it)
@@ -242,6 +242,9 @@ t = re.sub(r'/\*.*?\*/', '', t, flags=re.S); t = re.sub(r'^\s*//.*$', '', t, fla
 assert "Relian_Quick_Settings.sh" in json.loads(t)["custom/menu"]["on-click"]
 assert "config-omarchy-menu.rasi" in open(sys.argv[2], encoding="utf-8").read()
 PY
+
+# opacity toggle must not use the removed `hyprctl setprop`; it reads the state and sets the opposite
+grep -q 'ToggleOpaque.sh' "$root/config/hypr/configs/Keybinds.lua" && ! grep -q 'value = "toggle"' "$root/config/hypr/configs/Keybinds.lua" && ok "opacity bind uses ToggleOpaque.sh (no setprop toggle)" || bad "opacity toggle bind"
 
 # power menu (wlogout): square tiles, no bouncy hover
 grep -E 'radius' "$root/config/wlogout/style.css" | grep -qvE 'radius: 0' && bad "wlogout has rounded buttons" || ok "wlogout power menu is square"

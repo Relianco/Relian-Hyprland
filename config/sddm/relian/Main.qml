@@ -43,7 +43,10 @@ Rectangle {
       Item {                      // the sweeping highlight: a clipped copy of the art, brighter
         id: band
         width: dim.implicitWidth * 0.12; height: parent.height; clip: true
-        NumberAnimation on x { from: -band.width; to: dim.implicitWidth; duration: 7000; loops: Animation.Infinite }
+        x: -width
+        // stepped at 10 fps on purpose: a smooth 60 fps sweep repaints the whole screen and costs ~18% of a core
+        Timer { interval: 100; running: true; repeat: true
+                onTriggered: band.x = band.x > dim.implicitWidth ? -band.width : band.x + dim.implicitWidth / 70 }
         Text { x: -band.x; text: dim.text; color: "@ACCENT@"; opacity: 0.45
                font.family: dim.font.family; font.pixelSize: 14; textFormat: Text.PlainText }
       }
@@ -53,7 +56,7 @@ Rectangle {
         NumberAnimation { to: 1.0; duration: 2500 }
         PauseAnimation { duration: 20000 }
         NumberAnimation { to: 0.0; duration: 2500 }
-        ScriptAction { script: backdrop.idx = (backdrop.idx + 1) % Art.ART.length }
+        ScriptAction { script: backdrop.idx = (backdrop.idx + 1 + Math.floor(Math.random() * (Art.ART.length - 1))) % Art.ART.length }  // any other one
       }
     }
   }

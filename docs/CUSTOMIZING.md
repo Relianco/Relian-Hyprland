@@ -95,7 +95,7 @@ whole monitor. It only affects windows that are alone on their workspace.
   [ttfx](https://github.com/ChrisBuilds/terminaltexteffects) effect; any key or focus change ends it. Needs `ttfx` (`yay -S ttfx`).
   `SUPER+CTRL+ALT+S` turns it on/off, the main menu can preview it. Add your own art as `.txt` files in
   `~/.config/hypr/branding/large/` (42+ rows, big screens) or `small/`; `tools/make-ascii-logo.py --all` regenerates the bundled set.
-- **Login screen** (SDDM): a dim, animated version of the screensaver art sits behind the password box (a brighter band sweeps across it and the art changes every ~25s). `tools/preview-login.sh` shows it without touching anything; `sudo tools/install-login.sh [Theme]` installs it
+- **Login screen** (SDDM): a dim, animated version of the screensaver art sits behind the password box (a brighter band sweeps across it and a random different piece of art every ~25s, and a random one at start). `tools/preview-login.sh` shows it without touching anything; `sudo tools/install-login.sh [Theme]` installs it
   (backs up `/etc/sddm.conf` first), `sudo tools/install-login.sh --restore` undoes it. Colors follow the theme you pick.
 
 ## Troubleshooting

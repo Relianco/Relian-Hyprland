@@ -15,10 +15,9 @@
   "height": 30,
 
   "modules-left": ["custom/menu", "hyprland/workspaces"],
-  "modules-center": ["network#speed", "clock", "custom/weather", "custom/temps"],
+  "modules-center": ["network#speed", "clock", "custom/weather", "custom/temps", "custom/perf"],
   "modules-right": [
     "custom/agents",
-    "custom/perf",
     "custom/dnd",
     "group/tray-expander",
     "bluetooth",

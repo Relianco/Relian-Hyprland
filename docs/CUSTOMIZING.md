@@ -108,7 +108,7 @@ Wallpapers are not kept in git. `SUPER+W` opens the picker with everything in `~
 - **Agent usage icon**: needs `claudebar` and `codexbar` (AUR). Without them the icon still shows and the tooltip says what to
   install. The bar shows each agent's fullest limit next to its logo (Claude, then Codex); hovering shows every limit with a meter and its reset time. Click asks an agent (`AgentPrompt.sh`); right-click opens
   Claude, middle-click opens Codex.
-- **Performance and do-not-disturb buttons**: two icons left of the tray (`scripts/BarToggles.sh`). The gauge flips the power
+- **Performance and do-not-disturb buttons**: the gauge sits in the centre next to the temperatures and the bell on the right (`scripts/BarToggles.sh`). The gauge flips the power
   profile between performance and balanced (needs `power-profiles-daemon`), the bell silences notifications (swaync). Lit = on, dim = off.
 - **rofi**: every menu imports `config-omarchy-menu.rasi` (list menus) or `config-omarchy-launcher.rasi` (launcher/input boxes).
   The launcher searches app names (and generic names like "File Manager") and orders results by how often you launch them.

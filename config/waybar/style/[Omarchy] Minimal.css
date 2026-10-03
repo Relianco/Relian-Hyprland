@@ -34,8 +34,9 @@
 #custom-agents.missing  { opacity: 0.5; }
 #custom-agents.error    { color: #a55555; }
 
-/* performance mode / do-not-disturb toggles: dim when off, accent when on */
-#custom-perf, #custom-dnd { margin: 0 14px; min-width: 14px; }
+/* performance mode (centre, next to the temperatures) and do-not-disturb (right): dim when off, lit when on */
+#custom-dnd { margin: 0 14px; min-width: 14px; }
+#custom-perf { margin: 0 0 0 14px; min-width: 14px; }
 #custom-perf.off, #custom-dnd.off, #custom-perf.missing { opacity: 0.45; }
 #custom-perf.on { color: #d98c4a; }
 #custom-dnd.on  { color: #a55555; }

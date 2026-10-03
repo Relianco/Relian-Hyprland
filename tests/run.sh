@@ -185,7 +185,7 @@ fi
 # SensorTemps.sh always prints valid JSON (even with no sensors); layout wires speed + temps into the centre
 out=$("$root/config/hypr/scripts/SensorTemps.sh" 2>&1)
 echo "$out" | python3 -c 'import sys,json; d=json.loads(sys.stdin.read()); assert "text" in d and d["class"] in ("ok","warm","hot","hidden")' 2>&1 && ok "SensorTemps.sh prints valid waybar JSON" || bad "SensorTemps.sh output" "$out"
-grep -q '"modules-center": \["network#speed", "clock", "custom/weather", "custom/temps"\]' "$root/config/waybar/configs/[TOP] Omarchy" && ok "waybar centre = speed, clock, weather, temps" || bad "waybar centre modules"
+grep -q '"modules-center": \["network#speed", "clock", "custom/weather", "custom/temps", "custom/perf"\]' "$root/config/waybar/configs/[TOP] Omarchy" && ok "waybar centre = speed, clock, weather, temps, performance" || bad "waybar centre modules"
 
 # kitty follows the wallust theme and has Omarchy-style settings; swaync cards are square
 grep -q '^include ./kitty-themes/01-Wallust.conf' "$root/config/kitty/kitty.conf" && ! grep -qE '^(foreground|background|cursor) ' "$root/config/kitty/kitty.conf" && ok "kitty includes the wallust theme (no static colors)" || bad "kitty.conf colors"

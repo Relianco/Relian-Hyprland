@@ -106,6 +106,9 @@ Checks that the Lua config loads, every animation preset and menu theme parses, 
 theme applies and stays readable (contrast), the install works in an empty home directory, and a set of regression guards
 for bugs we hit along the way. Nothing in it touches your real credentials or session.
 
+A GitHub Actions workflow (`.github/workflows/secret-scan.yml`) scans the full history and files for leaked secrets with
+[betterleaks](https://github.com/betterleaks/betterleaks) on every push and pull request, and weekly.
+
 ## Repository layout
 
 ```

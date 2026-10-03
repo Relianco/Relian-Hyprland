@@ -18,10 +18,10 @@ export function launchCustomCommand(command) {
             .then((output) => {
                 const value = JSON.parse(output)["str"].trim();
                 if (value != "[[EMPTY]]" && value != "") {
-                    execAsync(['bash', '-c', `hyprctl keyword input:accel_profile '[[EMPTY]]'`]).catch(print);
+                    execAsync(['bash', '-c', `hyprctl eval 'hl.config({ input = { accel_profile = "" } })'`]).catch(print);
                 }
                 else {
-                    execAsync(['bash', '-c', `hyprctl keyword input:accel_profile flat`]).catch(print);
+                    execAsync(['bash', '-c', `hyprctl eval 'hl.config({ input = { accel_profile = "flat" } })'`]).catch(print);
                 }
             })
     }

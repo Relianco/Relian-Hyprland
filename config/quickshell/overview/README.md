@@ -49,7 +49,7 @@ https://github.com/user-attachments/assets/79ceb141-6b9e-4956-8e09-aaf72b66550c
    git clone https://github.com/Shanu-Kumawat/quickshell-overview ~/.config/quickshell/overview
    ```
 
-2. **Add keybind** to your Hyprland config (`~/.config/hypr/hyprland.conf`):
+2. **Add keybind** to your Hyprland config (`~/.config/hypr/hyprland.lua`):
    ```conf
    bind = Super, TAB, exec, qs ipc -c overview call overview toggle
    ```

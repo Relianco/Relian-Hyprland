@@ -88,34 +88,34 @@ xdg-user-dirs-update 2>&1 | tee -a "$LOG" || true
 # setting up for NVIDIA
 if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -iq nvidia; then
   echo "${INFO} Nvidia GPU detected. Setting up proper env's and configs" 2>&1 | tee -a "$LOG" || true
-  sed -i '/env = LIBVA_DRIVER_NAME,nvidia/s/^#//' config/hypr/configs/ENVariables.conf
-  sed -i '/env = __GLX_VENDOR_LIBRARY_NAME,nvidia/s/^#//' config/hypr/configs/ENVariables.conf
-  sed -i '/env = NVD_BACKEND,direct/s/^#//' config/hypr/configs/ENVariables.conf
-  sed -i '/env = GSK_RENDERER,ngl/s/^#//' config/hypr/configs/ENVariables.conf
+  sed -i '/hl.env("LIBVA_DRIVER_NAME", "nvidia")/s/^-- //' config/hypr/configs/ENVariables.lua
+  sed -i '/hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")/s/^-- //' config/hypr/configs/ENVariables.lua
+  sed -i '/hl.env("NVD_BACKEND", "direct")/s/^-- //' config/hypr/configs/ENVariables.lua
+  sed -i '/hl.env("GSK_RENDERER", "ngl")/s/^-- //' config/hypr/configs/ENVariables.lua
 
   # no hardware cursors if nvidia detected
-  sed -i 's/^\([[:space:]]*no_hardware_cursors[[:space:]]*=[[:space:]]*\)2/\1 1/' config/hypr/configs/SystemSettings.conf
+  sed -i 's/^\([[:space:]]*no_hardware_cursors[[:space:]]*=[[:space:]]*\)2/\1 1/' config/hypr/configs/SystemSettings.lua
 fi
 
 # uncommenting WLR_RENDERER_ALLOW_SOFTWARE,1 if running in a VM is detected
 if hostnamectl | grep -q 'Chassis: vm'; then
   echo "${INFO} System is running in a virtual machine. Setting up proper env's and configs" 2>&1 | tee -a "$LOG" || true
-  sed -i 's/^\([[:space:]]*no_hardware_cursors[[:space:]]*=[[:space:]]*\)2/\1 1/' config/hypr/configs/SystemSettings.conf
+  sed -i 's/^\([[:space:]]*no_hardware_cursors[[:space:]]*=[[:space:]]*\)2/\1 1/' config/hypr/configs/SystemSettings.lua
   # enabling proper ENV's for Virtual Environment which should help
-  sed -i '/env = WLR_RENDERER_ALLOW_SOFTWARE,1/s/^#//' config/hypr/configs/ENVariables.conf
-  sed -i '/monitor = Virtual-1, 1920x1080@60,auto,1/s/^#//' config/hypr/monitors.conf
+  sed -i '/hl.env("WLR_RENDERER_ALLOW_SOFTWARE", "1")/s/^-- //' config/hypr/configs/ENVariables.lua
+  sed -i '/output = "Virtual-1"/s/^-- //' config/hypr/monitors.lua
 fi
 
 # Proper Polkit for NixOS
 if hostnamectl | grep -q 'Operating System: NixOS'; then
   echo "${INFO} NixOS Distro Detected. Setting up proper env's and configs." 2>&1 | tee -a "$LOG" || true
   # Ensure NixOS polkit is enabled via overlay and default polkit is disabled via disable list
-  OVERLAY_SA="config/hypr/configs/Startup_Apps.conf"
+  OVERLAY_SA="config/hypr/UserConfigs/Startup_Apps.lua"
   DISABLE_SA="config/hypr/configs/Startup_Apps.disable"
   mkdir -p "$(dirname "$OVERLAY_SA")"
   touch "$OVERLAY_SA" "$DISABLE_SA"
-  if ! grep -qx 'exec-once = $scriptsDir/Polkit-NixOS.sh' "$OVERLAY_SA"; then
-    echo 'exec-once = $scriptsDir/Polkit-NixOS.sh' >>"$OVERLAY_SA"
+  if ! grep -qxF 'hl.on("hyprland.start", function() hl.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/Polkit-NixOS.sh") end)' "$OVERLAY_SA"; then
+    echo 'hl.on("hyprland.start", function() hl.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/Polkit-NixOS.sh") end)' >>"$OVERLAY_SA"
   fi
   if ! grep -qx '\$scriptsDir/Polkit.sh' "$DISABLE_SA"; then
     echo '$scriptsDir/Polkit.sh' >>"$DISABLE_SA"
@@ -124,10 +124,10 @@ fi
 
 # activating hyprcursor on env by checking if the directory ~/.icons/Bibata-Modern-Ice/hyprcursors exists
 if [ -d "$HOME/.icons/Bibata-Modern-Ice/hyprcursors" ]; then
-  HYPRCURSOR_ENV_FILE="config/hypr/configs/ENVariables.conf"
+  HYPRCURSOR_ENV_FILE="config/hypr/configs/ENVariables.lua"
   echo "${INFO} Bibata-Hyprcursor directory detected. Activating Hyprcursor...." 2>&1 | tee -a "$LOG" || true
-  sed -i 's/^#env = HYPRCURSOR_THEME,Bibata-Modern-Ice/env = HYPRCURSOR_THEME,Bibata-Modern-Ice/' "$HYPRCURSOR_ENV_FILE"
-  sed -i 's/^#env = HYPRCURSOR_SIZE,24/env = HYPRCURSOR_SIZE,24/' "$HYPRCURSOR_ENV_FILE"
+  sed -i 's/^-- \(hl.env("HYPRCURSOR_THEME", "Bibata-Modern-Ice")\)/\1/' "$HYPRCURSOR_ENV_FILE"
+  sed -i 's/^-- \(hl.env("HYPRCURSOR_SIZE", "24")\)/\1/' "$HYPRCURSOR_ENV_FILE"
 fi
 
 printf "\n%.0s" {1..1}
@@ -167,7 +167,7 @@ You need to set it Manually
 
 Setting a wrong Keyboard Layout will cause Hyprland to crash
 If you are not sure, just type ${YELLOW}us${RESET}
-${SKYBLUE}You can change later in ~/.config/hypr/UserConfigs/UserSettings.conf${RESET}
+${SKYBLUE}You can change later in ~/.config/hypr/UserConfigs/UserSettings.lua${RESET}  (kb_layout: configs/SystemSettings.lua)
 
 ${MAGENTA} NOTE:${RESET}
 •  You can also set more than 2 keyboard layouts
@@ -197,8 +197,8 @@ while true; do
 
   case $keyboard_layout in
   [yY])
-    awk -v layout="$layout" '/kb_layout/ {$0 = "  kb_layout = " layout} 1' config/hypr/configs/SystemSettings.conf >temp.conf
-    mv temp.conf config/hypr/configs/SystemSettings.conf
+    awk -v layout="$layout" '/kb_layout/ {$0 = "        kb_layout = \"" layout "\","} 1' config/hypr/configs/SystemSettings.lua >temp.lua
+    mv temp.lua config/hypr/configs/SystemSettings.lua
 
     echo "${NOTE} kb_layout ${MAGENTA}$layout${RESET} configured in settings." 2>&1 | tee -a "$LOG"
     break
@@ -219,7 +219,7 @@ You need to set it Manually
 
 Setting a wrong Keyboard Layout will cause Hyprland to crash
 If you are not sure, just type ${YELLOW}us${RESET}
-${SKYBLUE}You can change later in ~/.config/hypr/UserConfigs/UserSettings.conf${RESET}
+${SKYBLUE}You can change later in ~/.config/hypr/UserConfigs/UserSettings.lua${RESET}  (kb_layout: configs/SystemSettings.lua)
 
 ${MAGENTA} NOTE:${RESET}
 •  You can also set more than 2 keyboard layouts
@@ -230,8 +230,8 @@ ${MAGENTA} NOTE:${RESET}
     echo -n "${CAT} - Please enter the correct keyboard layout: "
     read new_layout
 
-    awk -v new_layout="$new_layout" '/kb_layout/ {$0 = "  kb_layout = " new_layout} 1' config/hypr/configs/SystemSettings.conf >temp.conf
-    mv temp.conf config/hypr/configs/SystemSettings.conf
+    awk -v new_layout="$new_layout" '/kb_layout/ {$0 = "        kb_layout = \"" new_layout "\","} 1' config/hypr/configs/SystemSettings.lua >temp.lua
+    mv temp.lua config/hypr/configs/SystemSettings.lua
     echo "${OK} kb_layout $new_layout configured in settings." 2>&1 | tee -a "$LOG"
     break
     ;;
@@ -243,27 +243,27 @@ done
 
 # Check if asusctl is installed and add rog-control-center on Startup
 if command -v asusctl >/dev/null 2>&1; then
-  OVERLAY_SA="config/hypr/configs/Startup_Apps.conf"
+  OVERLAY_SA="config/hypr/UserConfigs/Startup_Apps.lua"
   mkdir -p "$(dirname "$OVERLAY_SA")"
   touch "$OVERLAY_SA"
-  grep -qx 'exec-once = rog-control-center' "$OVERLAY_SA" || echo 'exec-once = rog-control-center' >>"$OVERLAY_SA"
+  grep -qxF 'hl.on("hyprland.start", function() hl.exec_cmd("rog-control-center") end)' "$OVERLAY_SA" || echo 'hl.on("hyprland.start", function() hl.exec_cmd("rog-control-center") end)' >>"$OVERLAY_SA"
 fi
 
 # Check if blueman-applet is installed and add blueman-applet on Startup
 if command -v blueman-applet >/dev/null 2>&1; then
-  OVERLAY_SA="config/hypr/configs/Startup_Apps.conf"
+  OVERLAY_SA="config/hypr/UserConfigs/Startup_Apps.lua"
   mkdir -p "$(dirname "$OVERLAY_SA")"
   touch "$OVERLAY_SA"
-  grep -qx 'exec-once = blueman-applet' "$OVERLAY_SA" || echo 'exec-once = blueman-applet' >>"$OVERLAY_SA"
+  grep -qxF 'hl.on("hyprland.start", function() hl.exec_cmd("blueman-applet") end)' "$OVERLAY_SA" || echo 'hl.on("hyprland.start", function() hl.exec_cmd("blueman-applet") end)' >>"$OVERLAY_SA"
 fi
 
 # Check if ags is installed and enable it
 if command -v ags >/dev/null 2>&1; then
   echo "${INFO} AGS detected - enabling in startup and refresh scripts" 2>&1 | tee -a "$LOG"
-  OVERLAY_SA="config/hypr/configs/Startup_Apps.conf"
+  OVERLAY_SA="config/hypr/UserConfigs/Startup_Apps.lua"
   mkdir -p "$(dirname "$OVERLAY_SA")"
   touch "$OVERLAY_SA"
-  grep -qx 'exec-once = ags' "$OVERLAY_SA" || echo 'exec-once = ags' >>"$OVERLAY_SA"
+  grep -qxF 'hl.on("hyprland.start", function() hl.exec_cmd("ags") end)' "$OVERLAY_SA" || echo 'hl.on("hyprland.start", function() hl.exec_cmd("ags") end)' >>"$OVERLAY_SA"
   sed -i '/#ags -q && ags &/s/^#//' config/hypr/scripts/RefreshNoWaybar.sh
   sed -i '/#ags -q && ags &/s/^#//' config/hypr/scripts/Refresh.sh
 fi
@@ -271,19 +271,19 @@ fi
 # Check if quickshell is installed and enable it
 if command -v qs >/dev/null 2>&1; then
   echo "${INFO} Quickshell detected - enabling in startup and refresh scripts" 2>&1 | tee -a "$LOG"
-  OVERLAY_SA="config/hypr/configs/Startup_Apps.conf"
+  OVERLAY_SA="config/hypr/UserConfigs/Startup_Apps.lua"
   mkdir -p "$(dirname "$OVERLAY_SA")"
   touch "$OVERLAY_SA"
-  grep -qx 'exec-once = qs' "$OVERLAY_SA" || echo 'exec-once = qs' >>"$OVERLAY_SA"
+  grep -qxF 'hl.on("hyprland.start", function() hl.exec_cmd("qs") end)' "$OVERLAY_SA" || echo 'hl.on("hyprland.start", function() hl.exec_cmd("qs") end)' >>"$OVERLAY_SA"
   sed -i '/#pkill qs && qs &/s/^#//' config/hypr/scripts/RefreshNoWaybar.sh
   sed -i '/#pkill qs && qs &/s/^#//' config/hypr/scripts/Refresh.sh
 fi
 
 # Ensure layout-aware keybinds init runs on startup (adds to user overlay so it survives composes)
-OVERLAY_SA="config/hypr/configs/Startup_Apps.conf"
+OVERLAY_SA="config/hypr/UserConfigs/Startup_Apps.lua"
 mkdir -p "$(dirname "$OVERLAY_SA")"
-if ! grep -qx 'exec-once = \$scriptsDir/KeybindsLayoutInit.sh' "$OVERLAY_SA"; then
-  echo 'exec-once = $scriptsDir/KeybindsLayoutInit.sh' >>"$OVERLAY_SA"
+if false; then # KeybindsLayoutInit.sh is already started from configs/Startup_Apps.lua
+  :
   echo "${INFO} Added KeybindsLayoutInit.sh to user Startup_Apps overlay" 2>&1 | tee -a "$LOG"
 fi
 
@@ -483,8 +483,8 @@ if [[ "$border_choice" =~ ^[Yy]$ ]]; then
   mv config/hypr/UserScripts/RainbowBorders.sh config/hypr/UserScripts/RainbowBorders.bak.sh
 
   # Comment out the exec-once and animation lines
-  sed -i '/exec-once = \$UserScripts\/RainbowBorders.sh/s/^/#/' config/hypr/configs/Startup_Apps.conf
-  sed -i '/^[[:space:]]*animation = borderangle, 1, 180, liner, loop/s/^/#/' config/hypr/configs/UserAnimations.conf
+  sed -i '/^[[:space:]]*run(UserScripts \.\. "\/RainbowBorders.sh")/s/^\([[:space:]]*\)/\1-- /' config/hypr/configs/Startup_Apps.lua
+  sed -i '/^[[:space:]]*hl.animation({ leaf = "borderangle"/s/^\([[:space:]]*\)/\1-- /' config/hypr/UserConfigs/UserAnimations.lua
 
   echo "${OK} Rainbow borders are now disabled." 2>&1 | tee -a "$LOG"
 else
@@ -805,17 +805,6 @@ if command -v qs >/dev/null 2>&1; then
     echo "${OK} - Quickshell overview config copied successfully" 2>&1 | tee -a "$LOG"
   fi
   
-  # Check for old quickshell startup commands and update them
-  HYPR_STARTUP="$HOME/.config/hypr/configs/Startup_Apps.conf"
-  if [ -f "$HYPR_STARTUP" ]; then
-    if grep -q '^exec-once = qs\s*$\|^exec-once = qs &' "$HYPR_STARTUP"; then
-      echo "${NOTE} - Found old Quickshell startup command, updating to new overview config..." 2>&1 | tee -a "$LOG"
-      # Replace old 'qs' or 'qs &' with new 'qs -c overview'
-      sed -i 's/^\(\s*\)exec-once = qs\s*$/\1exec-once = qs -c overview  # Quickshell Overview/' "$HYPR_STARTUP" 2>&1 | tee -a "$LOG"
-      sed -i 's/^\(\s*\)exec-once = qs &$/\1exec-once = qs -c overview  # Quickshell Overview/' "$HYPR_STARTUP" 2>&1 | tee -a "$LOG"
-      echo "${OK} - Updated Quickshell startup command to use overview config" 2>&1 | tee -a "$LOG"
-    fi
-  fi
 fi
 printf "\n%.0s" {1..1}
 
@@ -839,7 +828,7 @@ if [ -d "$BACKUP_HYPR_PATH" ]; then
   done
 
   # Restore files automatically
-  FILE_B=("monitors.conf" "workspaces.conf")
+  FILE_B=("monitors.lua" "workspaces.lua")
   for FILE_RESTORE in "${FILE_B[@]}"; do
     BACKUP_FILE="$BACKUP_HYPR_PATH/$FILE_RESTORE"
 
@@ -945,32 +934,19 @@ if [ -d "$BACKUP_DIR_PATH" ]; then
 
     FILES_TO_RESTORE=(
       "01-UserDefaults.conf"
-      "ENVariables.conf"
-      "LaptopDisplay.conf"
-      "Laptops.conf"
-      "Startup_Apps.conf"
-      "UserDecorations.conf"
-      "UserAnimations.conf"
-      "UserKeybinds.conf"
-      "UserSettings.conf"
-      "WindowRules.conf"
+      "ENVariables.lua"
+      "Laptops.lua"
+      "Startup_Apps.lua"
+      "UserDecorations.lua"
+      "UserAnimations.lua"
+      "UserKeybinds.lua"
+      "UserSettings.lua"
+      "WindowRules.lua"
     )
 
     for FILE_NAME in "${FILES_TO_RESTORE[@]}"; do
       BACKUP_FILE="$BACKUP_DIR_PATH/$FILE_NAME"
       if [ -f "$BACKUP_FILE" ]; then
-        # Special handling for Startup_Apps.conf and WindowRules.conf
-        if [ "$FILE_NAME" = "Startup_Apps.conf" ]; then
-          compose_overlay_from_backup "startup" "$DIRPATH/configs/Startup_Apps.conf" "$BACKUP_FILE" "$DIRPATH/UserConfigs/Startup_Apps.conf" "$DIRPATH/UserConfigs/Startup_Apps.disable"
-          echo "${OK} - Migrated overlay for ${YELLOW}$FILE_NAME${RESET}" 2>&1 | tee -a "$LOG"
-          continue
-        fi
-        if [ "$FILE_NAME" = "WindowRules.conf" ]; then
-          compose_overlay_from_backup "windowrules" "$DIRPATH/configs/WindowRules.conf" "$BACKUP_FILE" "$DIRPATH/UserConfigs/WindowRules.conf" "$DIRPATH/UserConfigs/WindowRules.disable"
-          echo "${OK} - Migrated overlay for ${YELLOW}$FILE_NAME${RESET}" 2>&1 | tee -a "$LOG"
-          continue
-        fi
-
         printf "\n${INFO} Found ${YELLOW}$FILE_NAME${RESET} in hypr backup...\n"
         echo -n "${CAT} Do you want to restore ${YELLOW}$FILE_NAME${RESET} from backup? (Y/n): "
         read file_restore

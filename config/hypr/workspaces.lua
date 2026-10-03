@@ -1,0 +1,11 @@
+-- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+-- Workspace rules. https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
+-- Examples (uncomment to use):
+-- hl.workspace_rule({ workspace = "1", monitor = "eDP-1" })
+-- hl.workspace_rule({ workspace = "5", monitor = "DP-2" })
+-- hl.workspace_rule({ workspace = "3", no_rounding = true, decorate = false })
+-- hl.workspace_rule({ workspace = "name:coding", no_rounding = true, decorate = false, gaps_in = 0, gaps_out = 0, no_border = true, monitor = "DP-1" })
+-- hl.workspace_rule({ workspace = "8", border_size = 8 })
+-- hl.workspace_rule({ workspace = "name:Hello", monitor = "DP-1", default = true })
+-- hl.workspace_rule({ workspace = "5", on_created_empty = "[float] firefox" })
+-- hl.workspace_rule({ workspace = "special:scratchpad", on_created_empty = "foot" })

@@ -1,0 +1,7 @@
+-- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+-- Laptop extras. Disable the laptop panel when the lid is closed (external display use).
+-- Wiki: https://wiki.hypr.land/Configuring/Binds/ (switches)
+-- WARNING: see caveats in the original docs: you may need to re-pick a wallpaper (SUPER W) after waking.
+-- hl.bind("switch:off:Lid Switch", hl.dsp.exec_cmd("hyprctl keyword monitor 'eDP-1, preferred, auto, 1'"), { locked = true })
+-- hl.bind("switch:on:Lid Switch",  hl.dsp.exec_cmd("hyprctl keyword monitor 'eDP-1, disable'"), { locked = true })
+-- NOTE: `hyprctl keyword` still works for hyprlang-only items; for Lua prefer hl.monitor({ output = "eDP-1", disabled = true }).

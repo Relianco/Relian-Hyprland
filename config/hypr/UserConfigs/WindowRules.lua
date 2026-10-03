@@ -1,0 +1,3 @@
+-- /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+-- For window rules and layer rules. https://wiki.hypr.land/Configuring/Basics/Window-Rules/
+-- This file is used to add or overwrite window rules and will not be modified during dotfiles updates

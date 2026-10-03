@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Download ultrawide (32:9) wallpapers from wallhaven.cc into ~/Pictures/wallpapers (SFW, general category, most favorited).
+"""Download ultrawide (32:9, at least 5120x1440 so nothing is upscaled) wallpapers from wallhaven.cc into ~/Pictures/wallpapers (SFW, general category, most favorited).
 
   FetchWallpapers.py [--per-query 2] [--queries space,nebula,aurora,...] [--out DIR] [--list]
 Images stay on your machine (not in the repo): wallhaven wallpapers carry their authors' own licences.
@@ -27,7 +27,7 @@ def main():
     out = pathlib.Path(a.out); out.mkdir(parents=True, exist_ok=True)
     seen = set()
     for q in a.queries.split(","):
-        qs = urllib.parse.urlencode({"q": q, "ratios": "32x9", "atleast": "3840x1080", "sorting": "favorites",
+        qs = urllib.parse.urlencode({"q": q, "ratios": "32x9", "atleast": "5120x1440", "sorting": "favorites",
                                      "purity": "100", "categories": "100"})
         data = json.loads(get(API + qs))["data"]
         n = 0

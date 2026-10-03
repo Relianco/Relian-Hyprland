@@ -73,7 +73,7 @@ mkdir -p "$HOME/Pictures/wallpapers"
 has_img() { find -L "$HOME/Pictures/wallpapers" -maxdepth 2 -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \) 2>/dev/null | grep -q .; }
 if ! has_img; then
   if [ "$files_only" = 0 ] && [ -t 0 ] && command -v python3 >/dev/null 2>&1; then
-    read -r -p "No wallpapers yet. Download a set of ultrawide ones from wallhaven.cc now? [y/N] " ans
+    read -r -p "No wallpapers yet. Download ultrawide (5120x1440+) ones from wallhaven.cc now? [y/N] " ans
     case "$ans" in [yY]*) python3 "$HOME/.config/hypr/scripts/FetchWallpapers.py" || warn "download failed" ;; esac
   fi
   has_img || warn "no wallpapers yet: run ~/.config/hypr/scripts/FetchWallpapers.py, or put your own in ~/Pictures/wallpapers"

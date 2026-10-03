@@ -81,7 +81,7 @@ whole monitor. It only affects windows that are alone on their workspace.
 ## Wallpapers
 
 Wallpapers are not kept in git. `SUPER+W` opens the picker with everything in `~/Pictures/wallpapers` (subfolders too).
-- **Ultrawide stills**: `~/.config/hypr/scripts/FetchWallpapers.py` downloads a set of 32:9 wallpapers (most favorited, SFW) from
+- **Ultrawide stills**: `~/.config/hypr/scripts/FetchWallpapers.py` downloads 32:9 wallpapers of at least 5120x1440 (most favorited, SFW), so nothing is upscaled from
   wallhaven.cc; `--queries nebula,city --per-query 4` picks the themes and amounts. Wider ones are scaled to 5120x1440.
 - **Animated**: drop `.mp4`/`.webm` loops in the same folder (needs `mpvpaper`: `paru -S mpvpaper`). They are hardware decoded and
   pause while windows cover them. Pick ones with slow, ambient motion: fast pans make a screen this wide uncomfortable to look at.

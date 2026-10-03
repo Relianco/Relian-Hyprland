@@ -169,7 +169,8 @@ grep -q '"modules-center": \["network#speed", "clock", "custom/weather", "custom
 # kitty follows the wallust theme and has Omarchy-style settings; swaync cards are square
 grep -q '^include ./kitty-themes/01-Wallust.conf' "$root/config/kitty/kitty.conf" && ! grep -qE '^(foreground|background|cursor) ' "$root/config/kitty/kitty.conf" && ok "kitty includes the wallust theme (no static colors)" || bad "kitty.conf colors"
 grep -qE '^window_padding_width 14' "$root/config/kitty/kitty.conf" && grep -q '^cursor_shape block' "$root/config/kitty/kitty.conf" && ok "kitty: 14px padding, block cursor" || bad "kitty padding/cursor"
-grep -E 'border-radius' "$root/config/swaync/style.css" | grep -qv 'border-radius: 0' && bad "swaync has rounded corners" || ok "swaync corners are square"
+grep -E 'radius' "$root/config/swaync/style.css" | grep -qvE 'radius: 0' && bad "swaync has rounded corners" || ok "swaync corners are square (every radius is 0)"
+grep -q '\.notification-action button' "$root/config/swaync/style.css" && ok "swaync styles the notification action buttons" || bad "swaync action buttons unstyled"
 python3 -c 'import json,sys; c=json.load(open(sys.argv[1])); assert c["positionX"]=="right" and c["notification-window-width"]==380' "$root/config/swaync/config.json" 2>&1 && ok "swaync: top-right, 380px" || bad "swaync config"
 
 # AgentUsage.sh merges claudebar + codexbar into one waybar module (stand-in commands, never real credentials)

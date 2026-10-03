@@ -57,39 +57,13 @@
     border: none
 }
 
-
-.notification-action {
-    border: 1px solid @noti-border-color;
-    border-top: none;
-    border-radius: 0;
+.notification-default-action:hover {
+    background: @noti-bg;
 }
-
-
-.notification-default-action:hover,
-.notification-action:hover {
-    color: @text-color;
-    background: @noti-bg
-}
-
 
 .notification-default-action {
     border-radius: 0;
     margin: 5px;
-}
-
-.notification-default-action:not(:only-child) {
-    border-bottom-left-radius: 7px;
-    border-bottom-right-radius: 7px
-}
-
-.notification-action:first-child {
-    border-bottom-left-radius: 10px;
-    background: @noti-bg
-}
-
-.notification-action:last-child {
-    border-bottom-right-radius: 10px;
-    background: @noti-bg-alt
 }
 
 .inline-reply {
@@ -326,4 +300,32 @@
     border-radius: 0;
     font-size: x-large;
     color: @text-color
+}
+
+/* notification action buttons (e.g. "Settings"): theme border, flat, accent tint on hover.
+   swaync wraps each action in .notification-action and puts a real GTK button inside, so style both. */
+.notification-action {
+    background: transparent;
+    background-image: none;
+    border: none;
+    border-top: 1px solid @noti-border-color;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+}
+.notification-action button,
+.notification-action > button {
+    background: transparent;
+    background-image: none;
+    color: @text-color;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0;
+    padding: 8px 10px;
+}
+.notification-action button:hover {
+    background: alpha(@color12, 0.25);
+    color: @text-color;
 }

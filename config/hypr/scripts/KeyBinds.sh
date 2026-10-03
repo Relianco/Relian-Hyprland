@@ -13,7 +13,7 @@ if pidof rofi > /dev/null; then
 fi
 
 rofi_theme="$HOME/.config/rofi/config-keybinds.rasi"
-msg='☣️ NOTE ☣️: Clicking with Mouse or Pressing ENTER will have NO function'
+msg='Browse only: clicking or pressing Enter does nothing'
 
 display_keybinds=$(hyprctl binds -j | jq -r '
   def bit($n): ((.modmask / $n | floor) % 2) == 1;

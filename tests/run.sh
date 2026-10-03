@@ -181,6 +181,10 @@ if command -v jq >/dev/null; then
 fi
 grep -q 'AgentPrompt.sh' "$root/config/waybar/configs/[TOP] Omarchy" && grep -q '"SUPER + CTRL + A"' "$root/config/hypr/configs/Keybinds.lua" && ok "agents icon + SUPER+CTRL+A open the agent prompt" || bad "agent prompt wiring"
 
+# rofi menu header messages are plain text (emoji render as ugly colour glyphs in rofi)
+emo=$(grep -rnP '^\s*msg=.*[\x{1F000}-\x{1FAFF}\x{2600}-\x{27BF}\x{2049}\x{203C}\x{FE0F}]' "$root/config/hypr/scripts" "$root/config/hypr/UserScripts" 2>/dev/null)
+[ -z "$emo" ] && ok "rofi menu messages have no emoji" || bad "emoji in rofi menu messages" "$emo"
+
 # rofi custom keys must not overlap rofi's own defaults (it pops a warning): the defaults they collide with are freed first
 grep -q 'kb-accept-alt ""' "$root/config/hypr/scripts/AgentPrompt.sh" && ok "AgentPrompt frees rofi's Shift+Return before binding it" || bad "AgentPrompt Shift+Return overlaps rofi kb-accept-alt"
 grep -q 'kb-row-up' "$root/config/hypr/scripts/ThemeSelect.sh" && grep -q 'kb-move-char-back' "$root/config/hypr/scripts/ThemeSelect.sh" && ok "ThemeSelect frees rofi's arrow-key bindings" || bad "ThemeSelect arrow keys overlap rofi defaults"

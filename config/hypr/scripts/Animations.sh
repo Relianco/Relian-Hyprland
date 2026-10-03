@@ -13,7 +13,7 @@ SCRIPTSDIR="$HOME/.config/hypr/scripts"
 animations_dir="$HOME/.config/hypr/animations"
 UserConfigs="$HOME/.config/hypr/UserConfigs"
 rofi_theme="$HOME/.config/rofi/config-Animations.rasi"
-msg='❗NOTE:❗ This will copy animations into UserAnimations.lua'
+msg='This copies the chosen animation into UserAnimations.lua'
 # list of animation files, sorted alphabetically with numbers first
 animations_list=$(find -L "$animations_dir" -maxdepth 1 -type f | sed 's/.*\///' | sed 's/\.lua$//' | sort -V)
 

@@ -92,7 +92,7 @@ Wallpapers are not kept in git. `SUPER+W` opens the picker with everything in `~
 
 ## Bar, menus and notifications
 
-- **Waybar**: layouts are in `~/.config/waybar/configs/`, styles in `style/`. `SUPER+CTRL+B` picks a style, `SUPER+ALT+B` a layout.
+- **Waybar**: the default layout shows the tray (apps) inline, always; "[TOP] Omarchy Compact" tucks it into a drawer for small screens. Layouts are in `~/.config/waybar/configs/`, styles in `style/`. `SUPER+CTRL+B` picks a style, `SUPER+ALT+B` a layout.
   The default pair is `[TOP] Omarchy` and `[Omarchy] Minimal`. The center shows network speed, clock, weather and temperatures
   (`scripts/SensorTemps.sh` finds the sensors by name, so it keeps working if the hwmon numbers change).
 - **Volume, Wi-Fi and Bluetooth popups**: click the icons in the bar for rofi-style popups at the top right (`scripts/VolumeMenu.sh`,

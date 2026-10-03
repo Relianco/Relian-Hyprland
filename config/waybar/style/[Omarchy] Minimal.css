@@ -19,7 +19,7 @@
 #workspaces button.empty { opacity: 0.5; }
 
 #cpu, #battery, #pulseaudio, #custom-menu { min-width: 12px; margin: 0 7.5px; }
-#tray { margin-right: 16px; }
+#tray { margin: 0 16px 0 4px; }
 #bluetooth { margin-right: 17px; }
 #network { margin-right: 13px; }
 #custom-expand-icon { margin-right: 18px; }

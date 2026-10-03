@@ -8,7 +8,7 @@ local function zoom(m)
     return function()
         local f = tonumber(hl.get_config("cursor.zoom_factor")) or 1
         if f < 1 then f = 1 end
-        hl.config({ cursor = { zoom_factor = f * m } })
+        hl.config({ cursor = { zoom_factor = math.max(1, f * m) } })
     end
 end
 

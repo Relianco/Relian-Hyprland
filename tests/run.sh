@@ -62,6 +62,20 @@ if command -v lua >/dev/null; then
   [ "$got" = "$want" ] && ok "01-UserDefaults.lua parses user defaults" || bad "01-UserDefaults.lua parse" "$got"
 else echo "skip - lua not installed; UserDefaults parse test skipped"; fi
 
+# run the whole config under plain lua with a permissive `hl` stub and fire hyprland.start callbacks,
+# so runtime errors inside callbacks/functions (which --verify-config does not execute) show up
+if command -v lua >/dev/null; then
+  out=$(HOME="$tmp/home" lua -e '
+    local noop = function() return setmetatable({}, getmetatable(hl)) end
+    local mt; mt = { __index = function() return setmetatable({}, mt) end, __call = function() return setmetatable({}, mt) end }
+    local starts = {}
+    hl = setmetatable({ on = function(ev, cb) if ev == "hyprland.start" then starts[#starts+1] = cb end end,
+                        get_config = function() return 1 end }, mt)
+    dofile(os.getenv("HOME") .. "/.config/hypr/hyprland.lua")
+    for _, cb in ipairs(starts) do cb() end' 2>&1)
+  [ -z "$out" ] && ok "config + hyprland.start callbacks run under a stubbed hl" || bad "stubbed run failed" "$out"
+fi
+
 # every require() in hyprland.lua resolves to a file
 for m in $(grep -oE 'require\("[^"]+"\)' "$root/config/hypr/hyprland.lua" | sed 's/require("\(.*\)")/\1/'); do
   [ -f "$root/config/hypr/$(echo "$m" | tr . /).lua" ] && ok "require $m" || bad "require $m has no file"

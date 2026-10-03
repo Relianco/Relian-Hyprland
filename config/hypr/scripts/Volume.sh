@@ -29,14 +29,17 @@ get_icon() {
     fi
 }
 
-# Notify
+# Notify: same look as the bar popups (big accent glyph + %, block meter); replaces itself while you keep scrolling
+. "$sDIR/PopupLib.sh"
+osd() { # osd PERCENT muted|on   (the summary is plain text in swaync, markup only works in the body)
+    local pct=$1 icon="󰕾" extra=""
+    [ "$pct" -lt 34 ] && icon="󰕿"; [ "$pct" -ge 34 ] && [ "$pct" -lt 67 ] && icon="󰖀"
+    [ "$2" = muted ] && { icon="󰝟"; extra="   muted"; }
+    notify-send -e -h string:x-canonical-private-synchronous:volume_notif -h boolean:SWAYNC_BYPASS_DND:true -u low -t 1500 \
+        "$icon  $pct%$extra" "$(meter "$pct" 26)"
+}
 notify_user() {
-    if [[ "$(get_volume)" == "Muted" ]]; then
-        notify-send -e -h string:x-canonical-private-synchronous:volume_notif -h boolean:SWAYNC_BYPASS_DND:true -u low -i "$(get_icon)" " Volume:" " Muted"
-    else
-        notify-send -e -h int:value:"$(get_volume | sed 's/%//')" -h string:x-canonical-private-synchronous:volume_notif -h boolean:SWAYNC_BYPASS_DND:true -u low -i "$(get_icon)" " Volume Level:" " $(get_volume)" &&
-        "$sDIR/Sounds.sh" --volume
-    fi
+    osd "$(pamixer --get-volume)" on && "$sDIR/Sounds.sh" --volume
 }
 
 # Increase Volume
@@ -60,9 +63,9 @@ dec_volume() {
 # Toggle Mute
 toggle_mute() {
 	if [ "$(pamixer --get-mute)" == "false" ]; then
-		pamixer -m && notify-send -e -u low -h boolean:SWAYNC_BYPASS_DND:true -i "$iDIR/volume-mute.png" " Mute"
+		pamixer -m && osd "$(pamixer --get-volume)" muted
 	elif [ "$(pamixer --get-mute)" == "true" ]; then
-		pamixer -u && notify-send -e -u low -h boolean:SWAYNC_BYPASS_DND:true -i "$(get_icon)" " Volume:" " Switched ON"
+		pamixer -u && osd "$(pamixer --get-volume)" on
 	fi
 }
 

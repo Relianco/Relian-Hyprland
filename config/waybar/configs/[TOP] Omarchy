@@ -3,8 +3,9 @@
 // ### Omarchy-style bar ### //
 // Minimal icon bar modeled on Omarchy's Waybar (github.com/basecamp/omarchy, branch dev).
 // Pair with the style "[Omarchy] Minimal". Self-contained: does not include the Modules* files.
-// AI usage modules need the `claudebar` / `codexbar` commands (AUR: yay -S claudebar codexbar,
-// then run `claude` / `codex login` once). If a command is missing its module just shows an error icon.
+// custom/agents: one icon for Claude Code + Codex usage (hover = every limit, click = ask an agent, right = Claude,
+// middle = Codex). Needs the `claudebar` / `codexbar` commands: yay -S claudebar codexbar (then `claude` / `codex login`
+// once). Without them the icon still shows and the tooltip says what to install.
 
 {
   "reload_style_on_change": true,
@@ -16,8 +17,7 @@
   "modules-left": ["custom/menu", "hyprland/workspaces"],
   "modules-center": ["network#speed", "clock", "custom/weather", "custom/temps"],
   "modules-right": [
-    "custom/claudebar",
-    "custom/codexbar",
+    "custom/agents",
     "group/tray-expander",
     "bluetooth",
     "network",
@@ -28,9 +28,9 @@
 
   "custom/menu": {
     "format": "󰣇",
-    "on-click": "rofi -show drun -modi drun,filebrowser,run,window",
-    "on-click-right": "$HOME/.config/hypr/scripts/Kool_Quick_Settings.sh",
-    "tooltip-format": "Applications\n\nSuper + D"
+    "on-click": "$HOME/.config/hypr/scripts/Kool_Quick_Settings.sh",
+    "on-click-right": "kitty",
+    "tooltip-format": "Menu\n\nSuper + Space   (right-click: terminal)"
   },
 
   "hyprland/workspaces": {
@@ -74,22 +74,15 @@
     "on-click": "kitty --class btop btop"
   },
 
-  "custom/claudebar": {
-    "exec": "claudebar",
+  "custom/agents": {
+    "exec": "$HOME/.config/hypr/scripts/AgentUsage.sh",
     "return-type": "json",
     "interval": 300,
     "signal": 13,
     "tooltip": true,
-    "on-click": "xdg-open https://claude.ai/settings/usage"
-  },
-
-  "custom/codexbar": {
-    "exec": "codexbar",
-    "return-type": "json",
-    "interval": 300,
-    "signal": 14,
-    "tooltip": true,
-    "on-click": "xdg-open https://chatgpt.com/codex/settings/usage"
+    "on-click": "$HOME/.config/hypr/scripts/AgentPrompt.sh",
+    "on-click-right": "$HOME/.config/hypr/scripts/AgentPrompt.sh claude",
+    "on-click-middle": "$HOME/.config/hypr/scripts/AgentPrompt.sh codex"
   },
 
   "network": {

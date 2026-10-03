@@ -50,6 +50,7 @@ hl.bind("SUPER + SHIFT + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }), 
 hl.bind("SUPER + CTRL + F", hl.dsp.window.fullscreen({ mode = "maximized" }), { description = "maximize window" })
 hl.bind("SUPER + SPACE", hl.dsp.exec_cmd(scriptsDir .. "/Kool_Quick_Settings.sh"), { description = "main menu (Omarchy style)" })
 hl.bind("SUPER + SHIFT + CTRL + SPACE", hl.dsp.exec_cmd(scriptsDir .. "/ThemeSelect.sh"), { description = "theme carousel (Omarchy style)" })
+hl.bind("SUPER + CTRL + A", hl.dsp.exec_cmd(scriptsDir .. "/AgentPrompt.sh"), { description = "ask an AI agent (Claude / Codex)" })
 hl.bind("SUPER + T", hl.dsp.window.float({ action = "toggle" }), { description = "Float current window" })
 hl.bind("SUPER + ALT + T", function()
     for _, w in ipairs(hl.get_workspace_windows(hl.get_active_workspace())) do

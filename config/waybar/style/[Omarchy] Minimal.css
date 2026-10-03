@@ -26,11 +26,13 @@
 #clock { margin-left: 8.75px; }
 #custom-weather { margin: 0 7.5px; min-width: 14px; }
 
-/* AI usage (claudebar / codexbar emit these classes) */
-#custom-claudebar, #custom-codexbar { margin: 0 7.5px; }
-#custom-claudebar.mid,   #custom-codexbar.mid      { color: #d7a65a; }
-#custom-claudebar.high,  #custom-codexbar.high     { color: #d98c4a; }
-#custom-claudebar.critical, #custom-codexbar.critical { color: #a55555; }
+/* AI agents icon (AgentUsage.sh sets the class from the fullest limit) */
+#custom-agents { margin: 0 7.5px; }
+#custom-agents.mid      { color: #d7a65a; }
+#custom-agents.high     { color: #d98c4a; }
+#custom-agents.critical { color: #a55555; }
+#custom-agents.missing  { opacity: 0.5; }
+#custom-agents.error    { color: #a55555; }
 
 /* centre cluster: network speed | clock | weather | temps */
 #network.speed { margin: 0 12px 0 0; min-width: 190px; }

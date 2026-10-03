@@ -187,6 +187,10 @@ hl.window_rule({ match = { class = "^(seahorse)$" }, opacity = "0.9 0.8" })  -- 
 hl.window_rule({ match = { title = "^(Picture-in-Picture)$" }, opacity = "0.95 0.75" })
 
 -- SIZE
+-- AI agent terminals opened by AgentPrompt.sh / the waybar agents icon
+hl.window_rule({ match = { class = "^(agent)$" }, float = true })
+hl.window_rule({ match = { class = "^(agent)$" }, center = true })
+hl.window_rule({ match = { class = "^(agent)$" }, size = { "monitor_h*1.6", "monitor_h*0.75" } })
 hl.window_rule({ match = { tag = "KooL_Cheat*" }, size = { "monitor_h*1.156", "monitor_h*0.9" } })
 hl.window_rule({ match = { tag = "wallpaper*" }, size = { "monitor_h*1.244", "monitor_h*0.7" } })
 hl.window_rule({ match = { tag = "settings*" }, size = { "monitor_h*1.244", "monitor_h*0.7" } })

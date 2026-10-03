@@ -161,6 +161,39 @@ grep -qE '^window_padding_width 14' "$root/config/kitty/kitty.conf" && grep -q '
 grep -E 'border-radius' "$root/config/swaync/style.css" | grep -qv 'border-radius: 0' && bad "swaync has rounded corners" || ok "swaync corners are square"
 python3 -c 'import json,sys; c=json.load(open(sys.argv[1])); assert c["positionX"]=="right" and c["notification-window-width"]==380' "$root/config/swaync/config.json" 2>&1 && ok "swaync: top-right, 380px" || bad "swaync config"
 
+# AgentUsage.sh merges claudebar + codexbar into one waybar module (stand-in commands, never real credentials)
+if command -v jq >/dev/null; then
+  stub="$tmp/stub"; mkdir -p "$stub"
+  printf '%s\n' '#!/usr/bin/env bash' 'n=$(date +%s)' 'echo "{\"error\":null,\"plan\":\"max\",\"state\":\"high\",\"max_pct\":73,\"windows\":[{\"label\":\"Weekly (7d)\",\"used_pct\":73,\"reset_at_unix\":$((n+200000))}]}"' > "$stub/claudebar"
+  printf '%s\n' '#!/usr/bin/env bash' 'n=$(date +%s)' 'echo "{\"error\":null,\"plan\":\"plus\",\"state\":\"low\",\"max_pct\":12,\"windows\":[{\"label\":\"Session <5h>\",\"used_pct\":12,\"reset_at_unix\":$((n+1800))}]}"' > "$stub/codexbar"
+  chmod +x "$stub"/*
+  au="$root/config/hypr/scripts/AgentUsage.sh"
+  out=$(PATH="$stub:/usr/bin:/bin" "$au")
+  echo "$out" | jq -e '(.text | endswith("73%")) and .class == "high" and (.tooltip | contains("Claude Code  (max)")) and (.tooltip | contains("Codex  (plus)")) and (.tooltip | contains("&lt;"))' >/dev/null 2>&1 \
+    && ok "AgentUsage.sh merges both agents (icon + fullest %, worst class, escaped tooltip)" || bad "AgentUsage.sh merge" "$out"
+  out=$(PATH="/usr/bin:/bin" "$au")
+  echo "$out" | jq -e '.class == "missing" and (.tooltip | contains("yay -S claudebar")) and (.tooltip | contains("yay -S codexbar"))' >/dev/null 2>&1 \
+    && ok "AgentUsage.sh without the tools still shows an icon and the install hint" || bad "AgentUsage.sh missing tools" "$out"
+  printf '%s\n' '#!/usr/bin/env bash' 'echo "{\"error\":{\"message\":\"No credentials. Run claude\"}}"' > "$stub/claudebar"
+  out=$(PATH="$stub:/usr/bin:/bin" "$au")
+  echo "$out" | jq -e '(.tooltip | contains("No credentials")) and .class == "low"' >/dev/null 2>&1 \
+    && ok "AgentUsage.sh shows one agent's error without hiding the other" || bad "AgentUsage.sh error handling" "$out"
+fi
+grep -q 'AgentPrompt.sh' "$root/config/waybar/configs/[TOP] Omarchy" && grep -q '"SUPER + CTRL + A"' "$root/config/hypr/configs/Keybinds.lua" && ok "agents icon + SUPER+CTRL+A open the agent prompt" || bad "agent prompt wiring"
+
+# rofi custom keys must not overlap rofi's own defaults (it pops a warning): the defaults they collide with are freed first
+grep -q 'kb-accept-alt ""' "$root/config/hypr/scripts/AgentPrompt.sh" && ok "AgentPrompt frees rofi's Shift+Return before binding it" || bad "AgentPrompt Shift+Return overlaps rofi kb-accept-alt"
+grep -q 'kb-row-up' "$root/config/hypr/scripts/ThemeSelect.sh" && grep -q 'kb-move-char-back' "$root/config/hypr/scripts/ThemeSelect.sh" && ok "ThemeSelect frees rofi's arrow-key bindings" || bad "ThemeSelect arrow keys overlap rofi defaults"
+
+# the top-left waybar icon opens the same (Omarchy-style) main menu as SUPER+SPACE
+python3 - "$root/config/waybar/configs/[TOP] Omarchy" "$root/config/hypr/scripts/Kool_Quick_Settings.sh" <<'PY' && ok "waybar menu icon = SUPER+SPACE main menu, themed like the launcher" || bad "waybar menu icon / menu theme"
+import re, sys, json
+t = open(sys.argv[1], encoding="utf-8").read()
+t = re.sub(r'/\*.*?\*/', '', t, flags=re.S); t = re.sub(r'^\s*//.*$', '', t, flags=re.M)
+assert "Kool_Quick_Settings.sh" in json.loads(t)["custom/menu"]["on-click"]
+assert "config-omarchy-menu.rasi" in open(sys.argv[2], encoding="utf-8").read()
+PY
+
 # the Omarchy-style waybar layout is valid JSONC and its style imports the wallust colors
 if command -v python3 >/dev/null; then
   out=$(python3 - "$root/config/waybar/configs/[TOP] Omarchy" <<'PY' 2>&1

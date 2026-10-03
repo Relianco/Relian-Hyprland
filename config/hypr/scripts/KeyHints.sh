@@ -60,6 +60,7 @@ GDK_BACKEND=$BACKEND yad \
 " ALT L" "Toggle Dwindle | Master Layout" "Hyprland Layout" \
 "  SPACE" "Main menu (KooL settings)" "(Omarchy: SUPER SPACE)" \
 " SHIFT CTRL SPACE" "Theme carousel" "(LEFT/RIGHT cycle + live preview, ENTER keep, ESC revert)" \
+" CTRL A" "Ask an AI agent" "(Enter: Claude Code, Shift+Enter: Codex; also the waybar robot icon)" \
 "  - / =" "Resize window narrower / wider" "(+SHIFT: shorter/taller, +ALT: small steps, +CTRL: big steps)" \
 " T" "Toggle float" "single window" \
 " ALT T" "Toggle all windows to float" "all windows" \

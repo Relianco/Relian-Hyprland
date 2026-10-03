@@ -1,0 +1,12 @@
+/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+/* Omarchy-style main menu: same look as the launcher, a bit narrower list with a header line.
+   Used by the KooL settings menu (SUPER+SPACE, the top-left waybar icon). */
+@import "~/.config/rofi/config-omarchy-launcher.rasi"
+
+window { width: 560px; }
+mainbox { children: [ inputbar, message, listview ]; }
+entry { placeholder: "󰍜  Menu"; }
+message { padding: 4px 10px; }
+textbox { text-color: rgba(255, 255, 255, 45%); }
+listview { lines: 12; scrollbar: false; }
+element-icon { size: 0px; }

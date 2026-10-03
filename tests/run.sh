@@ -53,6 +53,15 @@ b=$(grep -oE '^\s+[a-z0-9]+ =' "$root/config/wallust/templates/colors-hyprland.l
 [ "$a" = "$b" ] && ok "wallust lua/conf templates define the same colors" || bad "wallust templates differ" "$(diff <(echo "$a") <(echo "$b"))"
 grep -q "colors-hyprland.lua" "$root/config/wallust/wallust.toml" && ok "wallust.toml renders the lua template" || bad "wallust.toml missing lua template"
 
+# 01-UserDefaults.lua parses the .conf (quotes, inline comments, underscores, EDITOR) -- needs plain lua
+if command -v lua >/dev/null; then
+  d="$tmp/ud"; mkdir -p "$d/.config/hypr/UserConfigs"; cp "$root/config/hypr/UserConfigs/01-UserDefaults.lua" "$d/.config/hypr/UserConfigs/"
+  printf '%s\n' 'env = EDITOR,nvim #default editor' '$term = ghostty # Terminal' '$files = "nautilus"' '$Search_Engine = "https://duckduckgo.com/?q={}"' > "$d/.config/hypr/UserConfigs/01-UserDefaults.conf"
+  got=$(HOME="$d" lua -e 'hl={env=function(k,v) print(k,v) end}; local u=dofile(os.getenv("HOME").."/.config/hypr/UserConfigs/01-UserDefaults.lua"); print(u.term,u.files,u.Search_Engine)' 2>&1)
+  want=$(printf 'EDITOR\tnvim\nghostty\tnautilus\thttps://duckduckgo.com/?q={}')
+  [ "$got" = "$want" ] && ok "01-UserDefaults.lua parses user defaults" || bad "01-UserDefaults.lua parse" "$got"
+else echo "skip - lua not installed; UserDefaults parse test skipped"; fi
+
 # every require() in hyprland.lua resolves to a file
 for m in $(grep -oE 'require\("[^"]+"\)' "$root/config/hypr/hyprland.lua" | sed 's/require("\(.*\)")/\1/'); do
   [ -f "$root/config/hypr/$(echo "$m" | tr . /).lua" ] && ok "require $m" || bad "require $m has no file"

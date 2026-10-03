@@ -9,7 +9,7 @@ local f = io.open(UserConfigs .. "/01-UserDefaults.conf")
 if f then
     for raw in f:lines() do
         local line = raw:gsub("%s+#.*$", "")
-        local key, val = line:match("^%$(%w+)%s*=%s*(.-)%s*$")
+        local key, val = line:match("^%$([%w_]+)%s*=%s*(.-)%s*$")
         if key and val ~= "" then v[key] = val:gsub('^"(.*)"$', "%1") end
         local editor = line:match("^env%s*=%s*EDITOR,%s*(%S+)")
         if editor then hl.env("EDITOR", editor) end

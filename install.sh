@@ -93,6 +93,17 @@ if [ -f "$gtkcss" ] && grep -qE '^@define-color accent_|relian-(colors|thunar)\.
   [ -f "$gtkcss.relian-bak" ] || cp "$gtkcss" "$gtkcss.relian-bak"
   sed -i -E '/^@define-color accent_/d; /relian-(colors|thunar)\.css/d' "$gtkcss"
 fi
+# GTK4 apps (pavucontrol, ...) read gtk-4.0/gtk.css from the theme, but a user ~/.config/gtk-4.0/gtk.css that re-imports
+# adw-gtk3 (the usual symlink) would put the stock blue/grey back on top: back it up once and drop it
+mkdir -p "$theme/gtk-4.0" "$HOME/.config/gtk-4.0"
+[ -f "$theme/gtk-4.0/gtk.css" ] || printf '@import url("file:///usr/share/themes/adw-gtk3-dark/gtk-4.0/gtk.css");\n' > "$theme/gtk-4.0/gtk.css"
+ln -sf gtk.css "$theme/gtk-4.0/gtk-dark.css"   # GTK4 prefers gtk-dark.css when the dark preference is on
+g4="$HOME/.config/gtk-4.0/gtk.css"
+if [ -L "$g4" ] && readlink "$g4" | grep -q adw-gtk3; then
+  [ -e "$g4.relian-bak" ] || mv "$g4" "$g4.relian-bak"
+  rm -f "$g4"
+fi
+[ -f "$HOME/.config/gtk-4.0/settings.ini" ] && sed -i 's/^gtk-theme-name=.*/gtk-theme-name=relian/' "$HOME/.config/gtk-4.0/settings.ini"
 [ "$files_only" = 1 ] || gsettings set org.gnome.desktop.interface gtk-theme relian 2>/dev/null || true
 
 # --- 7. first theme: only if none was ever chosen -----------------------------------------------------------

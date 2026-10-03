@@ -132,7 +132,7 @@ PY
 fi
 if command -v wallust >/dev/null; then
   wl="$tmp/wl"; wh="$tmp/wlhome"; mkdir -p "$wl" "$wh/.config"; cp -r "$root"/config/wallust/* "$wl/"
-  for d in cava hypr/wallust rofi/wallust waybar/wallust kitty quickshell; do mkdir -p "$wh/.config/$d"; done; mkdir -p "$wh/.local/share/themes/relian/gtk-3.0"
+  for d in cava hypr/wallust rofi/wallust waybar/wallust kitty quickshell; do mkdir -p "$wh/.config/$d"; done; mkdir -p "$wh/.local/share/themes/relian/gtk-3.0" "$wh/.local/share/themes/relian/gtk-4.0"
   names=$(env HOME="$wh" WALLUST_CONFIG_DIR="$wl" "$root/config/hypr/scripts/ThemeSelect.sh" --list 2>&1)
   [ "$(echo "$names" | wc -l)" -ge 17 ] && ok "ThemeSelect --list shows wallpaper + themes" || bad "ThemeSelect --list" "$names"
   out=$(env HOME="$wh" WALLUST_CONFIG_DIR="$wl" THEME_NO_RELOAD=1 XDG_CACHE_HOME="$wh/.cache" "$root/config/hypr/scripts/ThemeSelect.sh" --set "Tokyo Night" 2>&1)
@@ -261,6 +261,8 @@ if command -v wallust >/dev/null && [ -d "$wh" ]; then
   env HOME="$wh" WALLUST_CONFIG_DIR="$wl" THEME_NO_RELOAD=1 XDG_CACHE_HOME="$wh/.cache" "$root/config/hypr/scripts/ThemeSelect.sh" --set "Tokyo Night" >/dev/null 2>&1
   grep -q '@define-color accent_bg_color #7AA2F7;' "$gtkcss" 2>/dev/null && grep -q 'adw-gtk3-dark/gtk-3.0/gtk.css' "$gtkcss" \
     && ok "GTK theme 'relian' is written with the theme's accent on top of adw-gtk3-dark" || bad "GTK theme file" "$(head -c 300 "$gtkcss" 2>/dev/null)"
+  grep -q '@define-color accent_bg_color #7AA2F7;' "$wh/.local/share/themes/relian/gtk-4.0/gtk.css" 2>/dev/null && grep -q 'adw-gtk3-dark/gtk-4.0/gtk.css' "$wh/.local/share/themes/relian/gtk-4.0/gtk.css" \
+    && ok "GTK4 theme (pavucontrol etc.) gets the same accent" || bad "GTK4 theme file" "missing or no accent"
 fi
 grep -q 'window.thunar' "$root/config/gtk-theme/relian/gtk-3.0/relian-thunar.css" && grep -q 'JetBrainsMono' "$root/config/gtk-theme/relian/gtk-3.0/relian-thunar.css" && ok "thunar css: scoped, square, JetBrainsMono" || bad "thunar css"
 

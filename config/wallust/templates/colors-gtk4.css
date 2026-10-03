@@ -1,0 +1,40 @@
+/* Relian-Hyprland: wallust template - the "relian" GTK4 theme (~/.local/share/themes/relian/gtk-4.0/gtk.css; same colours as colors-gtk.css, for GTK4 apps such as pavucontrol).
+   adw-gtk3-dark + the wallust colours (libadwaita names) + Thunar styling. It is a *theme*, not ~/.config/gtk-4.0/gtk.css,
+   because GTK re-reads a theme live when the gtk-theme setting changes (see ThemeSelect.sh), but never re-reads gtk.css. */
+@import url("file:///usr/share/themes/adw-gtk3-dark/gtk-4.0/gtk.css");
+{#- on(c, bg, fg): text color for a highlight of color c = whichever of bg/fg contrasts more with it; pure black/white if neither is clearly readable (so selected rows stay readable on every theme) -#}
+{%- macro lum(c) -%}{%- set h = {"0":0,"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9,"a":10,"b":11,"c":12,"d":13,"e":14,"f":15} -%}{%- set s = (c | strip) | lower -%}{{ 299 * (h[s[0]] * 16 + h[s[1]]) + 587 * (h[s[2]] * 16 + h[s[3]]) + 114 * (h[s[4]] * 16 + h[s[5]]) }}{%- endmacro -%}
+{%- macro on(c, bg, fg) -%}{%- set lc = lum(c) | int -%}{%- set db = ((lum(bg) | int) - lc) | abs -%}{%- set df = ((lum(fg) | int) - lc) | abs -%}{%- if db < 150000 and df < 150000 -%}{%- if lc > 127500 -%}#000000{%- else -%}#ffffff{%- endif -%}{%- elif db > df -%}{{ bg }}{%- else -%}{{ fg }}{%- endif -%}{%- endmacro -%}
+
+
+@define-color accent_bg_color {{color12}};
+@define-color accent_color {{color12 | lighten(0.1)}};
+@define-color accent_fg_color {{ on(color12, background, foreground) }};
+
+@define-color window_bg_color {{background}};
+@define-color window_fg_color {{foreground}};
+@define-color view_bg_color {{background | lighten(0.03)}};
+@define-color view_fg_color {{foreground}};
+@define-color headerbar_bg_color {{background | darken(0.03)}};
+@define-color headerbar_fg_color {{foreground}};
+@define-color headerbar_border_color {{background | lighten(0.10)}};
+@define-color sidebar_bg_color {{background | darken(0.02)}};
+@define-color sidebar_fg_color {{foreground}};
+@define-color card_bg_color {{background | lighten(0.06)}};
+@define-color card_fg_color {{foreground}};
+@define-color popover_bg_color {{background | lighten(0.05)}};
+@define-color popover_fg_color {{foreground}};
+@define-color dialog_bg_color {{background | lighten(0.02)}};
+@define-color dialog_fg_color {{foreground}};
+@define-color borders {{background | lighten(0.12)}};
+
+/* older GTK3 names, for apps/themes that still read them */
+@define-color theme_bg_color {{background}};
+@define-color theme_fg_color {{foreground}};
+@define-color theme_base_color {{background | lighten(0.03)}};
+@define-color theme_text_color {{foreground}};
+@define-color theme_selected_bg_color {{color12}};
+@define-color theme_selected_fg_color {{ on(color12, background, foreground) }};
+
+/* flat, square like the rest of the desktop */
+* { border-radius: 0; }

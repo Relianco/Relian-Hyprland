@@ -194,6 +194,9 @@ hl.window_rule({ match = { class = "^(agent)$" }, size = { "monitor_h*1.6", "mon
 hl.window_rule({ match = { tag = "Relian_Cheat*" }, size = { "monitor_h*1.156", "monitor_h*0.9" } })
 hl.window_rule({ match = { tag = "wallpaper*" }, size = { "monitor_h*1.244", "monitor_h*0.7" } })
 hl.window_rule({ match = { tag = "settings*" }, size = { "monitor_h*1.244", "monitor_h*0.7" } })
+-- the volume mixer is a narrow list: compact and solid (the generic settings size above is far too wide for it)
+hl.window_rule({ match = { class = "^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$" }, size = { "monitor_h*0.8", "monitor_h*0.62" } })
+hl.window_rule({ match = { class = "^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$" }, opacity = "1.0 override 1.0 override" })
 hl.window_rule({ match = { class = "^([Ww]hatsapp-for-linux|ZapZap|com.rtosta.zapzap)$" }, size = { "monitor_h*1.067", "monitor_h*0.7" } })
 hl.window_rule({ match = { class = "^([Ff]erdium)$" }, size = { "monitor_h*1.067", "monitor_h*0.7" } })
 

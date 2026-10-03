@@ -45,6 +45,9 @@ hyprlua.target = '~/.config/hypr/wallust/wallust-hyprland.lua'
 gtk.template = 'colors-gtk.css'
 gtk.target = '~/.local/share/themes/relian/gtk-3.0/gtk.css'
 
+gtk4.template = 'colors-gtk4.css'
+gtk4.target = '~/.local/share/themes/relian/gtk-4.0/gtk.css'
+
 rofi.template = 'colors-rofi.rasi'
 rofi.target = '~/.config/rofi/wallust/colors-rofi.rasi'
 

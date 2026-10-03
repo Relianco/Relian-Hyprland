@@ -86,6 +86,7 @@ whole monitor. It only affects windows that are alone on their workspace.
   profile between performance and balanced (needs `power-profiles-daemon`), the bell silences notifications (swaync). Lit = on, dim = off.
 - **rofi**: every menu imports `config-omarchy-menu.rasi` (list menus) or `config-omarchy-launcher.rasi` (launcher/input boxes).
   The launcher searches app names (and generic names like "File Manager") and orders results by how often you launch them.
+- **Volume mixer** (pavucontrol is GTK4): styled by the same `relian` theme (`gtk-4.0`), compact and solid via a window rule.
 - **Notifications** (swaync) and **power menu** (wlogout) have their own stylesheets in `config/swaync` and `config/wlogout`;
   both follow the theme colors.
 

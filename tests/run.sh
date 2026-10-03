@@ -247,6 +247,28 @@ grep -q "rofi call 0 rows=6" "$pk/log" && grep -q "rofi call 1 rows=4" "$pk/log"
 [ "$(ls "$pk/home/.cache/relian/wallthumbs" | wc -l)" = 3 ] && ok "wallpaper picker: every file gets its own thumbnail (same mtime, short paths)" || bad "thumbnail names collide" "$(ls "$pk/home/.cache/relian/wallthumbs")"
 rm -rf "$pk"
 
+# calendar: renders the month in valid pango, Right goes to the next month, the clock right-click opens it
+ca=$(mktemp -d); mkdir -p "$ca/bin" "$ca/home/.config/rofi/wallust"
+printf '%s\n' 'active-background: #89B4FA;' 'active-foreground: #000000;' 'normal-foreground: #CDD6F4;' > "$ca/home/.config/rofi/wallust/colors-rofi.rasi"
+cat > "$ca/bin/rofi" <<'EOS'
+#!/bin/bash
+cat >/dev/null
+n=$(cat "$FAKE_N" 2>/dev/null || echo 0); echo $((n + 1)) > "$FAKE_N"
+while [ $# -gt 0 ]; do [ "$1" = -mesg ] && echo "$2" >> "$FAKE_LOG"; shift; done
+case $n in 0) exit 11 ;; *) exit 1 ;; esac
+EOS
+chmod +x "$ca/bin/rofi"
+env PATH="$ca/bin:$PATH" HOME="$ca/home" FAKE_LOG="$ca/log" FAKE_N="$ca/n" "$root/config/hypr/scripts/Calendar.sh" 2026-12 >/dev/null 2>&1
+python3 - "$ca/log" <<'PY' && ok "Calendar.sh: December 2026, then Right -> January 2027 (valid pango, week numbers)" || bad "Calendar.sh" "$(cat "$ca/log" 2>/dev/null | head -3)"
+import sys, xml.dom.minidom as x
+blocks = open(sys.argv[1]).read().split("\n\n\n")
+txt = open(sys.argv[1]).read()
+assert "December 2026" in txt and "January 2027" in txt and "Wk" in txt
+x.parseString("<r>" + txt.replace("&", "&amp;") + "</r>")
+PY
+rm -rf "$ca"
+grep -q 'on-click-right": "$HOME/.config/hypr/scripts/Calendar.sh"' "$root/config/waybar/configs/[TOP] Omarchy" && ok "right-clicking the clock opens the calendar" || bad "clock right-click" "not wired"
+
 # bar toggles print valid JSON and are wired into the layout
 for m in perf dnd; do
   "$root/config/hypr/scripts/BarToggles.sh" $m | python3 -c 'import sys,json; d=json.loads(sys.stdin.read()); assert d["text"] and d["class"]' 2>&1 \

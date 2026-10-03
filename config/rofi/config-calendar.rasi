@@ -1,0 +1,11 @@
+/* ---- Relian-Hyprland ---- */
+/* Month calendar (right-click the clock): the launcher look with the month grid in the message area. */
+@import "~/.config/rofi/config-omarchy-launcher.rasi"
+
+window { width: 460px; location: north; anchor: north; y-offset: 40px; }
+mainbox { children: [ message, listview ]; }
+message { padding: 18px 20px 10px 20px; }
+textbox { text-color: @normal-foreground; horizontal-align: 0.5; }
+listview { lines: 1; scrollbar: false; padding: 0 0 6px 0; }
+element-icon { size: 0px; }
+element-text { horizontal-align: 0.5; text-color: rgba(255, 255, 255, 55%); }

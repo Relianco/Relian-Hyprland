@@ -50,6 +50,7 @@
   "clock": {
     "format": "{:%A %H:%M}",
     "format-alt": "{:%d %B W%V %Y}",
+    "on-click-right": "$HOME/.config/hypr/scripts/Calendar.sh",
     "tooltip": false
   },
 

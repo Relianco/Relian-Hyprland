@@ -95,6 +95,9 @@ Wallpapers are not kept in git. `SUPER+W` opens the picker with everything in `~
 - **Waybar**: layouts are in `~/.config/waybar/configs/`, styles in `style/`. `SUPER+CTRL+B` picks a style, `SUPER+ALT+B` a layout.
   The default pair is `[TOP] Omarchy` and `[Omarchy] Minimal`. The center shows network speed, clock, weather and temperatures
   (`scripts/SensorTemps.sh` finds the sensors by name, so it keeps working if the hwmon numbers change).
+- **Calendar**: right-click the clock for a month calendar in the rofi look (`scripts/Calendar.sh`). Left/Right (or Up/Down) change month,
+  Home or the Today row jumps back, Esc closes. Left-click still flips the clock between time and date. The rows under the month are
+  reserved for events once Outlook/Gmail sync is added.
 - **Agent usage icon**: needs `claudebar` and `codexbar` (AUR). Without them the icon still shows and the tooltip says what to
   install. The bar shows each agent's fullest limit (C = Claude, X = Codex); hovering shows every limit with a meter and its reset time. Click asks an agent (`AgentPrompt.sh`); right-click opens
   Claude, middle-click opens Codex.

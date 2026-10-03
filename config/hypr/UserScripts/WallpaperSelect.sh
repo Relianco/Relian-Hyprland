@@ -71,31 +71,36 @@ RANDOM_PIC_NAME=". random"
 # Rofi command
 rofi_command="rofi -i -show -dmenu -config $rofi_theme -theme-str $rofi_override"
 
+# Thumbnails: decoding 5120px images and 4K videos for every row is what made the picker slow, so each file gets a small cached
+# thumbnail (made once, in parallel; later opens only read the cache).
+thumb_dir="$HOME/.cache/relian/wallthumbs"
+thumb_path() { # thumb_path FILE -> cache file for it (changes when the file does)
+  local k; k=$(printf '%s:%s' "$1" "$(stat -c '%Y:%s' "$1")" | md5sum | cut -c1-20); echo "$thumb_dir/$k.jpg"
+}
+make_thumb() { # make_thumb FILE THUMB
+  local ss=()
+  [[ "${1,,}" =~ \.(mp4|mkv|mov|webm)$ ]] && ss=(-ss 2)
+  ffmpeg -v error -y "${ss[@]}" -i "$1" -frames:v 1 -vf "scale=800:-2" -q:v 4 "$2" 2>/dev/null \
+    || ffmpeg -v error -y -i "$1" -frames:v 1 -vf "scale=800:-2" -q:v 4 "$2" 2>/dev/null
+}
+export -f make_thumb
+
+build_thumbs() {
+  mkdir -p "$thumb_dir"
+  local f t
+  for f in "${PICS[@]}"; do
+    t=$(thumb_path "$f"); [[ -s "$t" ]] || printf '%s\0%s\0' "$f" "$t"
+  done | xargs -0 -n 2 -P 12 bash -c 'make_thumb "$0" "$1"'
+}
+
 # Sorting Wallpapers
 menu() {
   IFS=$'\n' sorted_options=($(sort <<<"${PICS[*]}"))
 
-  printf "%s\x00icon\x1f%s\n" "$RANDOM_PIC_NAME" "$RANDOM_PIC"
+  printf "%s\x00icon\x1f%s\n" "$RANDOM_PIC_NAME" "$(thumb_path "$RANDOM_PIC")"
 
   for pic_path in "${sorted_options[@]}"; do
-    pic_name=$(basename "$pic_path")
-    if [[ "$pic_name" =~ \.gif$ ]]; then
-      cache_gif_image="$HOME/.cache/gif_preview/${pic_name}.png"
-      if [[ ! -f "$cache_gif_image" ]]; then
-        mkdir -p "$HOME/.cache/gif_preview"
-        magick "$pic_path[0]" -resize 1920x1080 "$cache_gif_image"
-      fi
-      printf "%s\x00icon\x1f%s\n" "$pic_name" "$cache_gif_image"
-    elif [[ "$pic_name" =~ \.(mp4|mkv|mov|webm|MP4|MKV|MOV|WEBM)$ ]]; then
-      cache_preview_image="$HOME/.cache/video_preview/${pic_name}.png"
-      if [[ ! -f "$cache_preview_image" ]]; then
-        mkdir -p "$HOME/.cache/video_preview"
-        ffmpeg -v error -y -i "$pic_path" -ss 00:00:01.000 -vframes 1 "$cache_preview_image"
-      fi
-      printf "%s\x00icon\x1f%s\n" "$pic_name" "$cache_preview_image"
-    else
-      printf "%s\x00icon\x1f%s\n" "$pic_name" "$pic_path"
-    fi
+    printf "%s\x00icon\x1f%s\n" "$(basename "$pic_path")" "$(thumb_path "$pic_path")"
   done
 }
 
@@ -149,6 +154,7 @@ apply_wallpaper() { "$SCRIPTSDIR/WallpaperApply.sh" "$1"; set_sddm_wallpaper; }
 
 # Main function
 main() {
+  build_thumbs
   choice=$(menu | $rofi_command)
   choice=$(echo "$choice" | xargs)
   RANDOM_PIC_NAME=$(echo "$RANDOM_PIC_NAME" | xargs)

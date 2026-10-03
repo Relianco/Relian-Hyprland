@@ -248,8 +248,8 @@ if command -v jq >/dev/null; then
   chmod +x "$stub"/*
   au="$root/config/hypr/scripts/AgentUsage.sh"
   out=$(HOME="$nohome" PATH="$stub:$core" "$au")
-  echo "$out" | jq -e '(.text | endswith("73%")) and .class == "high" and (.tooltip | contains("Claude Code")) and (.tooltip | contains("max")) and (.tooltip | contains("Codex")) and (.tooltip | contains("plus")) and (.tooltip | contains("&lt;"))' >/dev/null 2>&1 \
-    && ok "AgentUsage.sh merges both agents (icon + fullest %, worst class, escaped tooltip)" || bad "AgentUsage.sh merge" "$out"
+  echo "$out" | jq -e '(.text | endswith("C 73%  X 12%")) and .class == "high" and (.tooltip | contains("Claude Code")) and (.tooltip | contains("max")) and (.tooltip | contains("Codex")) and (.tooltip | contains("plus")) and (.tooltip | contains("&lt;"))' >/dev/null 2>&1 \
+    && ok "AgentUsage.sh merges both agents (icon + each agent's fullest %, worst class, escaped tooltip)" || bad "AgentUsage.sh merge" "$out"
   out=$(HOME="$nohome" PATH="$core" "$au")
   echo "$out" | jq -e '.class == "missing" and (.tooltip | contains("yay -S claudebar")) and (.tooltip | contains("yay -S codexbar"))' >/dev/null 2>&1 \
     && ok "AgentUsage.sh without the tools still shows an icon and the install hint" || bad "AgentUsage.sh missing tools" "$out"

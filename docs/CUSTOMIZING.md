@@ -96,7 +96,7 @@ Wallpapers are not kept in git. `SUPER+W` opens the picker with everything in `~
   The default pair is `[TOP] Omarchy` and `[Omarchy] Minimal`. The center shows network speed, clock, weather and temperatures
   (`scripts/SensorTemps.sh` finds the sensors by name, so it keeps working if the hwmon numbers change).
 - **Agent usage icon**: needs `claudebar` and `codexbar` (AUR). Without them the icon still shows and the tooltip says what to
-  install. Hovering shows each limit with a meter and its reset time. Click asks an agent (`AgentPrompt.sh`); right-click opens
+  install. The bar shows each agent's fullest limit (C = Claude, X = Codex); hovering shows every limit with a meter and its reset time. Click asks an agent (`AgentPrompt.sh`); right-click opens
   Claude, middle-click opens Codex.
 - **Performance and do-not-disturb buttons**: two icons left of the tray (`scripts/BarToggles.sh`). The gauge flips the power
   profile between performance and balanced (needs `power-profiles-daemon`), the bell silences notifications (swaync). Lit = on, dim = off.

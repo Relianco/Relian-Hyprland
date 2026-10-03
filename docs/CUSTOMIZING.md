@@ -80,7 +80,7 @@ whole monitor. It only affects windows that are alone on their workspace.
 
 ## Wallpapers
 
-Wallpapers are not kept in git. `SUPER+W` opens the picker with everything in `~/Pictures/wallpapers` (subfolders too). It opens on the wallpaper in use; `Ctrl+1` shows all, `Ctrl+2` only stills, `Ctrl+3` only animated.
+Wallpapers are not kept in git. `SUPER+W` opens the picker with everything in `~/Pictures/wallpapers` (subfolders too). It opens on the wallpaper in use; `Ctrl+1` shows all, `Ctrl+2` only stills, `Ctrl+3` only animated (the number row or the keypad); the same choices are tiles at the top of the list.
 - **Ultrawide stills**: `~/.config/hypr/scripts/FetchWallpapers.py` downloads 32:9 wallpapers of at least 5120x1440 (most favorited, SFW), so nothing is upscaled from
   wallhaven.cc; `--queries nebula,city --per-query 4` picks the themes and amounts. Wider ones are scaled to 5120x1440.
 - **Animated**: `FetchAnimated.py` downloads slow, ambient 4K loops (Mixkit and Wikimedia Commons, no account needed) into

@@ -55,15 +55,26 @@ apply_filter() {
   done
 }
 
+# the first tiles: random, then the filter choices (same as Ctrl+1/2/3, but clickable and without a modifier key)
+LBL_ANIM="Animated only"; LBL_STILL="Stills only"; LBL_ALL="Show all"
+filter_rows() {
+  case "$filter" in
+    all)      printf '%s\x00icon\x1f%s\n' "$LBL_ANIM" video-x-generic "$LBL_STILL" image-x-generic ;;
+    still)    printf '%s\x00icon\x1f%s\n' "$LBL_ANIM" video-x-generic "$LBL_ALL" view-grid-symbolic ;;
+    animated) printf '%s\x00icon\x1f%s\n' "$LBL_STILL" image-x-generic "$LBL_ALL" view-grid-symbolic ;;
+  esac
+}
+
 menu() {
   printf ". random\x00icon\x1f%s\n" "${thumbs[shown[RANDOM % ${#shown[@]}]]}"
+  filter_rows
   local i
   for i in "${shown[@]}"; do printf "%s\x00icon\x1f%s\n" "${PICS[i]##*/}" "${thumbs[i]}"; done
 }
 
-# row (0 is ". random") of the wallpaper in use within the filtered list, so the picker opens on it
+# row of the wallpaper in use within the filtered list (rows 0-2 are random + the two filter tiles), so the picker opens on it
 current_row() {
-  local cur n=1 i; cur=$(cat "$state" 2>/dev/null)
+  local cur n=3 i; cur=$(cat "$state" 2>/dev/null)
   for i in "${shown[@]}"; do [[ "${PICS[i]}" == "$cur" ]] && { echo "$n"; return; }; n=$((n + 1)); done
   echo 0
 }
@@ -118,14 +129,18 @@ apply_wallpaper() { "$SCRIPTSDIR/WallpaperApply.sh" "$1"; set_sddm_wallpaper; }
 
 main() {
   build_thumbs
-  local row choice rc label
+  main_loop
+}
+
+main_loop() {
+  local choice rc label
   while true; do
     apply_filter
     [[ ${#shown[@]} -gt 0 ]] || { notify-send -i "$iDIR/error.png" "No $filter wallpapers" "nothing matches this filter"; filter=all; apply_filter; }
     case "$filter" in all) label="all" ;; still) label="stills only" ;; animated) label="animated only" ;; esac
     choice=$(menu | rofi -i -show -dmenu -config "$rofi_theme" -theme-str "$rofi_override" -selected-row "$(current_row)" \
-      -mesg "Showing: $label     Ctrl+1 all   Ctrl+2 stills   Ctrl+3 animated" \
-      -kb-custom-1 "Control+1" -kb-custom-2 "Control+2" -kb-custom-3 "Control+3")
+      -mesg "Showing: $label     (tiles 2-3 or Ctrl+1 all, Ctrl+2 stills, Ctrl+3 animated)" \
+      -kb-custom-1 "Control+1,Control+KP_1" -kb-custom-2 "Control+2,Control+KP_2" -kb-custom-3 "Control+3,Control+KP_3")
     rc=$?
     case $rc in
       10) filter=all; continue ;;
@@ -137,6 +152,11 @@ main() {
   done
   choice=${choice%$'\n'}
   [[ -n "$choice" ]] || exit 0
+  case "$choice" in
+    "$LBL_ANIM") filter=animated; main_loop; return ;;
+    "$LBL_STILL") filter=still; main_loop; return ;;
+    "$LBL_ALL") filter=all; main_loop; return ;;
+  esac
 
   local selected_file=""
   if [[ "$choice" == ". random" ]]; then

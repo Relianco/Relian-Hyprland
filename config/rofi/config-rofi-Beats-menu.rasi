@@ -1,45 +1,7 @@
 /* ---- Relian-Hyprland ---- */
-/* Main config Rofi Beats Config menu */
+/* Omarchy-style menu: shared look from config-omarchy-menu.rasi; this file only sets what is specific to this menu. */
+@import "~/.config/rofi/config-omarchy-menu.rasi"
 
-@import "~/.config/rofi/config.rasi"  
-
-/* ---- Mainbox ---- */
-mainbox {
-  children:
-    [ "inputbar", "listview"];
-}
-
-/* ---- Entry ---- */ 
-entry {
-  expand: false;
-  width: 25%;
-  width: 25%;
-  placeholder: "Choose Music Source";
-  horizontal-align: 0.5;
-  horizontal-align: 0.5;
-}
-
-/* ---- Window ---- */
-window {
-  width: 28%;
-  height: inherit;
-}
-
-/* ---- Listview ---- */
-listview {
-  fixed-columns: false;
-  scrollbar: false;
-  colums: 1;
-  lines: 4;
-  spacing: 6px;
-  cycle: true;
-}
-
-/* ---- Element ---- */
-element-icon {
-  	size: 0%;
-}
-element-text {
-    horizontal-align: 0.5;
-    
-}
+entry { placeholder: "Choose Music Source"; }
+window { width: 420px; }
+listview { lines: 4; }

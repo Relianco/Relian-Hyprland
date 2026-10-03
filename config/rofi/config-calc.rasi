@@ -1,25 +1,9 @@
 /* ---- Relian-Hyprland ---- */
-/* Main Config Calculator */
-/* Submitted by: https://github.com/JosephArmas */
+/* Omarchy-style input-only box (no list). */
+@import "~/.config/rofi/config-omarchy-launcher.rasi"
 
-@import "~/.config/rofi/config.rasi" 
-
-/* ---- Mainbox ---- */
-mainbox {
-  children: [ "entry", "message" ];
-  height: inherit;
-}
-
-/* ---- Window ---- */
-window {
-  width: 30%;
-  height: inherit;
-}
-
-/* ---- Entry ---- */
-entry {
-  expand: true;
-  placeholder: "Calculate";
-}
-
-listview {enable: false;}
+configuration { modi: "dmenu"; }
+window { width: 560px; }
+mainbox { children: [ inputbar, message ]; }
+entry { placeholder: "Calculate"; }
+listview { enabled: false; }

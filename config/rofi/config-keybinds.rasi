@@ -1,48 +1,7 @@
 /* ---- Relian-Hyprland ---- */
-/* Main Config - For Keybinds generation */
+/* Omarchy-style menu: shared look from config-omarchy-menu.rasi; this file only sets what is specific to this menu. */
+@import "~/.config/rofi/config-omarchy-menu.rasi"
 
-@import "~/.config/rofi/config.rasi"  
-
-
-/* ---- Mainbox ---- */
-mainbox {
-  children:
-    [ "inputbar", "message", "listview"];
-}
-
-/* ---- Entry ---- */
-entry {
-  expand: true;
-  placeholder: "Search Keybinds";
-}
-
-/* ---- Listview ---- */
-listview {
-  columns: 2;
-  lines: 8;
-  fixed-height: false;
-  scrollbar: true;
-  spacing: 6px;
-  cycle: true;
-}
-
-window {
-  width: 90%;
-  height: inherit;
-}
-
-/* ---- Elements ---- */
-element {
-  orientation: horizontal;
-}
-
-element-icon {
-  	size: 0%;
-}
-
-element-text {
-    horizontal-align: 0.0;
-    vertical-align: 0.5;
-    margin: 0px;
-    padding: 0px;
-}
+entry { placeholder: "Search Keybinds"; }
+window { width: 1100px; }
+listview { lines: 16; }

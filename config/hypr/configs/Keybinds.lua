@@ -38,7 +38,7 @@ hl.bind("SUPER + H", hl.dsp.exec_cmd(scriptsDir .. "/KeyHints.sh"), { descriptio
 hl.bind("SUPER + ALT + R", hl.dsp.exec_cmd(scriptsDir .. "/Refresh.sh"), { description = "refresh bar and menus" })
 hl.bind("SUPER + ALT + E", hl.dsp.exec_cmd(scriptsDir .. "/RofiEmoji.sh"), { description = "emoji menu" })
 hl.bind("SUPER + S", hl.dsp.exec_cmd(scriptsDir .. "/RofiSearch.sh"), { description = "web search" })
-hl.bind("SUPER + CTRL + S", hl.dsp.exec_cmd("rofi -show window"), { description = "window switcher" })
+hl.bind("SUPER + CTRL + S", hl.dsp.exec_cmd("rofi -show window -theme " .. os.getenv("HOME") .. "/.config/rofi/config-omarchy-launcher.rasi"), { description = "window switcher" })
 hl.bind("SUPER + ALT + O", hl.dsp.exec_cmd(scriptsDir .. "/ChangeBlur.sh"), { description = "toggle blur" })
 hl.bind("SUPER + SHIFT + G", hl.dsp.exec_cmd(scriptsDir .. "/GameMode.sh"), { description = "toggle game mode" })
 hl.bind("SUPER + ALT + L", hl.dsp.exec_cmd(scriptsDir .. "/ChangeLayout.sh"), { description = "toggle master/dwindle layout" })

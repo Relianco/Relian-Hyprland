@@ -1,25 +1,9 @@
 /* ---- Relian-Hyprland ---- */
-/* Rofi Config for Google Search) */
+/* Omarchy-style input-only box (no list). */
+@import "~/.config/rofi/config-omarchy-launcher.rasi"
 
-@import "~/.config/rofi/config.rasi"  
-
-/* ---- Window ---- */
-window {
-	width: 40%;
-	//orientation: horizontal;
-	height: inherit;
-    y-offset: 10px;
-    location: north;
-    children: [ "entry", "message" ];
-    border: 2px;
-    border-color: white/25%;
-}
-
-/* ---- Entry ---- */ 
-entry {
-	expand: true;
-	placeholder: "Google Search";
-	horizontal-align: 0.5;
-	padding: 15px;
-	border-radius: inherit;
-}
+configuration { modi: "dmenu"; }
+window { width: 560px; }
+mainbox { children: [ inputbar, message ]; }
+entry { placeholder: "Search the web"; }
+listview { enabled: false; }

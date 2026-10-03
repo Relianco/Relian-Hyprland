@@ -39,6 +39,9 @@ entry {
     placeholder-color: rgba(255, 255, 255, 45%);
 }
 
+/* rofi's default dashed separator lines are removed: flat look */
+listview { border: 0px; padding: 0px; }
+message { border: 0px; }
 listview {
     lines: 8;
     columns: 1;

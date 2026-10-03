@@ -92,6 +92,19 @@ PY
 grep -qE 'rounding = 0,' "$root/config/hypr/UserConfigs/UserDecorations.lua" && ok "corners are square (rounding = 0)" || bad "rounding is not 0"
 grep -q 'borderangle' "$root/config/hypr/UserConfigs/UserAnimations.lua" && bad "rainbow border animation present" || ok "no rainbow border animation"
 
+# every rofi menu theme parses (against the repo's own rofi dir, not your live one) and uses the Omarchy base, not the old layouts
+if command -v rofi >/dev/null; then
+  mkdir -p "$tmp/home/.config"; rm -rf "$tmp/home/.config/rofi"; cp -r "$root/config/rofi" "$tmp/home/.config/rofi"
+  prob=""
+  for f in "$root"/config/rofi/config-*.rasi; do
+    n=$(basename "$f")
+    out=$(HOME="$tmp/home" rofi -theme "$tmp/home/.config/rofi/$n" -dump-theme 2>&1)
+    echo "$out" | grep -qE "WARNING|Failed to parse|Error:|error:" && prob+="$n(parse) "
+    case "$n" in config-omarchy-launcher.rasi) ;; *) grep -qE '@import "~/.config/rofi/config-omarchy-(menu|launcher).rasi"' "$f" || prob+="$n(old-layout) " ;; esac
+  done
+  [ -z "$prob" ] && ok "all rofi menu themes parse and use the Omarchy base" || bad "rofi menu themes" "$prob"
+fi
+
 # dark-only carousel: no scheme with a light background (luminance of #bg must stay below 0.5)
 python3 - "$root/config/wallust/colorschemes" <<'PY' && ok "all themes are dark" || bad "a light theme is in the carousel"
 import json, glob, sys
@@ -229,6 +242,9 @@ t = re.sub(r'/\*.*?\*/', '', t, flags=re.S); t = re.sub(r'^\s*//.*$', '', t, fla
 assert "Relian_Quick_Settings.sh" in json.loads(t)["custom/menu"]["on-click"]
 assert "config-omarchy-menu.rasi" in open(sys.argv[2], encoding="utf-8").read()
 PY
+
+# power menu (wlogout): square tiles, no bouncy hover
+grep -E 'radius' "$root/config/wlogout/style.css" | grep -qvE 'radius: 0' && bad "wlogout has rounded buttons" || ok "wlogout power menu is square"
 
 # the Omarchy-style waybar layout is valid JSONC and its style imports the wallust colors
 if command -v python3 >/dev/null; then

@@ -15,27 +15,37 @@ claude=$(fetch claudebar); codex=$(fetch codexbar)
 
 jq -nc --argjson claude "$claude" --argjson codex "$codex" --arg icon "$ICON" '
   def esc: gsub("&";"&amp;") | gsub("<";"&lt;") | gsub(">";"&gt;");
-  def bar($p): ([($p / 10 | floor), 10] | min | [., 0] | max) as $f
-               | ([range($f)] | map("█") | join("")) + ([range(10 - $f)] | map("░") | join(""));
+  def dim($s): "<span alpha=\"55%\">" + $s + "</span>";
+  def col($p): if $p >= 85 then "#e06c5a" elif $p >= 60 then "#e0a85a" else "#8fbf7a" end;
+  def meter($p; $w): ([($p / 100 * $w) | round, $w] | min | [., 0] | max) as $f
+                     | "<span foreground=\"\(col($p))\">" + ([range($f)] | map("█") | join("")) + "</span>"
+                     + "<span alpha=\"25%\">" + ([range($w - $f)] | map("█") | join("")) + "</span>";
   def eta($u): ($u - now) as $s
                | if $s <= 0 then "now" elif $s < 3600 then "\($s / 60 | floor)m"
                  elif $s < 86400 then "\($s / 3600 | floor)h \(($s % 3600) / 60 | floor)m"
                  else "\($s / 86400 | floor)d \(($s % 86400) / 3600 | floor)h" end;
   def pad($s; $n): ($s + (" " * $n))[0:$n];
+  def gap: "\n<span size=\"small\"> </span>\n";
+  def row: "  \(pad(.label; 14) | esc)  \(meter(.used_pct; 22))  "
+           + "<span weight=\"bold\" foreground=\"\(col(.used_pct))\">\(("   " + (.used_pct | round | tostring) + "%")[-4:])</span>   "
+           + dim("resets in " + eta(.reset_at_unix));
   def section($name; $doc; $install):
-    if $doc == null then "\($name)\n  not installed  (\($install))"
-    elif ($doc.error // null) != null then "\($name)\n  \(($doc.error.message // "error") | esc)"
-    else "\($name)" + (if ($doc.plan // "") != "" then "  (\($doc.plan | esc))" else "" end)
-         + (if $doc.stale == true then "  [stale]" else "" end)
-         + ([($doc.windows // [])[] | "\n  \(pad(.label; 14) | esc) \(bar(.used_pct)) \(.used_pct | round)%  resets in \(eta(.reset_at_unix))"] | join(""))
-    end;
-  def worst($docs): ($docs | map(select(. != null and (.error // null) == null) | .state) )
+    "<span size=\"large\" weight=\"bold\">\($name)</span>"
+    + (if $doc == null then "   " + dim("not installed") + gap + "  " + dim($install)
+       elif ($doc.error // null) != null then gap + "  <span foreground=\"#e06c5a\">\(($doc.error.message // "error") | esc)</span>"
+       else (if ($doc.plan // "") != "" then "   " + dim($doc.plan | esc) else "" end)
+            + (if $doc.stale == true then "   " + dim("stale") else "" end)
+            + gap + ([($doc.windows // [])[] | row] | join(gap))
+       end);
+  def worst($docs): ($docs | map(select(. != null and (.error // null) == null) | .state))
                     | (map({low:0, mid:1, high:2, critical:3}[.] // 0) | max) as $w
                     | if $w == null then null else ["low","mid","high","critical"][$w] end;
   [$claude, $codex] as $docs
   | ($docs | map(select(. != null and (.error // null) == null) | (.max_pct // 0)) | max) as $pct
   | (worst($docs)) as $state
   | {text: (if $pct == null then $icon else "\($icon) \($pct | round)%" end),
-     tooltip: ([section("Claude Code"; $claude; "yay -S claudebar"), section("Codex"; $codex; "yay -S codexbar")] | join("\n\n")
-               + "\n\nclick: ask an agent   right: Claude   middle: Codex"),
+     tooltip: ("<span size=\"small\" weight=\"bold\" alpha=\"55%\">AI AGENTS</span>" + gap
+               + section("Claude Code"; $claude; "yay -S claudebar") + gap + gap
+               + section("Codex"; $codex; "yay -S codexbar") + gap + gap
+               + dim("click  ask an agent    right  Claude    middle  Codex")),
      class: (if $state != null then $state elif ($docs | all(. == null)) then "missing" else "error" end)}'

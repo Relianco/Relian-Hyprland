@@ -40,6 +40,8 @@
 #custom-temps.warm { color: #d7a65a; }
 #custom-temps.hot  { color: #a55555; }
 
-tooltip { padding: 2px; }
+/* roomy tooltips (agents usage, temps, ...) */
+tooltip { padding: 14px 20px; }
+tooltip label { font-size: 13px; }
 #battery.warning  { color: #d7a65a; }
 #battery.critical { color: #a55555; }

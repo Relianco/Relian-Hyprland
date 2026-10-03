@@ -183,7 +183,7 @@ if command -v jq >/dev/null; then
   chmod +x "$stub"/*
   au="$root/config/hypr/scripts/AgentUsage.sh"
   out=$(HOME="$nohome" PATH="$stub:$core" "$au")
-  echo "$out" | jq -e '(.text | endswith("73%")) and .class == "high" and (.tooltip | contains("Claude Code  (max)")) and (.tooltip | contains("Codex  (plus)")) and (.tooltip | contains("&lt;"))' >/dev/null 2>&1 \
+  echo "$out" | jq -e '(.text | endswith("73%")) and .class == "high" and (.tooltip | contains("Claude Code")) and (.tooltip | contains("max")) and (.tooltip | contains("Codex")) and (.tooltip | contains("plus")) and (.tooltip | contains("&lt;"))' >/dev/null 2>&1 \
     && ok "AgentUsage.sh merges both agents (icon + fullest %, worst class, escaped tooltip)" || bad "AgentUsage.sh merge" "$out"
   out=$(HOME="$nohome" PATH="$core" "$au")
   echo "$out" | jq -e '.class == "missing" and (.tooltip | contains("yay -S claudebar")) and (.tooltip | contains("yay -S codexbar"))' >/dev/null 2>&1 \
@@ -192,6 +192,10 @@ if command -v jq >/dev/null; then
   out=$(HOME="$nohome" PATH="$stub:$core" "$au")
   echo "$out" | jq -e '(.tooltip | contains("No credentials")) and .class == "low"' >/dev/null 2>&1 \
     && ok "AgentUsage.sh shows one agent's error without hiding the other" || bad "AgentUsage.sh error handling" "$out"
+fi
+if python3 -c 'import gi; gi.require_version("Pango","1.0")' 2>/dev/null; then
+  out=$(HOME="$nohome" PATH="$stub:$core" "$au" | jq -r .tooltip | python3 -c 'import sys,gi; gi.require_version("Pango","1.0"); from gi.repository import Pango; Pango.parse_markup(sys.stdin.read(),-1,"\0")' 2>&1) \
+    && ok "AgentUsage.sh tooltip is valid Pango markup" || bad "AgentUsage.sh tooltip markup" "$out"
 fi
 grep -q 'AgentPrompt.sh' "$root/config/waybar/configs/[TOP] Omarchy" && grep -q '"SUPER + CTRL + A"' "$root/config/hypr/configs/Keybinds.lua" && ok "agents icon + SUPER+CTRL+A open the agent prompt" || bad "agent prompt wiring"
 

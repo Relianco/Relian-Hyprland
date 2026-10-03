@@ -1,76 +1,67 @@
 #!/usr/bin/env bash
 # /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# Quick cheat sheet (SUPER + H): every keybind with a description, in the same rofi style as the other menus.
+# Type to search (matches key, description or notes); Esc closes. For the *live* binds use SUPER + SHIFT + K.
 
-# GDK BACKEND. Change to either wayland or x11 if having issues
-BACKEND=wayland
+rofi_theme="$HOME/.config/rofi/config-omarchy-menu.rasi"
 
-# Check if rofi or yad is running and kill them if they are
-if pidof rofi > /dev/null; then
-  pkill rofi
-fi
+# key | description | notes
+rows=(
+  'SUPER + SHIFT + K' 'Searchable Keybinds' '(Search all Keybinds via rofi)'
+  'SUPER + SHIFT + E' 'KooL Hyprland Settings Menu' ''
+  'SUPER + enter' Terminal '(kitty)'
+  'SUPER + SHIFT + enter' 'DropDown Terminal' 'SUPER Q to close'
+  'SUPER + B' 'Launch Browser' '(Default browser)'
+  'SUPER + A' 'Desktop Overview' '(AGS - if opted to install)'
+  'SUPER + D' 'Application Launcher' '(also SUPER ALT SPACE, like Omarchy)'
+  'SUPER + E' 'Open File Manager' '(Thunar)'
+  'SUPER + S' 'Google Search using rofi' '(rofi)'
+  'SUPER + Q' 'close active window' '(not kill)'
+  'SUPER + SHIFT + Q' 'kills an active window' '(kill)'
+  'SUPER + ALT + mouse scroll up/down' 'Desktop Zoom' 'Desktop Magnifier'
+  'SUPER + ALT + V' 'Clipboard Manager' '(cliphist)'
+  'SUPER + W' 'Choose wallpaper' '(Wallpaper Menu)'
+  'SUPER + SHIFT + W' 'Choose wallpaper effects' '(imagemagick + swww)'
+  'CTRL + ALT + W' 'Random wallpaper' '(via swww)'
+  'SUPER + CTRL + ALT + B' 'Hide/UnHide Waybar' waybar
+  'SUPER + CTRL + B' 'Choose waybar styles' '(waybar styles)'
+  'SUPER + ALT + B' 'Choose waybar layout' '(waybar layout)'
+  'SUPER + ALT + R' 'Reload Waybar swaync Rofi' 'CHECK NOTIFICATION FIRST!!!'
+  'SUPER + SHIFT + N' 'Launch Notification Panel' 'swaync Notification Center'
+  'SUPER + Print' screenshot '(grim)'
+  'SUPER + SHIFT + Print' 'screenshot region' '(grim + slurp)'
+  'SUPER + SHIFT + S' 'screenshot region' '(swappy)'
+  'SUPER + CTRL + Print' 'screenshot timer 5 secs ' '(grim)'
+  'SUPER + CTRL + SHIFT + Print' 'screenshot timer 10 secs ' '(grim)'
+  'ALT + Print' 'Screenshot active window' 'active window only'
+  'CTRL + ALT + P' power-menu '(wlogout)'
+  'CTRL + ALT + L' 'screen lock' '(hyprlock)'
+  'CTRL + ALT + Del' 'Hyprland Exit' '(NOTE: Hyprland Will exit immediately)'
+  'SUPER + SHIFT + F' Fullscreen 'Toggles to full screen'
+  'SUPER + CTRL + F' 'Fake Fullscreen' 'Toggles to fake full screen'
+  'SUPER + ALT + L' 'Toggle Dwindle | Master Layout' 'Hyprland Layout'
+  'SUPER + SPACE' 'Main menu (KooL settings)' '(Omarchy: SUPER SPACE)'
+  'SUPER + SHIFT + CTRL + SPACE' 'Theme carousel' '(LEFT/RIGHT cycle + live preview, ENTER keep, ESC revert)'
+  'SUPER + CTRL + A' 'Ask an AI agent' '(Enter: Claude Code, Shift+Enter: Codex; also the waybar robot icon)'
+  'SUPER + - / =' 'Resize window narrower / wider' '(+SHIFT: shorter/taller, +ALT: small steps, +CTRL: big steps)'
+  'SUPER + T' 'Toggle float' 'single window'
+  'SUPER + ALT + T' 'Toggle all windows to float' 'all windows'
+  'SUPER + ALT + O' 'Toggle Blur' 'normal or less blur'
+  'SUPER + CTRL + O' 'Toggle Opaque ON or OFF' 'on active window only'
+  'SUPER + SHIFT + A' 'Animations Menu' 'Choose Animations via rofi'
+  'SUPER + CTRL + R' 'Rofi Themes Menu' 'Choose Rofi Themes via rofi'
+  'SUPER + CTRL + SHIFT + R' 'Rofi Themes Menu v2' 'Choose Rofi Themes via Theme Selector (modified)'
+  'SUPER + SHIFT + G' 'Gamemode! All animations OFF or ON' toggle
+  'SUPER + ALT + E' 'Rofi Emoticons' Emoticon
+  'SUPER + H' 'Launch this Quick Cheat Sheet' ''
+  'More tips:' https://github.com/JaKooLit/Hyprland-Dots/wiki ''
+)
 
-if pidof yad > /dev/null; then
-  pkill yad
-fi
+pkill rofi 2>/dev/null
 
-# Launch yad with calculated width and height
-GDK_BACKEND=$BACKEND yad \
-    --center \
-    --title="KooL Quick Cheat Sheet" \
-    --no-buttons \
-    --list \
-    --column=Key: \
-    --column=Description: \
-    --column=Command: \
-    --timeout-indicator=bottom \
-"ESC" "close this app" "" " = " "SUPER KEY (Windows Key Button)" "(SUPER KEY)" \
-" SHIFT K" "Searchable Keybinds" "(Search all Keybinds via rofi)" \
-" SHIFT E" "KooL Hyprland Settings Menu" "" \
-"" "" "" \
-" enter" "Terminal" "(kitty)" \
-" SHIFT enter" "DropDown Terminal" " Q to close" \
-" B" "Launch Browser" "(Default browser)" \
-" A" "Desktop Overview" "(AGS - if opted to install)" \
-" D" "Application Launcher" "(also SUPER ALT SPACE, like Omarchy)" \
-" E" "Open File Manager" "(Thunar)" \
-" S" "Google Search using rofi" "(rofi)" \
-" Q" "close active window" "(not kill)" \
-" Shift Q " "kills an active window" "(kill)" \
-" ALT mouse scroll up/down   " "Desktop Zoom" "Desktop Magnifier" \
-" Alt V" "Clipboard Manager" "(cliphist)" \
-" W" "Choose wallpaper" "(Wallpaper Menu)" \
-" Shift W" "Choose wallpaper effects" "(imagemagick + swww)" \
-"CTRL ALT W" "Random wallpaper" "(via swww)" \
-" CTRL ALT B" "Hide/UnHide Waybar" "waybar" \
-" CTRL B" "Choose waybar styles" "(waybar styles)" \
-" ALT B" "Choose waybar layout" "(waybar layout)" \
-" ALT R" "Reload Waybar swaync Rofi" "CHECK NOTIFICATION FIRST!!!" \
-" SHIFT N" "Launch Notification Panel" "swaync Notification Center" \
-" Print" "screenshot" "(grim)" \
-" Shift Print" "screenshot region" "(grim + slurp)" \
-" Shift S" "screenshot region" "(swappy)" \
-" CTRL Print" "screenshot timer 5 secs " "(grim)" \
-" CTRL SHIFT Print" "screenshot timer 10 secs " "(grim)" \
-"ALT Print" "Screenshot active window" "active window only" \
-"CTRL ALT P" "power-menu" "(wlogout)" \
-"CTRL ALT L" "screen lock" "(hyprlock)" \
-"CTRL ALT Del" "Hyprland Exit" "(NOTE: Hyprland Will exit immediately)" \
-" SHIFT F" "Fullscreen" "Toggles to full screen" \
-" CTL F" "Fake Fullscreen" "Toggles to fake full screen" \
-" ALT L" "Toggle Dwindle | Master Layout" "Hyprland Layout" \
-"  SPACE" "Main menu (KooL settings)" "(Omarchy: SUPER SPACE)" \
-" SHIFT CTRL SPACE" "Theme carousel" "(LEFT/RIGHT cycle + live preview, ENTER keep, ESC revert)" \
-" CTRL A" "Ask an AI agent" "(Enter: Claude Code, Shift+Enter: Codex; also the waybar robot icon)" \
-"  - / =" "Resize window narrower / wider" "(+SHIFT: shorter/taller, +ALT: small steps, +CTRL: big steps)" \
-" T" "Toggle float" "single window" \
-" ALT T" "Toggle all windows to float" "all windows" \
-" ALT O" "Toggle Blur" "normal or less blur" \
-" CTRL O" "Toggle Opaque ON or OFF" "on active window only" \
-" Shift A" "Animations Menu" "Choose Animations via rofi" \
-" CTRL R" "Rofi Themes Menu" "Choose Rofi Themes via rofi" \
-" CTRL Shift R" "Rofi Themes Menu v2" "Choose Rofi Themes via Theme Selector (modified)" \
-" SHIFT G" "Gamemode! All animations OFF or ON" "toggle" \
-" ALT E" "Rofi Emoticons" "Emoticon" \
-" H" "Launch this Quick Cheat Sheet" "" \
-"" "" "" \
-"More tips:" "https://github.com/JaKooLit/Hyprland-Dots/wiki" ""\
+# three columns, padded so the list lines up (the rofi theme uses a monospace font)
+for ((i = 0; i < ${#rows[@]}; i += 3)); do
+  printf '%-30s %-46s %s\n' "${rows[i]}" "${rows[i + 1]}" "${rows[i + 2]}"
+done | rofi -dmenu -i -no-custom -theme "$rofi_theme" \
+  -theme-str 'window { width: 1300px; } entry { placeholder: "󰌌  Search keybinds..."; } listview { lines: 16; }' \
+  -mesg "Type to search   Esc to close   (live binds: SUPER + SHIFT + K)"

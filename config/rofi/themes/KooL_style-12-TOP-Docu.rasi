@@ -32,7 +32,7 @@ entry {
     border-color:  				darkgrey;
     background-color: 			grey;
     padding:       				12px;
-    placeholder:       			"🔎 Search";
+    placeholder:       			"Search";
     placeholder-color: 			darkgrey;
     cursor: 					text;
 }

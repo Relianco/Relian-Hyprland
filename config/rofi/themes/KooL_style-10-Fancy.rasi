@@ -271,7 +271,7 @@ entry {
     enabled: true;
     expand: true;
 	background-color: white / 75%;
-    placeholder: " 🖥️ Search ";
+    placeholder: "Search ";
     vertical-align: 0.5;
     border-radius: 5px;
     padding: 4px;

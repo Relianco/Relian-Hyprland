@@ -163,19 +163,22 @@ python3 -c 'import json,sys; c=json.load(open(sys.argv[1])); assert c["positionX
 
 # AgentUsage.sh merges claudebar + codexbar into one waybar module (stand-in commands, never real credentials)
 if command -v jq >/dev/null; then
-  stub="$tmp/stub"; mkdir -p "$stub"
+  stub="$tmp/stub"; mkdir -p "$stub"; nohome="$tmp/nohome"; mkdir -p "$nohome"
+  # PATH for the tests: only core tools symlinked into a private dir. /usr/bin is NOT used, because the real
+  # claudebar/codexbar may be installed there and would be run against your real credentials.
+  core="$tmp/core"; mkdir -p "$core"; for b in bash env jq timeout date cat sed tr head sleep dirname basename; do p=$(command -v "$b") && ln -sf "$p" "$core/$b"; done
   printf '%s\n' '#!/usr/bin/env bash' 'n=$(date +%s)' 'echo "{\"error\":null,\"plan\":\"max\",\"state\":\"high\",\"max_pct\":73,\"windows\":[{\"label\":\"Weekly (7d)\",\"used_pct\":73,\"reset_at_unix\":$((n+200000))}]}"' > "$stub/claudebar"
   printf '%s\n' '#!/usr/bin/env bash' 'n=$(date +%s)' 'echo "{\"error\":null,\"plan\":\"plus\",\"state\":\"low\",\"max_pct\":12,\"windows\":[{\"label\":\"Session <5h>\",\"used_pct\":12,\"reset_at_unix\":$((n+1800))}]}"' > "$stub/codexbar"
   chmod +x "$stub"/*
   au="$root/config/hypr/scripts/AgentUsage.sh"
-  out=$(PATH="$stub:/usr/bin:/bin" "$au")
+  out=$(HOME="$nohome" PATH="$stub:$core" "$au")
   echo "$out" | jq -e '(.text | endswith("73%")) and .class == "high" and (.tooltip | contains("Claude Code  (max)")) and (.tooltip | contains("Codex  (plus)")) and (.tooltip | contains("&lt;"))' >/dev/null 2>&1 \
     && ok "AgentUsage.sh merges both agents (icon + fullest %, worst class, escaped tooltip)" || bad "AgentUsage.sh merge" "$out"
-  out=$(PATH="/usr/bin:/bin" "$au")
+  out=$(HOME="$nohome" PATH="$core" "$au")
   echo "$out" | jq -e '.class == "missing" and (.tooltip | contains("yay -S claudebar")) and (.tooltip | contains("yay -S codexbar"))' >/dev/null 2>&1 \
     && ok "AgentUsage.sh without the tools still shows an icon and the install hint" || bad "AgentUsage.sh missing tools" "$out"
   printf '%s\n' '#!/usr/bin/env bash' 'echo "{\"error\":{\"message\":\"No credentials. Run claude\"}}"' > "$stub/claudebar"
-  out=$(PATH="$stub:/usr/bin:/bin" "$au")
+  out=$(HOME="$nohome" PATH="$stub:$core" "$au")
   echo "$out" | jq -e '(.tooltip | contains("No credentials")) and .class == "low"' >/dev/null 2>&1 \
     && ok "AgentUsage.sh shows one agent's error without hiding the other" || bad "AgentUsage.sh error handling" "$out"
 fi
@@ -183,7 +186,8 @@ grep -q 'AgentPrompt.sh' "$root/config/waybar/configs/[TOP] Omarchy" && grep -q 
 
 # rofi menu header messages are plain text (emoji render as ugly colour glyphs in rofi)
 emo=$(grep -rnP '^\s*msg=.*[\x{1F000}-\x{1FAFF}\x{2600}-\x{27BF}\x{2049}\x{203C}\x{FE0F}]' "$root/config/hypr/scripts" "$root/config/hypr/UserScripts" 2>/dev/null)
-[ -z "$emo" ] && ok "rofi menu messages have no emoji" || bad "emoji in rofi menu messages" "$emo"
+emo+=$(grep -rnP 'placeholder:.*[\x{1F000}-\x{1FAFF}\x{2600}-\x{27BF}\x{2049}\x{203C}\x{FE0F}]' "$root/config/rofi" 2>/dev/null)
+[ -z "$emo" ] && ok "rofi menu messages and search placeholders have no emoji" || bad "emoji in rofi menu messages/placeholders" "$emo"
 
 # rofi custom keys must not overlap rofi's own defaults (it pops a warning): the defaults they collide with are freed first
 grep -q 'kb-accept-alt ""' "$root/config/hypr/scripts/AgentPrompt.sh" && ok "AgentPrompt frees rofi's Shift+Return before binding it" || bad "AgentPrompt Shift+Return overlaps rofi kb-accept-alt"

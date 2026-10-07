@@ -171,7 +171,7 @@ hl.window_rule({ match = { title = "^(SDDM Background)$" }, size = { "monitor_h*
 -- END of float popups and dialogue #######
 
 -- OPACITY
-hl.window_rule({ match = { tag = "browser*" }, opacity = "0.99 0.8" })
+hl.window_rule({ match = { tag = "browser*" }, opacity = "1.0 override 1.0 override" })
 hl.window_rule({ match = { tag = "projects*" }, opacity = "0.9 0.8" })
 hl.window_rule({ match = { tag = "im*" }, opacity = "0.94 0.86" })
 hl.window_rule({ match = { tag = "multimedia*" }, opacity = "0.94 0.86" })

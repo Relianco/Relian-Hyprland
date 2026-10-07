@@ -26,6 +26,7 @@ The Lua rewrite and the Omarchy-style look.
 - `hyprctl dispatch`/`keyword` calls in scripts replaced with Lua dispatchers and `hyprctl eval`.
 
 ### Fixed
+- Browsers dimming when unfocused: browser windows are now solid (`1.0 override`) and `dim_inactive` is off, so a video no longer darkens when the mouse leaves the window.
 - Terminals opening full screen instead of tiling (kitty was restoring a cached "maximized" state).
 - The opacity toggle (it used `hyprctl setprop`, which no longer exists).
 - Rofi key-binding overlap warnings; unreadable highlighted rows on some themes; `getoption`-based toggles under Lua.
